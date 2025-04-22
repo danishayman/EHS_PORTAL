@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35931.197 d17.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EHS_PORTAL", "EHS_PORTAL.csproj", "{13D3EA48-728C-4F30-8E00-A9D1724F1721}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{13D3EA48-728C-4F30-8E00-A9D1724F1721}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13D3EA48-728C-4F30-8E00-A9D1724F1721}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13D3EA48-728C-4F30-8E00-A9D1724F1721}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13D3EA48-728C-4F30-8E00-A9D1724F1721}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {09B2E076-4DF4-4CE3-AAB0-842BF63585AF}
+	EndGlobalSection
+EndGlobal
