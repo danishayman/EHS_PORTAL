@@ -50,7 +50,7 @@ header {
 }
 
 .company-logo {
-  height: 60px;
+  height: 40px;
   margin-right: 15px;
 }
 
@@ -95,13 +95,16 @@ header {
 
 .section-title {
   text-align: center;
+  font-size: 30px;
   margin-bottom: 40px;
   color: var(--primary-color);
 }
 
 .cards-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
+  max-width: 1000px;
+  margin: 0 auto;
   gap: 30px;
 }
 
@@ -112,11 +115,20 @@ header {
   box-shadow: var(--box-shadow);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
+  max-width: 280px;
+  margin: 0 auto;
+  text-decoration: none;
+  color: inherit;
 }
 
 .card:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  text-decoration: none;
+}
+
+.card * {
+  text-decoration: none;
 }
 
 .card-icon {
@@ -129,8 +141,15 @@ header {
   font-size: 32px;
 }
 
+.card-image {
+  height: 80px;
+  width: auto;
+  object-fit: contain;
+}
+
 .card-content {
   padding: 20px;
+  text-align: center;
 }
 
 .card-title {
@@ -189,6 +208,18 @@ footer {
 }
 
 /* Responsive Styles */
+@media (max-width: 900px) {
+  .cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .cards-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 768px) {
   .hero h1 {
     font-size: 32px;
@@ -196,10 +227,6 @@ footer {
   
   .hero p {
     font-size: 16px;
-  }
-  
-  .cards-grid {
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   }
   
   .company-logo {
