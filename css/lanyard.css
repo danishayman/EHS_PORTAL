@@ -1,0 +1,274 @@
+/* Organization Chart with Lanyard Style */
+.org-chart-section {
+    padding: 60px 0;
+    background-color: #f9f9f9;
+}
+
+.org-chart-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    overflow-x: auto;
+}
+
+.org-chart {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Levels of the organization */
+.org-level {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 60px;
+    position: relative;
+}
+
+/* Connector lines between levels */
+.org-level:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    width: 2px;
+    background-color: #ddd;
+    top: 100%;
+    left: 50%;
+    height: 40px;
+    transform: translateX(-50%);
+}
+
+/* Horizontal connector for siblings */
+.org-level-items {
+    display: flex;
+    justify-content: center;
+    position: relative;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+.org-level-items::before {
+    content: '';
+    position: absolute;
+    height: 2px;
+    background-color: #ddd;
+    top: -20px;
+    left: 0;
+    right: 0;
+    z-index: 1;
+}
+
+/* Lanyard and ID Badge */
+.lanyard-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+    margin: 20px 15px;
+    transition: transform 0.3s;
+}
+
+.lanyard-container:hover {
+    transform: translateY(-5px);
+}
+
+/* Lanyard strap with V shape */
+.lanyard-strap {
+    position: relative;
+    width: 130px;
+    height: 90px;
+    margin-bottom: -3px;
+    margin-top: -35px; /* Move the lanyard up */
+}
+
+/* Hook element at the top of the lanyard */
+.lanyard-hook {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: #071852;
+    border-radius: 50%;
+    top: -3px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Left side of V-shaped lanyard */
+.lanyard-strap-left {
+    position: absolute;
+    width: 14px;
+    height: 90px;
+    background: linear-gradient(90deg, #173278 0%, #1e3a8a 70%, #2748a7 100%); /* 3D gradient effect */
+    transform: rotate(-15deg);
+    transform-origin: top center;
+    left: 30px;
+    border-radius: 0 0 4px 4px;
+    overflow: hidden;
+    box-shadow: -2px 2px 4px rgba(0, 0, 0, 0.15); /* 3D shadow */
+}
+
+/* Right side of V-shaped lanyard */
+.lanyard-strap-right {
+    position: absolute;
+    width: 14px;
+    height: 90px;
+    background: linear-gradient(90deg, #2748a7 0%, #1e3a8a 30%, #173278 100%); /* 3D gradient effect - reversed */
+    transform: rotate(15deg);
+    transform-origin: top center;
+    right: 30px;
+    border-radius: 0 0 4px 4px;
+    overflow: hidden;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15); /* 3D shadow */
+}
+
+/* Texture pattern for lanyard */
+.lanyard-strap-left::before,
+.lanyard-strap-right::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 5px,
+        rgba(255, 255, 255, 0.15) 5px,
+        rgba(255, 255, 255, 0.15) 10px
+    );
+}
+
+/* Highlight for 3D effect */
+.lanyard-strap-left::after,
+.lanyard-strap-right::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 40%;
+    background: linear-gradient(90deg, rgba(255,255,255,0.15), transparent);
+}
+
+.lanyard-strap-left::after {
+    left: 0;
+}
+
+.lanyard-strap-right::after {
+    right: 0;
+    background: linear-gradient(270deg, rgba(255,255,255,0.15), transparent);
+}
+
+/* INARI text on left lanyard */
+.lanyard-text-left {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 7px;
+    color: white;
+    text-orientation: upright;
+    writing-mode: vertical-lr;
+    letter-spacing: 1px;
+    padding: 2px;
+    transform: rotate(180deg);
+    font-weight: bold;
+    text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.3); /* 3D text effect */
+}
+
+/* INARI text on right lanyard */
+.lanyard-text-right {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 7px;
+    color: white;
+    text-orientation: upright;
+    writing-mode: vertical-lr;
+    letter-spacing: 1px;
+    padding: 2px;
+    font-weight: bold;
+    text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.3); /* 3D text effect */
+}
+
+/* ID Badge */
+.id-badge {
+    width: 120px;
+    height: 180px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.badge-header {
+    background-color: #1e3a8a; /* Royal blue */
+    color: white;
+    padding: 8px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.badge-photo {
+    margin: 10px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Standard image wrapper styles - will be added by JS */
+.standard-image-wrapper {
+    /* All styling is applied in JS for consistency */
+}
+
+.badge-info {
+    padding: 8px;
+    text-align: center;
+}
+
+.badge-name {
+    font-weight: bold;
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+
+.badge-title {
+    font-size: 12px;
+    color: #666;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .org-level {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .org-level-items {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .org-level-items::before {
+        width: 2px;
+        height: 100%;
+        left: 50%;
+        top: 0;
+        right: auto;
+    }
+} 

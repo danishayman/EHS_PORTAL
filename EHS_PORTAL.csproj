@@ -67,8 +67,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="css\lanyard.css" />
     <Content Include="css\styles.css" />
     <Content Include="index.html" />
+    <Content Include="js\lanyard.js" />
     <Content Include="js\main.js" />
     <Content Include="Web.config" />
   </ItemGroup>
