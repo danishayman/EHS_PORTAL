@@ -112,6 +112,11 @@ document.addEventListener('DOMContentLoaded', function() {
         lanyardHook.className = 'lanyard-hook';
         lanyardStrap.appendChild(lanyardHook);
         
+        // Add the connecting piece between straps
+        const lanyardConnector = document.createElement('div');
+        lanyardConnector.className = 'lanyard-connector';
+        lanyardStrap.appendChild(lanyardConnector);
+        
         // Left side of the V
         const leftStrap = document.createElement('div');
         leftStrap.className = 'lanyard-strap-left';
