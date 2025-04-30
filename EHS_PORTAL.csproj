@@ -69,6 +69,15 @@
   <ItemGroup>
     <Content Include="css\lanyard.css" />
     <Content Include="css\styles.css" />
+    <Content Include="images\clip.png" />
+    <Content Include="images\data.png" />
+    <Content Include="images\fets.png" />
+    <Content Include="images\logo.png" />
+    <Content Include="images\person.jpeg" />
+    <Content Include="images\ppe.png" />
+    <Content Include="images\ptw.png" />
+    <Content Include="images\training.png" />
+    <Content Include="images\wallpaper.jpg" />
     <Content Include="index.html" />
     <Content Include="js\lanyard.js" />
     <Content Include="js\main.js" />

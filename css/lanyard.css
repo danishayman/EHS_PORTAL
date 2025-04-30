@@ -183,6 +183,7 @@
     color: white;
     letter-spacing: 1px;
     font-weight: bold;
+    font-family: "Times New Roman", Times, serif;
     text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.3); /* 3D text effect */
 }
 
@@ -200,6 +201,7 @@
     color: white;
     letter-spacing: 1px;
     font-weight: bold;
+    font-family: "Times New Roman", Times, serif;
     text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.3); /* 3D text effect */
 }
 
@@ -223,6 +225,7 @@
     text-align: center;
     font-weight: bold;
     font-size: 14px;
+    font-family: "Times New Roman", Times, serif;
 }
 
 .badge-photo {
@@ -246,11 +249,13 @@
     font-weight: bold;
     font-size: 14px;
     margin-bottom: 4px;
+    font-family: "Times New Roman", Times, serif;
 }
 
 .badge-title {
     font-size: 12px;
     color: #666;
+    font-family: "Times New Roman", Times, serif;
 }
 
 /* Responsive adjustments */
