@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Permit to Work - EHS Portal</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="icon" href="../images/favicon.ico" type="image/x-icon">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .ptw-dashboard {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .dashboard-card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            flex: 1 1 200px;
+            text-align: center;
+        }
+        
+        .dashboard-card h3 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+        
+        .dashboard-card .count {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #3498db;
+        }
+        
+        .ptw-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .ptw-table th, .ptw-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #e1e1e1;
+        }
+        
+        .ptw-table th {
+            background-color: #3498db;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .ptw-table tr:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .status-badge {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .status-approved {
+            background-color: #2ecc71;
+            color: white;
+        }
+        
+        .status-pending {
+            background-color: #f39c12;
+            color: white;
+        }
+        
+        .status-rejected {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .status-expired {
+            background-color: #95a5a6;
+            color: white;
+        }
+
+        .status-active {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+        
+        .btn:hover {
+            background-color: #2980b9;
+        }
+        
+        .btn-action {
+            padding: 5px 10px;
+            font-size: 0.8rem;
+        }
+        
+        .btn-request {
+            background-color: #27ae60;
+            margin-bottom: 20px;
+        }
+        
+        .btn-request:hover {
+            background-color: #219955;
+        }
+        
+        .search-filter {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .search-filter input, .search-filter select {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .ptw-categories {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .ptw-category {
+            flex: 1 1 180px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            padding: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .ptw-category:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .ptw-category .icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: #3498db;
+        }
+
+        .ptw-category h3 {
+            margin: 0 0 10px 0;
+            color: #2c3e50;
+        }
+
+        .ptw-category p {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+        }
+        
+        .risk-high {
+            color: #e74c3c;
+        }
+        
+        .risk-medium {
+            color: #f39c12;
+        }
+        
+        .risk-low {
+            color: #2ecc71;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-content">
+            <div class="logo-container">
+                <img src="../images/logo.png" alt="Inari Amertron Berhad Logo" class="company-logo">
+                <div class="logo">EHS <span>Portal</span></div>
+            </div>
+            <div class="company-name">Inari Amertron Berhad</div>
+        </div>
+    </header>
+
+    <!-- Navigation Breadcrumb -->
+    <div class="container" style="padding-top: 20px;">
+        <div class="breadcrumb">
+            <a href="../index.html">Home</a> &gt; Permit to Work
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <section class="container" style="padding-top: 20px; padding-bottom: 40px;">
+        <h1>Permit to Work System</h1>
+        <p>Request, track, and manage work permits for high-risk activities to ensure safety compliance and control.</p>
+
+        <!-- Dashboard Cards -->
+        <div class="ptw-dashboard">
+            <div class="dashboard-card">
+                <h3>Active Permits</h3>
+                <div class="count">18</div>
+            </div>
+            <div class="dashboard-card">
+                <h3>Pending Approval</h3>
+                <div class="count">7</div>
+            </div>
+            <div class="dashboard-card">
+                <h3>Expiring Today</h3>
+                <div class="count">3</div>
+            </div>
+            <div class="dashboard-card">
+                <h3>Closed This Month</h3>
+                <div class="count">42</div>
+            </div>
+        </div>
+
+        <!-- Permit Categories -->
+        <h2>Permit Categories</h2>
+        <div class="ptw-categories">
+            <a href="#" class="ptw-category">
+                <div class="icon"><i class="fas fa-fire"></i></div>
+                <h3>Hot Work</h3>
+                <p>Welding, cutting, grinding, and other spark-producing activities</p>
+            </a>
+            <a href="#" class="ptw-category">
+                <div class="icon"><i class="fas fa-bolt"></i></div>
+                <h3>Electrical Work</h3>
+                <p>Installation, maintenance, and repair of electrical systems</p>
+            </a>
+            <a href="#" class="ptw-category">
+                <div class="icon"><i class="fas fa-hard-hat"></i></div>
+                <h3>Confined Space</h3>
+                <p>Entry into tanks, vessels, pits, and other confined spaces</p>
+            </a>
+            <a href="#" class="ptw-category">
+                <div class="icon"><i class="fas fa-cloud"></i></div>
+                <h3>Chemical Handling</h3>
+                <p>Storage, transfer, and disposal of hazardous chemicals</p>
+            </a>
+            <a href="#" class="ptw-category">
+                <div class="icon"><i class="fas fa-arrow-up"></i></div>
+                <h3>Working at Height</h3>
+                <p>Activities performed above 2 meters from ground level</p>
+            </a>
+        </div>
+
+        <!-- Request Button -->
+        <a href="#" class="btn btn-request"><i class="fas fa-plus"></i> New Permit Request</a>
+
+        <!-- Search and Filter -->
+        <div class="search-filter">
+            <input type="text" placeholder="Search permits..." style="flex: 1;">
+            <select>
+                <option>All Statuses</option>
+                <option>Active</option>
+                <option>Pending</option>
+                <option>Expired</option>
+                <option>Rejected</option>
+                <option>Closed</option>
+            </select>
+            <select>
+                <option>All Types</option>
+                <option>Hot Work</option>
+                <option>Electrical Work</option>
+                <option>Confined Space</option>
+                <option>Chemical Handling</option>
+                <option>Working at Height</option>
+            </select>
+            <button class="btn btn-action">Filter</button>
+        </div>
+
+        <!-- PTW Requests Table -->
+        <h2>Recent Permit Requests</h2>
+        <table class="ptw-table">
+            <thead>
+                <tr>
+                    <th>Permit ID</th>
+                    <th>Type</th>
+                    <th>Requester</th>
+                    <th>Location</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Risk Level</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>PTW-2023-0148</td>
+                    <td>Hot Work</td>
+                    <td>Lee Kwang Ho</td>
+                    <td>Plant A - Section 3</td>
+                    <td>20 Nov 2023</td>
+                    <td>22 Nov 2023</td>
+                    <td><span class="risk-high">High</span></td>
+                    <td><span class="status-badge status-active">Active</span></td>
+                    <td>
+                        <a href="#" class="btn btn-action">View</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>PTW-2023-0147</td>
+                    <td>Confined Space</td>
+                    <td>Nurul Fatihah</td>
+                    <td>Plant B - Wastewater Tank</td>
+                    <td>21 Nov 2023</td>
+                    <td>21 Nov 2023</td>
+                    <td><span class="risk-high">High</span></td>
+                    <td><span class="status-badge status-pending">Pending</span></td>
+                    <td>
+                        <a href="#" class="btn btn-action">View</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>PTW-2023-0146</td>
+                    <td>Electrical Work</td>
+                    <td>Chai Wen Long</td>
+                    <td>Admin Building - Level 2</td>
+                    <td>19 Nov 2023</td>
+                    <td>19 Nov 2023</td>
+                    <td><span class="risk-medium">Medium</span></td>
+                    <td><span class="status-badge status-expired">Closed</span></td>
+                    <td>
+                        <a href="#" class="btn btn-action">View</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>PTW-2023-0145</td>
+                    <td>Working at Height</td>
+                    <td>Harish Nair</td>
+                    <td>Plant C - Roof Access</td>
+                    <td>18 Nov 2023</td>
+                    <td>20 Nov 2023</td>
+                    <td><span class="risk-high">High</span></td>
+                    <td><span class="status-badge status-active">Active</span></td>
+                    <td>
+                        <a href="#" class="btn btn-action">View</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>PTW-2023-0144</td>
+                    <td>Chemical Handling</td>
+                    <td>Lim Mei Ling</td>
+                    <td>Chemical Storage Area</td>
+                    <td>17 Nov 2023</td>
+                    <td>17 Nov 2023</td>
+                    <td><span class="risk-medium">Medium</span></td>
+                    <td><span class="status-badge status-expired">Closed</span></td>
+                    <td>
+                        <a href="#" class="btn btn-action">View</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Requirements Section -->
+        <h2 style="margin-top: 40px;">Safety Requirements</h2>
+        <div class="ptw-table">
+            <table class="ptw-table">
+                <thead>
+                    <tr>
+                        <th>Permit Type</th>
+                        <th>Required Documents</th>
+                        <th>Approval Authority</th>
+                        <th>Training Requirements</th>
+                        <th>Max Duration</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Hot Work</td>
+                        <td>Risk Assessment, Fire Safety Plan</td>
+                        <td>Safety Manager + Area Supervisor</td>
+                        <td>Hot Work Safety, Fire Safety</td>
+                        <td>3 days</td>
+                    </tr>
+                    <tr>
+                        <td>Confined Space</td>
+                        <td>Entry Plan, Gas Test Results, Rescue Plan</td>
+                        <td>Safety Manager + Department Head</td>
+                        <td>Confined Space Entry, Emergency Response</td>
+                        <td>1 day</td>
+                    </tr>
+                    <tr>
+                        <td>Electrical Work</td>
+                        <td>Circuit Diagrams, Isolation Plan</td>
+                        <td>Electrical Engineer + Area Supervisor</td>
+                        <td>Electrical Safety, LOTO Procedure</td>
+                        <td>5 days</td>
+                    </tr>
+                    <tr>
+                        <td>Chemical Handling</td>
+                        <td>SDS, Spill Response Plan</td>
+                        <td>Safety Officer + Area Supervisor</td>
+                        <td>Chemical Safety, Spill Control</td>
+                        <td>2 days</td>
+                    </tr>
+                    <tr>
+                        <td>Working at Height</td>
+                        <td>Fall Protection Plan, Equipment Checklist</td>
+                        <td>Safety Manager + Area Supervisor</td>
+                        <td>Fall Protection, Rescue Techniques</td>
+                        <td>5 days</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#">PTW Guidelines</a></li>
+                        <li><a href="#">Risk Assessment Forms</a></li>
+                        <li><a href="#">Safety Procedures</a></li>
+                        <li><a href="#">HIRARC Documents</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Resources</h3>
+                    <ul>
+                        <li><a href="#">PTW Request Form</a></li>
+                        <li><a href="#">Safety Checklists</a></li>
+                        <li><a href="#">Training Materials</a></li>
+                        <li><a href="#">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact EHS</h3>
+                    <ul>
+                        <li><a href="mailto:ehs@inariamertron.com">ehs@inariamertron.com</a></li>
+                        <li><a href="tel:+15551234567">Emergency: (555) 123-4567</a></li>
+                        <li><a href="#">Submit Feedback</a></li>
+                        <li><a href="#">EHS Team Directory</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 Inari Amertron Berhad. All rights reserved. | Environment, Health & Safety Department</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/main.js"></script>
+</body>
+
+</html> 
