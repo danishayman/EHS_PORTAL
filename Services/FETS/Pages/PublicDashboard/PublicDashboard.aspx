@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title>INARI - Fire Extinguisher Tracking System
+    <title>INARI - FETS
     </title>
     <!-- Favicon -->
     <link rel="shortcut icon" href="../../favicon.ico" type="image/x-icon" />

@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head runat="server">
-    <title>FETS - Login</title>
+    <title>INARI - FETS</title>
     <!-- Favicon -->
     <link rel="shortcut icon" href="../../favicon.ico" type="image/x-icon" />
     <!-- Link to Google Fonts -->
