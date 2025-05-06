@@ -345,7 +345,7 @@
 <body>
     <!-- Left panel with background image -->
     <div class="left-panel">
-        <img src="<%=ResolveUrl("~/Uploads/misc/front-gate.jpg")%>" alt="Left Panel Background">
+        <img src="<%=ResolveUrl("~/Services/FETS/Uploads/misc/front-gate.jpg")%>" alt="Left Panel Background">
     </div>
 
     <!-- Right panel with login form -->
@@ -353,7 +353,7 @@
         <form id="form1" runat="server">
             <!-- Logo container -->
             <div class="logo-container">
-                <img src="<%=ResolveUrl("~/Uploads/misc/logo.jpeg")%>" alt="FETS Logo" class="logo" />
+                <img src="<%=ResolveUrl("~/Services/FETS/Uploads/misc/logo.jpeg")%>" alt="FETS Logo" class="logo" />
             </div>
 
             <!-- Login container -->

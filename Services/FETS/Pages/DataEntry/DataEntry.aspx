@@ -1,5 +1,5 @@
 <%@ Page Language="C#" AutoEventWireup="true" CodeBehind="DataEntry.aspx.cs" Inherits="FETS.Pages.DataEntry.DataEntry"
-    MasterPageFile="~/Site.Master" %>
+    MasterPageFile="~/Services/FETS/Site.Master" %>
 
     <asp:Content ID="HeadContent" ContentPlaceHolderID="HeadContent" runat="server">
         <!-- Styles for the data entry form and UI elements -->

@@ -1,4 +1,4 @@
-<%@ Page Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="ViewSection.aspx.cs"
+<%@ Page Language="C#" MasterPageFile="~/Services/FETS/Site.Master" AutoEventWireup="true" CodeBehind="ViewSection.aspx.cs"
     Inherits="FETS.Pages.ViewSection.ViewSection" %>
 
 <asp:Content ID="HeadContent" ContentPlaceHolderID="HeadContent" runat="server">

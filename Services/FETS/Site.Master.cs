@@ -2,6 +2,7 @@ using System;
 using System.Web.UI;
 using System.Web.Security;
 using FETS.Models;
+using System.Web;
 
 namespace FETS
 {
@@ -36,7 +37,7 @@ namespace FETS
                     if (currentPage.ToLower() != "publicdashboard.aspx")
                     {
                         // Redirect unauthenticated users to login page only if not on the PublicDashboard
-                        Response.Redirect("~/Pages/Login/Login.aspx");
+                        Response.Redirect("~/Services/FETS/Pages/Login/Login.aspx");
                     }
                 }
             }
@@ -90,27 +91,27 @@ namespace FETS
         /// </summary>
         protected void btnDashboard_Click(object sender, EventArgs e)
         {
-            Response.Redirect("~/Pages/Dashboard/Dashboard.aspx");
+            Response.Redirect("~/Services/FETS/Pages/Dashboard/Dashboard.aspx");
         }
 
         protected void btnDataEntry_Click(object sender, EventArgs e)
         {
-            Response.Redirect("~/Pages/DataEntry/DataEntry.aspx");
+            Response.Redirect("~/Services/FETS/Pages/DataEntry/DataEntry.aspx");
         }
 
         protected void btnViewSection_Click(object sender, EventArgs e)
         {
-            Response.Redirect("~/Pages/ViewSection/ViewSection.aspx");
+            Response.Redirect("~/Services/FETS/Pages/ViewSection/ViewSection.aspx");
         }
 
         protected void btnMapLayout_Click(object sender, EventArgs e)
         {
-            Response.Redirect("~/Pages/MapLayout/MapLayout.aspx");
+            Response.Redirect("~/Services/FETS/Pages/MapLayout/MapLayout.aspx");
         }
 
         protected void btnProfile_Click(object sender, EventArgs e)
         {
-            Response.Redirect("~/Pages/Profile/Profile.aspx");
+            Response.Redirect("~/Services/FETS/Pages/Profile/Profile.aspx");
         }
 
         /// <summary>
@@ -121,7 +122,7 @@ namespace FETS
             // Only allow administrators to access activity logs
             if (RoleHelper.IsUserInRole("Administrator"))
             {
-                Response.Redirect("~/Pages/Admin/ActivityLogs.aspx");
+                Response.Redirect("~/Services/FETS/Pages/Admin/ActivityLogs.aspx");
             }
         }
 
@@ -142,7 +143,42 @@ namespace FETS
             }
 
             FormsAuthentication.SignOut();
-            Response.Redirect("~/Pages/Login/Login.aspx");
+            Response.Redirect("~/Services/FETS/Pages/Login/Login.aspx");
+        }
+
+        private string GetUserRoleFromTicket()
+        {
+            // Get the user's role from the auth ticket
+            HttpCookie authCookie = Request.Cookies[FormsAuthentication.FormsCookieName];
+            if (authCookie != null)
+            {
+                FormsAuthenticationTicket ticket = FormsAuthentication.Decrypt(authCookie.Value);
+                if (ticket != null && !ticket.Expired)
+                {
+                    return ticket.UserData; // The UserData contains the role
+                }
+            }
+            
+            // If session has the role, use that
+            if (Session["UserRole"] != null)
+            {
+                return Session["UserRole"].ToString();
+            }
+            
+            return ""; // Default - no role
+        }
+
+        protected void lnkLogout_Click(object sender, EventArgs e)
+        {
+            // Clear authentication cookie
+            FormsAuthentication.SignOut();
+            
+            // Clear session data
+            Session.Clear();
+            Session.Abandon();
+            
+            // Redirect to login page
+            Response.Redirect("~/Services/FETS/Pages/Login/Login.aspx");
         }
     }
 }

@@ -19,10 +19,11 @@ namespace FETS.Pages.MapLayout
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            // Check if user is authenticated
             if (!User.Identity.IsAuthenticated)
             {
-                Response.Redirect("~/Pages/Login/Login.aspx");
-                return;
+                // Redirect to login page
+                Response.Redirect("~/Services/FETS/Pages/Login/Login.aspx");
             }
 
             // Get user's assigned plant and role

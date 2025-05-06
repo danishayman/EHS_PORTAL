@@ -13,7 +13,7 @@ namespace FETS.Pages.MapLayout
         {
             if (!User.Identity.IsAuthenticated)
             {
-                Response.Redirect("~/Pages/Login/Login.aspx");
+                Response.Redirect("~/Services/FETS/Pages/Login/Login.aspx");
                 return;
             }
 
@@ -31,7 +31,7 @@ namespace FETS.Pages.MapLayout
 
             if (string.IsNullOrEmpty(plantId) || string.IsNullOrEmpty(levelId))
             {
-                Response.Redirect("~/Pages/MapLayout/MapLayout.aspx");
+                Response.Redirect("~/Services/FETS/Pages/MapLayout/MapLayout.aspx");
                 return;
             }
 
@@ -119,14 +119,14 @@ namespace FETS.Pages.MapLayout
 
         protected void btnBack_Click(object sender, EventArgs e)
         {
-            Response.Redirect("~/Pages/MapLayout/MapLayout.aspx");
+            Response.Redirect("~/Services/FETS/Pages/MapLayout/MapLayout.aspx");
         }
 
         protected void btnLogout_Click(object sender, EventArgs e)
         {
             FormsAuthentication.SignOut();
             Session.Clear();
-            Response.Redirect("~/Pages/Login/Login.aspx");
+            Response.Redirect("~/Services/FETS/Pages/Login/Login.aspx");
         }
     }
 } 
