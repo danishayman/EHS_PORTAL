@@ -1,0 +1,169 @@
+@model IEnumerable<CLIP.Models.PlantMonitoring>
+
+@{
+    ViewBag.Title = "Monitoring Records";
+}
+
+<h2>Monitoring Records</h2>
+
+<div class="row mb-3">
+    <div class="col-md-12">
+        <div class="btn-group">
+            @Html.ActionLink("List View", "Index", null, new { @class = "btn btn-primary" })
+            @Html.ActionLink("Schedule View", "Schedule", null, new { @class = "btn btn-outline-primary" })
+            @Html.ActionLink("Monitoring Types", "Index", "Monitoring", null, new { @class = "btn btn-outline-secondary" })
+        </div>
+        @if (User.IsInRole("Admin"))
+        {
+            <a href="@Url.Action("Create")" class="btn btn-success float-right">
+                <i class="fas fa-plus"></i> Add New Record
+            </a>
+        }
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <h5>Filters</h5>
+    </div>
+    <div class="card-body">
+        <form method="get" class="form-inline">
+            <div class="form-group mr-3 mb-2">
+                <label for="category" class="mr-2">Category:</label>
+                <select id="category" name="category" class="form-control">
+                    <option value="">All Categories</option>
+                    @foreach (var category in ViewBag.Categories)
+                    {
+                        <option value="@category" @(ViewBag.SelectedCategory == category ? "selected" : "")>@category</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group mr-3 mb-2">
+                <label for="plantId" class="mr-2">Plant:</label>
+                <select id="plantId" name="plantId" class="form-control">
+                    <option value="">All Plants</option>
+                    @foreach (var plant in ViewBag.Plants)
+                    {
+                        <option value="@plant.Id" @(ViewBag.SelectedPlantId == plant.Id ? "selected" : "")>@plant.PlantName</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group mr-3 mb-2">
+                <label for="status" class="mr-2">Status:</label>
+                <select id="status" name="status" class="form-control">
+                    <option value="">All Status</option>
+                    @foreach (var status in ViewBag.StatusList)
+                    {
+                        if (status != "All")
+                        {
+                            <option value="@status" @(ViewBag.SelectedStatus == status ? "selected" : "")>@status</option>
+                        }
+                    }
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary mb-2">Filter</button>
+        </form>
+    </div>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-striped table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th>Monitoring Type</th>
+                <th>Category</th>
+                <th>Plant</th>
+                <th>Area</th>
+                <th>Frequency</th>
+                <th>Expiry Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Monitoring.MonitoringName</td>
+                    <td>@item.Monitoring.MonitoringCategory</td>
+                    <td>@item.Plant.PlantName</td>
+                    <td>@item.Area</td>
+                    <td>
+                        @{
+                            string frequencyText = "Unknown";
+                            int freq = item.Monitoring.MonitoringFreq;
+                            
+                            if (freq == 1) { frequencyText = "Monthly"; }
+                            else if (freq == 2) { frequencyText = "Bi-Monthly"; }
+                            else if (freq == 3) { frequencyText = "Quarterly"; }
+                            else if (freq == 4) { frequencyText = "4 Months"; }
+                            else if (freq == 6) { frequencyText = "Half-Yearly"; }
+                            else if (freq == 8) { frequencyText = "8 Months"; }
+                            else if (freq == 12) { frequencyText = "Yearly"; }
+                            else if (freq == 15) { frequencyText = "15 Months"; }
+                            else if (freq == 18) { frequencyText = "18 Months"; }
+                            else if (freq == 24) { frequencyText = "Every 2 Years"; }
+                            else if (freq == 36) { frequencyText = "Every 3 Years"; }
+                            else if (freq == 48) { frequencyText = "Every 4 Years"; }
+                            else if (freq == 60) { frequencyText = "Every 5 Years"; }
+                            else { frequencyText = $"Every {freq} months"; }
+                        }
+                        @frequencyText
+                    </td>
+                    <td>
+                        @if (item.ExpDate.HasValue)
+                        {
+                            <span class="@(item.ExpDate < DateTime.Now ? "text-danger" : (item.ExpDate < DateTime.Now.AddDays(30) ? "text-warning" : ""))">
+                                @item.ExpDate.Value.ToString("yyyy-MM-dd")
+                            </span>
+                        }
+                        else
+                        {
+                            <span>Not set</span>
+                        }
+                    </td>
+                    <td>
+                        <span class="badge @item.StatusCssClass">@item.Status</span>
+                    </td>
+                    <td>
+                        <div class="btn-group">
+                            <a href="@Url.Action("Details", new { id = item.Id })" class="btn btn-sm btn-info">
+                                <i class="fas fa-info-circle"></i> Details
+                            </a>
+                            <a href="@Url.Action("UpdateStatus", new { id = item.Id })" class="btn btn-sm btn-primary">
+                                <i class="fas fa-tasks"></i> Update
+                            </a>
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <a href="@Url.Action("Edit", new { id = item.Id })" class="btn btn-sm btn-warning">
+                                    <i class="fas fa-edit"></i> Edit
+                                </a>
+                                <a href="@Url.Action("Delete", new { id = item.Id })" class="btn btn-sm btn-danger">
+                                    <i class="fas fa-trash"></i> Delete
+                                </a>
+                            }
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info text-center">
+        No records found matching the filter criteria.
+    </div>
+}
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Auto-submit form when select fields change
+            $("#category, #plantId, #status").change(function() {
+                $(this).closest("form").submit();
+            });
+        });
+    </script>
+} 
