@@ -1,0 +1,184 @@
+/* Activity Logs Styles */
+.card {
+    border: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.card-header {
+    background-color: #3498db;
+    color: white;
+    font-weight: 600;
+    padding: 15px 20px;
+    font-size: 18px;
+    border: none;
+}
+
+.card-header i {
+    margin-right: 10px;
+}
+
+.card-body {
+    padding: 25px;
+}
+
+/* Filter Controls */
+.form-label {
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: #2c3e50;
+}
+
+.form-select {
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: 1px solid #dcdfe6;
+    background-color: #f8f9fa;
+    font-size: 15px;
+    transition: all 0.3s ease;
+    height: auto;
+}
+
+.form-select:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+}
+
+/* Table Styles */
+.table {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-top: 15px;
+}
+
+.table th {
+    background-color: #f8f9fa;
+    color: #2c3e50;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+    padding: 15px;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.table td {
+    padding: 12px 15px;
+    vertical-align: middle;
+    font-size: 14px;
+    color: #444;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(0, 123, 255, 0.05);
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(0, 123, 255, 0.1);
+}
+
+/* Empty State */
+.table-bordered tbody tr td[colspan] {
+    text-align: center;
+    padding: 30px;
+    font-style: italic;
+    color: #6c757d;
+}
+
+/* Pagination Styles */
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    padding: 15px 0;
+}
+
+.pagination-container a, 
+.pagination-container span {
+    margin: 0 5px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    text-decoration: none;
+    color: #3498db;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    transition: all 0.2s ease;
+}
+
+.pagination-container a:hover {
+    background-color: #e9ecef;
+    border-color: #dee2e6;
+}
+
+.pagination-container span {
+    color: #fff;
+    background-color: #3498db;
+    border-color: #3498db;
+}
+
+/* Export Button */
+.btn-primary {
+    background-color: #3498db;
+    border-color: #3498db;
+    color: white;
+    font-weight: 500;
+    border-radius: 8px;
+    padding: 10px 20px;
+    transition: all 0.3s;
+}
+
+.btn-primary:hover {
+    background-color: #2980b9;
+    border-color: #2980b9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .col-md-3 {
+        margin-bottom: 15px;
+    }
+    
+    .table {
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
+/* Custom Scrollbar for Table */
+.table-responsive::-webkit-scrollbar {
+    height: 10px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+    background: #3498db;
+    border-radius: 10px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb:hover {
+    background: #2980b9;
+}
+
+/* Fancy animation for new rows */
+@keyframes highlight {
+    0% {
+        background-color: rgba(52, 152, 219, 0.3);
+    }
+    100% {
+        background-color: transparent;
+    }
+}
+
+.new-record {
+    animation: highlight 2s ease-out;
+} 
