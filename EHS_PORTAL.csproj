@@ -90,6 +90,7 @@
     <Content Include="index.html" />
     <Content Include="js\lanyard.js" />
     <Content Include="js\main.js" />
+    <Content Include="Services\FETS\favicon.ico" />
     <Content Include="Services\FETS\Uploads\Maps\01d0ca0c-9ead-4642-8e36-da9b77596719.png" />
     <Content Include="Services\FETS\Uploads\Maps\07bdef70-07ae-404f-980e-b3b5f9121ed4.png" />
     <Content Include="Services\FETS\Uploads\Maps\0a55f21b-5249-4d40-aec1-16042bc29383.png" />

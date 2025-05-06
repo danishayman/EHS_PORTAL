@@ -5,6 +5,8 @@
 <head runat="server">
     <title>INARI - Fire Extinguisher Tracking System
     </title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="../../favicon.ico" type="image/x-icon" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
