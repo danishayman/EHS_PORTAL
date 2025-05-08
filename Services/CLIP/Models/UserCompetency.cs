@@ -25,8 +25,6 @@ namespace CLIP.Models
         public DateTime? ExpiryDate { get; set; }
         
         public string Remarks { get; set; }
-        
-        public string Building { get; set; }
 
         // Navigation properties
         [ForeignKey("UserId")]
