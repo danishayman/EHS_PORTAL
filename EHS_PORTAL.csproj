@@ -80,16 +80,20 @@
     <Content Include="css\styles.css" />
     <Content Include="images\clip.png" />
     <Content Include="images\data.png" />
+    <Content Include="images\favicon.ico" />
     <Content Include="images\fets.png" />
+    <Content Include="images\fire-extinguisher-15247.png" />
     <Content Include="images\logo.png" />
     <Content Include="images\person.jpeg" />
     <Content Include="images\ppe.png" />
     <Content Include="images\ptw.png" />
+    <Content Include="images\sdes.png" />
     <Content Include="images\training.png" />
     <Content Include="images\wallpaper.jpg" />
     <Content Include="index.html" />
     <Content Include="js\lanyard.js" />
     <Content Include="js\main.js" />
+    <Content Include="Services\CLIP\index.html" />
     <Content Include="Services\FETS\favicon.ico" />
     <Content Include="Services\FETS\Uploads\Maps\01d0ca0c-9ead-4642-8e36-da9b77596719.png" />
     <Content Include="Services\FETS\Uploads\Maps\07bdef70-07ae-404f-980e-b3b5f9121ed4.png" />
@@ -140,6 +144,9 @@
     <Content Include="Services\FETS\Uploads\misc\publicdashboard3.jpg" />
     <Content Include="Services\FETS\Uploads\misc\viewmap.png" />
     <Content Include="Services\FETS\Uploads\misc\warning.png" />
+    <Content Include="Services\PPE\index.html" />
+    <Content Include="Services\PTW\index.html" />
+    <Content Include="Services\Training\index.html" />
     <Content Include="Web.config" />
     <!-- FETS Project Files -->
     <Content Include="Services\FETS\Site.Master" />
@@ -155,11 +162,38 @@
     <!-- FETS Project Compile Files -->
     <Compile Include="Services\FETS\Site.Master.cs">
       <DependentUpon>Site.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Services\FETS\Site.Master.designer.cs">
       <DependentUpon>Site.Master</DependentUpon>
     </Compile>
-    <Compile Include="Services\FETS\Pages\**\*.aspx.cs" />
+    <Compile Include="Services\FETS\Pages\Admin\ActivityLogs.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Services\FETS\Pages\Dashboard\Dashboard.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Services\FETS\Pages\DataEntry\DataEntry.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Services\FETS\Pages\Login\Login.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Services\FETS\Pages\MapLayout\MapLayout.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Services\FETS\Pages\MapLayout\ViewMap.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Services\FETS\Pages\Profile\Profile.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Services\FETS\Pages\PublicDashboard\PublicDashboard.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Services\FETS\Pages\ViewSection\ViewSection.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Services\FETS\Pages\**\*.aspx.designer.cs" />
     <Compile Include="Services\FETS\Pages\**\*.ascx.cs" />
     <Compile Include="Services\FETS\Pages\**\*.ascx.designer.cs" />
@@ -174,6 +208,9 @@
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Uploads\Maps\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

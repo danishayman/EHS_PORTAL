@@ -84,7 +84,11 @@ SELECT
     SUM(CASE WHEN s.StatusName = 'Under Service' THEN 1 ELSE 0 END) as UnderService,
     SUM(CASE WHEN s.StatusName = 'Expired' THEN 1 ELSE 0 END) as Expired,
     SUM(CASE WHEN s.StatusName = 'Expiring Soon' THEN 1 ELSE 0 END) as ExpiringSoon,
-    MIN(CASE WHEN fe.DateExpired >= GETDATE() THEN fe.DateExpired ELSE NULL END) as NextExpiryDate
+    MIN(CASE 
+        WHEN fe.DateExpired >= GETDATE() AND s.StatusName != 'Under Service' 
+        THEN fe.DateExpired 
+        ELSE NULL 
+    END) as NextExpiryDate
 FROM Plants p
 LEFT JOIN FireExtinguishers fe ON p.PlantID = fe.PlantID
 LEFT JOIN Status s ON fe.StatusID = s.StatusID
@@ -259,9 +263,10 @@ ORDER BY p.PlantName", conn))
                     using (SqlCommand cmd = new SqlCommand(@"
                         SELECT 
                             p.PlantName,
-                            MIN(CASE WHEN fe.DateExpired >= GETDATE() THEN fe.DateExpired ELSE NULL END) as NextExpiryDate
+                            MIN(CASE WHEN fe.DateExpired >= GETDATE() AND s.StatusName != 'Under Service' THEN fe.DateExpired ELSE NULL END) as NextExpiryDate
                         FROM Plants p
                         LEFT JOIN FireExtinguishers fe ON p.PlantID = fe.PlantID
+                        LEFT JOIN Status s ON fe.StatusID = s.StatusID
                         GROUP BY p.PlantName
                         ORDER BY p.PlantName", conn))
                     {

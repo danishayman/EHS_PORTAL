@@ -90,7 +90,14 @@ namespace FETS.Pages.Login
                     System.Diagnostics.Debug.WriteLine(string.Format("Error logging login activity: {0}", ex.Message));
                 }
 
-                Response.Redirect("~/Services/FETS/Pages/Dashboard/Dashboard.aspx");
+                // Use FormsAuthentication.RedirectFromLoginPage instead of manual redirect
+                // This ensures the authentication cookie is properly set and the redirect works
+                FormsAuthentication.RedirectFromLoginPage(username, false);
+                
+                // If the above doesn't work, fall back to manual redirect with EndResponse to prevent 
+                // further processing that might interfere with the redirect
+                Response.Redirect("~/Services/FETS/Pages/Dashboard/Dashboard.aspx", false);
+                Context.ApplicationInstance.CompleteRequest();
             }
             else
             {
