@@ -90,6 +90,7 @@
     <Content Include="index.html" />
     <Content Include="js\lanyard.js" />
     <Content Include="js\main.js" />
+    <Content Include="Services\CLIP\index.html" />
     <Content Include="Services\FETS\favicon.ico" />
     <Content Include="Services\FETS\Uploads\Maps\01d0ca0c-9ead-4642-8e36-da9b77596719.png" />
     <Content Include="Services\FETS\Uploads\Maps\07bdef70-07ae-404f-980e-b3b5f9121ed4.png" />
@@ -140,6 +141,9 @@
     <Content Include="Services\FETS\Uploads\misc\publicdashboard3.jpg" />
     <Content Include="Services\FETS\Uploads\misc\viewmap.png" />
     <Content Include="Services\FETS\Uploads\misc\warning.png" />
+    <Content Include="Services\PPE\index.html" />
+    <Content Include="Services\PTW\index.html" />
+    <Content Include="Services\Training\index.html" />
     <Content Include="Web.config" />
     <!-- FETS Project Files -->
     <Content Include="Services\FETS\Site.Master" />
@@ -174,6 +178,9 @@
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Uploads\Maps\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

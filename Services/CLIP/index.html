@@ -4,13 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PPE Management - EHS Portal</title>
+    <title>CLIP - Certificate, License & Important Permit</title>
     <link rel="stylesheet" href="../../css/styles.css">
     <link rel="icon" href="../../images/favicon.ico" type="image/x-icon">
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .ppe-dashboard {
+        .clip-dashboard {
             display: flex;
             flex-wrap: wrap;
             gap: 20px;
@@ -37,7 +37,7 @@
             color: #3498db;
         }
         
-        .ppe-table {
+        .clip-table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
@@ -47,19 +47,19 @@
             overflow: hidden;
         }
         
-        .ppe-table th, .ppe-table td {
+        .clip-table th, .clip-table td {
             padding: 12px 15px;
             text-align: left;
             border-bottom: 1px solid #e1e1e1;
         }
         
-        .ppe-table th {
+        .clip-table th {
             background-color: #3498db;
             color: white;
             font-weight: 600;
         }
         
-        .ppe-table tr:hover {
+        .clip-table tr:hover {
             background-color: #f5f5f5;
         }
         
@@ -70,17 +70,17 @@
             font-weight: 600;
         }
         
-        .status-approved {
+        .status-active {
             background-color: #2ecc71;
             color: white;
         }
         
-        .status-pending {
+        .status-expiring {
             background-color: #f39c12;
             color: white;
         }
         
-        .status-rejected {
+        .status-expired {
             background-color: #e74c3c;
             color: white;
         }
@@ -107,12 +107,12 @@
             font-size: 0.8rem;
         }
         
-        .btn-request {
+        .btn-add {
             background-color: #27ae60;
             margin-bottom: 20px;
         }
         
-        .btn-request:hover {
+        .btn-add:hover {
             background-color: #219955;
         }
         
@@ -128,6 +128,15 @@
             padding: 8px 12px;
             border: 1px solid #ddd;
             border-radius: 4px;
+        }
+        
+        .expiry-soon {
+            color: #f39c12;
+        }
+        
+        .expiry-critical {
+            color: #e74c3c;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -147,46 +156,53 @@
     <!-- Navigation Breadcrumb -->
     <div class="container" style="padding-top: 20px;">
         <div class="breadcrumb">
-            <a href="../../index.html">Home</a> &gt; Personal Protective Equipment Management
+            <a href="../../index.html">Home</a> &gt; Certificate, License & Important Permit
         </div>
     </div>
 
     <!-- Main Content -->
     <section class="container" style="padding-top: 20px; padding-bottom: 40px;">
-        <h1>Personal Protective Equipment Management</h1>
-        <p>Request, track, and manage personal protective equipment for your department and employees.</p>
+        <h1>Certificate, License & Important Permit (CLIP) Management</h1>
+        <p>Track, manage, and renew your certificates, licenses, and important permits to ensure regulatory compliance.</p>
 
         <!-- Dashboard Cards -->
-        <div class="ppe-dashboard">
+        <div class="clip-dashboard">
             <div class="dashboard-card">
-                <h3>Total Equipment</h3>
-                <div class="count">248</div>
+                <h3>Total Documents</h3>
+                <div class="count">156</div>
             </div>
             <div class="dashboard-card">
-                <h3>Pending Requests</h3>
+                <h3>Expiring Soon</h3>
                 <div class="count">12</div>
             </div>
             <div class="dashboard-card">
-                <h3>Items Expiring Soon</h3>
-                <div class="count">5</div>
+                <h3>Expired</h3>
+                <div class="count">3</div>
             </div>
             <div class="dashboard-card">
-                <h3>Items Out of Stock</h3>
-                <div class="count">3</div>
+                <h3>Renewal in Progress</h3>
+                <div class="count">8</div>
             </div>
         </div>
 
-        <!-- Request Button -->
-        <a href="#" class="btn btn-request"><i class="fas fa-plus"></i> New PPE Request</a>
+        <!-- Add Button -->
+        <a href="#" class="btn btn-add"><i class="fas fa-plus"></i> Add New Document</a>
 
         <!-- Search and Filter -->
         <div class="search-filter">
-            <input type="text" placeholder="Search requests..." style="flex: 1;">
+            <input type="text" placeholder="Search documents..." style="flex: 1;">
             <select>
                 <option>All Statuses</option>
-                <option>Approved</option>
-                <option>Pending</option>
-                <option>Rejected</option>
+                <option>Active</option>
+                <option>Expiring Soon</option>
+                <option>Expired</option>
+            </select>
+            <select>
+                <option>All Types</option>
+                <option>Certificate</option>
+                <option>License</option>
+                <option>Permit</option>
+                <option>Authorization</option>
             </select>
             <select>
                 <option>All Departments</option>
@@ -194,145 +210,114 @@
                 <option>Maintenance</option>
                 <option>Quality</option>
                 <option>R&D</option>
+                <option>EHS</option>
             </select>
             <button class="btn btn-action">Filter</button>
         </div>
 
-        <!-- PPE Requests Table -->
-        <h2>Recent PPE Requests</h2>
-        <table class="ppe-table">
+        <!-- Documents Table -->
+        <h2>Active Documents</h2>
+        <table class="clip-table">
             <thead>
                 <tr>
-                    <th>Request ID</th>
-                    <th>Requester</th>
+                    <th>Document ID</th>
+                    <th>Title</th>
+                    <th>Type</th>
                     <th>Department</th>
-                    <th>Equipment Type</th>
-                    <th>Quantity</th>
-                    <th>Date Requested</th>
+                    <th>Issue Date</th>
+                    <th>Expiry Date</th>
                     <th>Status</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td>PPE-2023-0042</td>
-                    <td>Ahmad Razali</td>
+                    <td>CLIP-2023-0042</td>
+                    <td>Fire Safety Certificate</td>
+                    <td>Certificate</td>
+                    <td>EHS</td>
+                    <td>15 Jan 2023</td>
+                    <td>15 Jan 2024</td>
+                    <td><span class="status-badge status-active">Active</span></td>
+                    <td>
+                        <a href="#" class="btn btn-action">View</a>
+                        <a href="#" class="btn btn-action">Renew</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>CLIP-2023-0041</td>
+                    <td>Chemical Handling License</td>
+                    <td>License</td>
                     <td>Production</td>
-                    <td>Safety Glasses</td>
-                    <td>15</td>
-                    <td>15 Nov 2023</td>
-                    <td><span class="status-badge status-approved">Approved</span></td>
+                    <td>10 Mar 2023</td>
+                    <td>10 Dec 2023</td>
+                    <td><span class="status-badge status-expiring">Expiring Soon</span></td>
                     <td>
                         <a href="#" class="btn btn-action">View</a>
+                        <a href="#" class="btn btn-action">Renew</a>
                     </td>
                 </tr>
                 <tr>
-                    <td>PPE-2023-0041</td>
-                    <td>Aisha Wong</td>
-                    <td>R&D</td>
-                    <td>Chemical Resistant Gloves</td>
-                    <td>8</td>
-                    <td>14 Nov 2023</td>
-                    <td><span class="status-badge status-pending">Pending</span></td>
+                    <td>CLIP-2023-0040</td>
+                    <td>Environmental Compliance Permit</td>
+                    <td>Permit</td>
+                    <td>EHS</td>
+                    <td>05 Feb 2023</td>
+                    <td>05 Feb 2025</td>
+                    <td><span class="status-badge status-active">Active</span></td>
                     <td>
                         <a href="#" class="btn btn-action">View</a>
+                        <a href="#" class="btn btn-action">Renew</a>
                     </td>
                 </tr>
                 <tr>
-                    <td>PPE-2023-0040</td>
-                    <td>Rajesh Kumar</td>
+                    <td>CLIP-2023-0039</td>
+                    <td>Electrical Safety Certification</td>
+                    <td>Certificate</td>
                     <td>Maintenance</td>
-                    <td>Safety Harness</td>
-                    <td>2</td>
-                    <td>12 Nov 2023</td>
-                    <td><span class="status-badge status-approved">Approved</span></td>
+                    <td>22 Apr 2023</td>
+                    <td>22 Oct 2023</td>
+                    <td><span class="status-badge status-expired">Expired</span></td>
                     <td>
                         <a href="#" class="btn btn-action">View</a>
+                        <a href="#" class="btn btn-action">Renew</a>
                     </td>
                 </tr>
                 <tr>
-                    <td>PPE-2023-0039</td>
-                    <td>Nurul Huda</td>
-                    <td>Quality</td>
-                    <td>Ear Protection</td>
-                    <td>20</td>
-                    <td>10 Nov 2023</td>
-                    <td><span class="status-badge status-rejected">Rejected</span></td>
+                    <td>CLIP-2023-0038</td>
+                    <td>Hazardous Waste Disposal Authorization</td>
+                    <td>Authorization</td>
+                    <td>R&D</td>
+                    <td>18 Jun 2023</td>
+                    <td>18 Jun 2024</td>
+                    <td><span class="status-badge status-active">Active</span></td>
                     <td>
                         <a href="#" class="btn btn-action">View</a>
+                        <a href="#" class="btn btn-action">Renew</a>
                     </td>
                 </tr>
                 <tr>
-                    <td>PPE-2023-0038</td>
-                    <td>Li Wei</td>
+                    <td>CLIP-2023-0037</td>
+                    <td>Pressure Vessel Operation License</td>
+                    <td>License</td>
                     <td>Production</td>
-                    <td>Respirator Masks</td>
-                    <td>30</td>
-                    <td>08 Nov 2023</td>
-                    <td><span class="status-badge status-approved">Approved</span></td>
+                    <td>30 May 2023</td>
+                    <td>30 Nov 2023</td>
+                    <td><span class="status-badge status-expiring">Expiring Soon</span></td>
                     <td>
                         <a href="#" class="btn btn-action">View</a>
+                        <a href="#" class="btn btn-action">Renew</a>
                     </td>
                 </tr>
             </tbody>
         </table>
 
-        <!-- Inventory Management Section -->
-        <h2 style="margin-top: 40px;">PPE Inventory</h2>
-        <table class="ppe-table">
-            <thead>
-                <tr>
-                    <th>Item</th>
-                    <th>Category</th>
-                    <th>Available Stock</th>
-                    <th>Required Stock</th>
-                    <th>Last Restocked</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Safety Glasses</td>
-                    <td>Eye Protection</td>
-                    <td>45</td>
-                    <td>60</td>
-                    <td>01 Nov 2023</td>
-                    <td><span class="status-badge status-approved">In Stock</span></td>
-                </tr>
-                <tr>
-                    <td>Hard Hats</td>
-                    <td>Head Protection</td>
-                    <td>18</td>
-                    <td>25</td>
-                    <td>28 Oct 2023</td>
-                    <td><span class="status-badge status-approved">In Stock</span></td>
-                </tr>
-                <tr>
-                    <td>Chemical Resistant Gloves</td>
-                    <td>Hand Protection</td>
-                    <td>12</td>
-                    <td>40</td>
-                    <td>15 Oct 2023</td>
-                    <td><span class="status-badge status-pending">Low Stock</span></td>
-                </tr>
-                <tr>
-                    <td>Respirator Masks (N95)</td>
-                    <td>Respiratory Protection</td>
-                    <td>0</td>
-                    <td>50</td>
-                    <td>05 Oct 2023</td>
-                    <td><span class="status-badge status-rejected">Out of Stock</span></td>
-                </tr>
-                <tr>
-                    <td>Safety Boots</td>
-                    <td>Foot Protection</td>
-                    <td>8</td>
-                    <td>15</td>
-                    <td>22 Sep 2023</td>
-                    <td><span class="status-badge status-pending">Low Stock</span></td>
-                </tr>
-            </tbody>
-        </table>
+        <!-- Calendar View Button -->
+        <div style="margin-top: 30px; text-align: center;">
+            <a href="#" class="btn"><i class="fas fa-calendar"></i> View Expiry Calendar</a>
+            <a href="#" class="btn"><i class="fas fa-chart-bar"></i> View Dashboard</a>
+            <a href="#" class="btn"><i class="fas fa-file-export"></i> Export to Excel</a>
+        </div>
     </section>
 
     <!-- Footer -->
@@ -342,28 +327,28 @@
                 <div class="footer-column">
                     <h3>Quick Links</h3>
                     <ul>
-                        <li><a href="#">PPE Guidelines</a></li>
-                        <li><a href="#">Equipment Catalogs</a></li>
-                        <li><a href="#">Usage Instructions</a></li>
-                        <li><a href="#">Report Damaged PPE</a></li>
+                        <li><a href="#" target="_blank">EHS Policy</a></li>
+                        <li><a href="#" target="_blank">Compliance Calendar</a></li>
+                        <li><a href="#" target="_blank">Safety Committee</a></li>
+                        <li><a href="#" target="_blank">Report an Incident</a></li>
                     </ul>
                 </div>
                 <div class="footer-column">
                     <h3>Resources</h3>
                     <ul>
-                        <li><a href="#">PPE Request Form</a></li>
-                        <li><a href="#">Safety Equipment Standards</a></li>
-                        <li><a href="#">Training Videos</a></li>
-                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#" target="_blank">Forms & Documents</a></li>
+                        <li><a href="#" target="_blank">Training Materials</a></li>
+                        <li><a href="#" target="_blank">Regulatory Updates</a></li>
+                        <li><a href="#" target="_blank">EHS News</a></li>
                     </ul>
                 </div>
                 <div class="footer-column">
                     <h3>Contact EHS</h3>
                     <ul>
-                        <li><a href="mailto:ehs.notification@inari-amertron.com.my">ehs.notification@inari-amertron.com.my</a></li>
-                        <li><a href="tel:+15551234567">Emergency: (555) 123-4567</a></li>
-                        <li><a href="#">Submit Feedback</a></li>
-                        <li><a href="#">EHS Team Directory</a></li>
+                        <li><a href="mailto:ehs.notification@inari-amertron.com.my" target="_blank">ehs.notification@inari-amertron.com.my</a></li>
+                        <li><a href="tel:+15551234567" target="_blank">Emergency: (555) 123-4567</a></li>
+                        <li><a href="#" target="_blank">Submit Feedback</a></li>
+                        <li><a href="#" target="_blank">EHS Team Directory</a></li>
                     </ul>
                 </div>
             </div>
@@ -372,8 +357,6 @@
             </div>
         </div>
     </footer>
-
-    <script src="../../js/main.js"></script>
 </body>
 
-</html> 
+</html>
