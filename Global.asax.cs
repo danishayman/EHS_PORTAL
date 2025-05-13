@@ -6,11 +6,11 @@ using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using System.Data.Entity;
-using CLIP.Models;
+using EHS_PORTAL.Areas.CLIP.Models;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CLIP
+namespace EHS_PORTAL
 {
     public class MvcApplication : System.Web.HttpApplication
     {
