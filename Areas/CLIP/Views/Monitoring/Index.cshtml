@@ -1,0 +1,102 @@
+@model IEnumerable<CLIP.Models.Monitoring>
+
+@{
+    ViewBag.Title = "Monitoring Types";
+}
+
+<h2>Monitoring Types</h2>
+
+<div class="row mb-3">
+    <div class="col-md-12">
+        <div class="btn-group">
+            @Html.ActionLink("List View", "Index", "PlantMonitoring", null, new { @class = "btn btn-outline-primary" })
+            @Html.ActionLink("Schedule View", "Schedule", "PlantMonitoring", null, new { @class = "btn btn-outline-primary" })
+            @Html.ActionLink("Monitoring Types", "Index", "Monitoring", null, new { @class = "btn btn-primary" })
+        </div>
+        @if (User.IsInRole("Admin"))
+        {
+            <a href="@Url.Action("Create")" class="btn btn-success float-right">
+                <i class="fas fa-plus"></i> Add New Monitoring Type
+            </a>
+        }
+    </div>
+</div>
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+<div class="table-responsive">
+    <table class="table table-striped table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.MonitoringName)</th>
+                <th>@Html.DisplayNameFor(model => model.MonitoringCategory)</th>
+                <th>@Html.DisplayNameFor(model => model.MonitoringFreq)</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.MonitoringName)</td>
+                    <td>@Html.DisplayFor(modelItem => item.MonitoringCategory)</td>
+                    <td>
+                        @{
+                            string frequencyText = "Unknown";
+                            int freq = item.MonitoringFreq;
+                            
+                            if (freq == 1) { frequencyText = "Monthly"; }
+                            else if (freq == 2) { frequencyText = "Bi-Monthly"; }
+                            else if (freq == 3) { frequencyText = "Quarterly"; }
+                            else if (freq == 4) { frequencyText = "4 Months"; }
+                            else if (freq == 6) { frequencyText = "Half-Yearly"; }
+                            else if (freq == 8) { frequencyText = "8 Months"; }
+                            else if (freq == 12) { frequencyText = "Yearly"; }
+                            else if (freq == 15) { frequencyText = "15 Months"; }
+                            else if (freq == 18) { frequencyText = "18 Months"; }
+                            else if (freq == 24) { frequencyText = "Every 2 Years"; }
+                            else if (freq == 36) { frequencyText = "Every 3 Years"; }
+                            else if (freq == 48) { frequencyText = "Every 4 Years"; }
+                            else if (freq == 60) { frequencyText = "Every 5 Years"; }
+                            else { frequencyText = $"Every {freq} months"; }
+                        }
+                        @frequencyText
+                    </td>
+                    <td>
+                        <div class="btn-group">
+                            <a href="@Url.Action("Details", new { id = item.MonitoringID })" class="btn btn-sm btn-info">
+                                <i class="fas fa-info-circle"></i> Details
+                            </a>
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <a href="@Url.Action("Edit", new { id = item.MonitoringID })" class="btn btn-sm btn-warning">
+                                    <i class="fas fa-edit"></i> Edit
+                                </a>
+                                <a href="@Url.Action("Delete", new { id = item.MonitoringID })" class="btn btn-sm btn-danger">
+                                    <i class="fas fa-trash"></i> Delete
+                                </a>
+                            }
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<hr />
+<div>
+    @Html.ActionLink("Back to Monitoring Dashboard", "Index", "PlantMonitoring", null, new { @class = "btn btn-secondary" })
+</div> 
