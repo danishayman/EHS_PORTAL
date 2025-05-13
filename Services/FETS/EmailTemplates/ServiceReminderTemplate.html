@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Fire Extinguisher Service Follow-up Reminder</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            background-color: #f5f5f5;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 3px solid #e74c3c;
+        }
+        .header h1 {
+            color: #e74c3c;
+            margin: 0;
+            font-size: 24px;
+        }
+        .content {
+            padding: 20px;
+        }
+        .extinguisher-details {
+            background-color: #f9f9f9;
+            border-left: 4px solid #e74c3c;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .footer {
+            font-size: 12px;
+            color: #777;
+            margin-top: 30px;
+            padding-top: 10px;
+            border-top: 1px solid #ddd;
+            text-align: center;
+        }
+        .action-required {
+            background-color: #ffebee;
+            border: 1px solid #ffcdd2;
+            border-radius: 4px;
+            padding: 10px;
+            margin: 20px 0;
+            color: #c62828;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Fire Extinguisher Service Follow-up Reminder</h1>
+        </div>
+        
+        <div class="content">
+            <p>Hello,</p>
+            
+            <p>This is a reminder to follow up with your vendor regarding the recently serviced fire extinguisher(s). It has been one week since the service was completed.</p>
+            
+            <div class="action-required">
+                <strong>ACTION REQUIRED:</strong> Please ensure that the service was performed correctly and that all necessary documentation has been received from the vendor.
+            </div>
+            
+            <h3>Extinguisher Details:</h3>
+            
+            <!-- For single extinguisher -->
+            <div class="extinguisher-details">
+                <p><strong>Serial Number:</strong> {{SerialNumber}}</p>
+                <p><strong>Location:</strong> {{Plant}}, {{Level}}, {{Location}}</p>
+                <p><strong>Service Completed:</strong> {{ServiceDate}}</p>
+                <p><strong>New Expiry Date:</strong> {{ExpiryDate}}</p>
+            </div>
+            
+            <!-- For multiple extinguishers -->
+            <table id="extinguishers-table" data-display="{{TableStyle}}">
+                <thead>
+                    <tr>
+                        <th>Serial Number</th>
+                        <th>Location</th>
+                        <th>Service Date</th>
+                        <th>New Expiry Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{TableRows}}
+                </tbody>
+            </table>
+            
+            <p>Please take the following actions:</p>
+            <ol>
+                <li>Confirm that the FE is located at the desginated place</li>
+                <li>Verify that the service tag is properly attached to the extinguisher</li>
+                <li>Confirm that pressure gauges show proper readings</li>
+                <li>Ensure that seals and tamper indicators are intact</li>
+                <li>Verify that the extinguisher is properly mounted and accessible</li>
+                <li>Check that the vendor has provided all required maintenance documentation</li>
+            </ol>
+            
+            <p>If any issues are found, please contact the vendor immediately for corrective action.</p>
+            
+            <p>Thank you for your attention to this important safety matter.</p>
+        </div>
+        
+        <div class="footer">
+            <p>This is an automated message from the Fire Extinguisher Tracking System(FETS).</p>
+            <p>© {2025} {INARI AMERTRON BHD.} - Environment, Health and Safety Department(EHS)</p>
+        </div>
+    </div>
+</body>
+</html> 
