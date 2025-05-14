@@ -45,10 +45,10 @@
                             Monitoring
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="monitoringDropdown">
-                            <li>@Html.ActionLink("Monitoring Dashboard", "Index", "PlantMonitoring", new { area = "" }, new { @class = "dropdown-item" })</li>
-                            <li>@Html.ActionLink("Schedule View", "Schedule", "PlantMonitoring", new { area = "" }, new { @class = "dropdown-item" })</li>
+                            <li>@Html.ActionLink("Monitoring Dashboard", "Index", "PlantMonitoring", new { area = "CLIP" }, new { @class = "dropdown-item" })</li>
+                            <li>@Html.ActionLink("Schedule View", "Schedule", "PlantMonitoring", new { area = "CLIP" }, new { @class = "dropdown-item" })</li>
                             <li><hr class="dropdown-divider"></li>
-                            <li>@Html.ActionLink("Manage Monitoring Types", "Index", "Monitoring", new { area = "" }, new { @class = "dropdown-item" })</li>
+                            <li>@Html.ActionLink("Manage Monitoring Types", "Index", "Monitoring", new { area = "CLIP" }, new { @class = "dropdown-item" })</li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
@@ -56,13 +56,13 @@
                             Competency
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="competencyDropdown">
-                            <li>@Html.ActionLink("Competency Modules", "Index", "Competency", new { area = "" }, new { @class = "dropdown-item" })</li>
-                            <li>@Html.ActionLink("Competent Person", "Index", "UserCompetency", new { area = "" }, new { @class = "dropdown-item" })</li>
+                            <li>@Html.ActionLink("Competency Modules", "Index", "Competency", new { area = "CLIP" }, new { @class = "dropdown-item" })</li>
+                            <li>@Html.ActionLink("Competent Person", "Index", "UserCompetency", new { area = "CLIP" }, new { @class = "dropdown-item" })</li>
                             <li><hr class="dropdown-divider"></li>
-                            <li>@Html.ActionLink("My Competencies", "MyCompetencies", "UserCompetency", new { area = "" }, new { @class = "dropdown-item" })</li>
+                            <li>@Html.ActionLink("My Competencies", "MyCompetencies", "UserCompetency", new { area = "CLIP" }, new { @class = "dropdown-item" })</li>
                         </ul>
                     </li>
-                    <li>@Html.ActionLink("Certificate of Fitness", "Index", "CertificateOfFitness", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("Certificate of Fitness", "Index", "CertificateOfFitness", new { area = "CLIP" }, new { @class = "nav-link" })</li>
                 </ul>
                 }
                 <div class="ms-auto">
