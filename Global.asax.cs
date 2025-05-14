@@ -21,7 +21,7 @@ namespace EHS_PORTAL
 
         protected void Application_Start()
         {
-            // Disable database migration check
+            // Disable database initialization to prevent automatic migrations
             Database.SetInitializer<ApplicationDbContext>(null);
 
             AreaRegistration.RegisterAllAreas();
