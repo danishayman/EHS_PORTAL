@@ -63,7 +63,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="MailKit, Version=4.10.0.0, Culture=neutral, PublicKeyToken=4e064fe7c44a8f1b, processorArchitecture=MSIL">
-      <HintPath>packages\MailKit.4.10.0\lib\net47\MailKit.dll</HintPath>
+      <HintPath>packages\MailKit.4.12.0\lib\net47\MailKit.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -124,7 +124,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="MimeKit, Version=4.10.0.0, Culture=neutral, PublicKeyToken=bede1c8a46c66814, processorArchitecture=MSIL">
-      <HintPath>packages\MimeKit.4.10.0\lib\net47\MimeKit.dll</HintPath>
+      <HintPath>packages\MimeKit.4.12.0\lib\net47\MimeKit.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -137,12 +137,15 @@
     </Reference>
     <Reference Include="System.Buffers, Version=4.0.5.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\System.Buffers.4.6.1\lib\net462\System.Buffers.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Formats.Asn1, Version=9.0.0.3, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>packages\System.Formats.Asn1.9.0.3\lib\net462\System.Formats.Asn1.dll</HintPath>
+      <HintPath>packages\System.Formats.Asn1.9.0.4\lib\net462\System.Formats.Asn1.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Memory, Version=4.0.4.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>packages\System.Memory.4.6.2\lib\net462\System.Memory.dll</HintPath>
+      <HintPath>packages\System.Memory.4.6.3\lib\net462\System.Memory.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Net.Http, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>True</SpecificVersion>
@@ -151,13 +154,16 @@
     <Reference Include="System.Numerics" />
     <Reference Include="System.Numerics.Vectors, Version=4.1.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>packages\System.Numerics.Vectors.4.6.1\lib\net462\System.Numerics.Vectors.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>packages\System.Runtime.CompilerServices.Unsafe.6.1.1\lib\net462\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+      <HintPath>packages\System.Runtime.CompilerServices.Unsafe.6.1.2\lib\net462\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Security" />
     <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>packages\System.Threading.Tasks.Extensions.4.6.2\lib\net462\System.Threading.Tasks.Extensions.dll</HintPath>
+      <HintPath>packages\System.Threading.Tasks.Extensions.4.6.3\lib\net462\System.Threading.Tasks.Extensions.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -209,6 +215,47 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Areas\CLIP\Content\bootstrap-grid.css" />
+    <Content Include="Areas\CLIP\Content\bootstrap-grid.min.css" />
+    <Content Include="Areas\CLIP\Content\bootstrap-grid.rtl.css" />
+    <Content Include="Areas\CLIP\Content\bootstrap-grid.rtl.min.css" />
+    <Content Include="Areas\CLIP\Content\bootstrap-reboot.css" />
+    <Content Include="Areas\CLIP\Content\bootstrap-reboot.min.css" />
+    <Content Include="Areas\CLIP\Content\bootstrap-reboot.rtl.css" />
+    <Content Include="Areas\CLIP\Content\bootstrap-reboot.rtl.min.css" />
+    <Content Include="Areas\CLIP\Content\bootstrap-utilities.css" />
+    <Content Include="Areas\CLIP\Content\bootstrap-utilities.min.css" />
+    <Content Include="Areas\CLIP\Content\bootstrap-utilities.rtl.css" />
+    <Content Include="Areas\CLIP\Content\bootstrap-utilities.rtl.min.css" />
+    <Content Include="Areas\CLIP\Content\bootstrap.css" />
+    <Content Include="Areas\CLIP\Content\bootstrap.min.css" />
+    <Content Include="Areas\CLIP\Content\bootstrap.rtl.css" />
+    <Content Include="Areas\CLIP\Content\bootstrap.rtl.min.css" />
+    <Content Include="Areas\CLIP\Content\Site.css" />
+    <Content Include="Areas\CLIP\DATABASE\CREATE_DB29042025.sql" />
+    <Content Include="Areas\CLIP\DATABASE\SQL_Fix_PlantId.sql" />
+    <Content Include="Areas\CLIP\DATABASE\Update_Competency.sql" />
+    <Content Include="Areas\CLIP\DATABASE\upd_db.sql" />
+    <Content Include="Areas\CLIP\favicon.ico" />
+    <Content Include="Areas\CLIP\Images\logo.png" />
+    <Content Include="Areas\CLIP\Scripts\bootstrap.bundle.js" />
+    <Content Include="Areas\CLIP\Scripts\bootstrap.bundle.min.js" />
+    <Content Include="Areas\CLIP\Scripts\bootstrap.esm.js" />
+    <Content Include="Areas\CLIP\Scripts\bootstrap.esm.min.js" />
+    <Content Include="Areas\CLIP\Scripts\bootstrap.js" />
+    <Content Include="Areas\CLIP\Scripts\bootstrap.min.js" />
+    <None Include="Areas\CLIP\Scripts\jquery-3.7.0.intellisense.js" />
+    <Content Include="Areas\CLIP\Scripts\jquery-3.7.0.js" />
+    <Content Include="Areas\CLIP\Scripts\jquery-3.7.0.min.js" />
+    <Content Include="Areas\CLIP\Scripts\jquery-3.7.0.slim.js" />
+    <Content Include="Areas\CLIP\Scripts\jquery-3.7.0.slim.min.js" />
+    <None Include="Areas\CLIP\Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Areas\CLIP\Scripts\jquery.validate.js" />
+    <Content Include="Areas\CLIP\Scripts\jquery.validate.min.js" />
+    <Content Include="Areas\CLIP\Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Areas\CLIP\Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Areas\CLIP\Scripts\modernizr-2.8.3.js" />
+    <Content Include="Areas\CLIP\Views\CertificateOfFitness\UPLOADS\20250508090743_mlem.jpeg" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
     <Content Include="Content\bootstrap-grid.rtl.css" />
@@ -260,6 +307,85 @@
     <Content Include="Content\bootstrap-grid.rtl.css.map" />
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-grid.css.map" />
+    <Content Include="Areas\CLIP\Content\bootstrap-grid.css.map" />
+    <Content Include="Areas\CLIP\Content\bootstrap-grid.min.css.map" />
+    <Content Include="Areas\CLIP\Content\bootstrap-grid.rtl.css.map" />
+    <Content Include="Areas\CLIP\Content\bootstrap-grid.rtl.min.css.map" />
+    <Content Include="Areas\CLIP\Content\bootstrap-reboot.css.map" />
+    <Content Include="Areas\CLIP\Content\bootstrap-reboot.min.css.map" />
+    <Content Include="Areas\CLIP\Content\bootstrap-reboot.rtl.css.map" />
+    <Content Include="Areas\CLIP\Content\bootstrap-reboot.rtl.min.css.map" />
+    <Content Include="Areas\CLIP\Content\bootstrap-utilities.css.map" />
+    <Content Include="Areas\CLIP\Content\bootstrap-utilities.min.css.map" />
+    <Content Include="Areas\CLIP\Content\bootstrap-utilities.rtl.css.map" />
+    <Content Include="Areas\CLIP\Content\bootstrap-utilities.rtl.min.css.map" />
+    <Content Include="Areas\CLIP\Content\bootstrap.css.map" />
+    <Content Include="Areas\CLIP\Content\bootstrap.min.css.map" />
+    <Content Include="Areas\CLIP\Content\bootstrap.rtl.css.map" />
+    <Content Include="Areas\CLIP\Content\bootstrap.rtl.min.css.map" />
+    <Content Include="Areas\CLIP\Scripts\bootstrap.bundle.js.map" />
+    <Content Include="Areas\CLIP\Scripts\bootstrap.bundle.min.js.map" />
+    <Content Include="Areas\CLIP\Scripts\bootstrap.esm.js.map" />
+    <Content Include="Areas\CLIP\Scripts\bootstrap.esm.min.js.map" />
+    <Content Include="Areas\CLIP\Scripts\bootstrap.js.map" />
+    <Content Include="Areas\CLIP\Scripts\bootstrap.min.js.map" />
+    <Content Include="Areas\CLIP\Scripts\jquery-3.7.0.min.map" />
+    <Content Include="Areas\CLIP\Scripts\jquery-3.7.0.slim.min.map" />
+    <Content Include="Areas\CLIP\uploads\Monitoring\Quote_2_20250430162618_Competency.xlsx" />
+    <Content Include="Areas\CLIP\Views\Account\ConfirmEmail.cshtml" />
+    <Content Include="Areas\CLIP\Views\Account\ExternalLoginConfirmation.cshtml" />
+    <Content Include="Areas\CLIP\Views\Account\ExternalLoginFailure.cshtml" />
+    <Content Include="Areas\CLIP\Views\Account\ForgotPassword.cshtml" />
+    <Content Include="Areas\CLIP\Views\Account\ForgotPasswordConfirmation.cshtml" />
+    <Content Include="Areas\CLIP\Views\Account\Login.cshtml" />
+    <Content Include="Areas\CLIP\Views\Account\Register.cshtml" />
+    <Content Include="Areas\CLIP\Views\Account\ResetPassword.cshtml" />
+    <Content Include="Areas\CLIP\Views\Account\ResetPasswordConfirmation.cshtml" />
+    <Content Include="Areas\CLIP\Views\Account\SendCode.cshtml" />
+    <Content Include="Areas\CLIP\Views\Account\VerifyCode.cshtml" />
+    <Content Include="Areas\CLIP\Views\Account\_ExternalLoginsListPartial.cshtml" />
+    <Content Include="Areas\CLIP\Views\CertificateOfFitness\Create.cshtml" />
+    <Content Include="Areas\CLIP\Views\CertificateOfFitness\Delete.cshtml" />
+    <Content Include="Areas\CLIP\Views\CertificateOfFitness\Details.cshtml" />
+    <Content Include="Areas\CLIP\Views\CertificateOfFitness\Edit.cshtml" />
+    <Content Include="Areas\CLIP\Views\CertificateOfFitness\Index.cshtml" />
+    <Content Include="Areas\CLIP\Views\CertificateOfFitness\UPLOADS\20250429153512_CF - PMA-PP_22 98629.pdf" />
+    <Content Include="Areas\CLIP\Views\Competency\AddCompetency.cshtml" />
+    <Content Include="Areas\CLIP\Views\Competency\Competency.cshtml" />
+    <Content Include="Areas\CLIP\Views\Competency\EditCompetency.cshtml" />
+    <Content Include="Areas\CLIP\Views\Home\About.cshtml" />
+    <Content Include="Areas\CLIP\Views\Home\Contact.cshtml" />
+    <Content Include="Areas\CLIP\Views\Home\Index.cshtml" />
+    <Content Include="Areas\CLIP\Views\Home\Welcome.cshtml" />
+    <Content Include="Areas\CLIP\Views\Manage\AddPhoneNumber.cshtml" />
+    <Content Include="Areas\CLIP\Views\Manage\ChangePassword.cshtml" />
+    <Content Include="Areas\CLIP\Views\Manage\Index.cshtml" />
+    <Content Include="Areas\CLIP\Views\Manage\ManageLogins.cshtml" />
+    <Content Include="Areas\CLIP\Views\Manage\SetPassword.cshtml" />
+    <Content Include="Areas\CLIP\Views\Manage\VerifyPhoneNumber.cshtml" />
+    <Content Include="Areas\CLIP\Views\Monitoring\Create.cshtml" />
+    <Content Include="Areas\CLIP\Views\Monitoring\Delete.cshtml" />
+    <Content Include="Areas\CLIP\Views\Monitoring\Details.cshtml" />
+    <Content Include="Areas\CLIP\Views\Monitoring\Edit.cshtml" />
+    <Content Include="Areas\CLIP\Views\Monitoring\Index.cshtml" />
+    <Content Include="Areas\CLIP\Views\PlantMonitoring\Create.cshtml" />
+    <Content Include="Areas\CLIP\Views\PlantMonitoring\Delete.cshtml" />
+    <Content Include="Areas\CLIP\Views\PlantMonitoring\Details.cshtml" />
+    <Content Include="Areas\CLIP\Views\PlantMonitoring\Edit.cshtml" />
+    <Content Include="Areas\CLIP\Views\PlantMonitoring\Index.cshtml" />
+    <Content Include="Areas\CLIP\Views\PlantMonitoring\Schedule.cshtml" />
+    <Content Include="Areas\CLIP\Views\PlantMonitoring\UpdateStatus.cshtml" />
+    <Content Include="Areas\CLIP\Views\Shared\Error.cshtml" />
+    <Content Include="Areas\CLIP\Views\Shared\Lockout.cshtml" />
+    <Content Include="Areas\CLIP\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\CLIP\Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Areas\CLIP\Views\UserCompetency\Assign.cshtml" />
+    <Content Include="Areas\CLIP\Views\UserCompetency\Edit.cshtml" />
+    <Content Include="Areas\CLIP\Views\UserCompetency\Index.cshtml" />
+    <Content Include="Areas\CLIP\Views\UserCompetency\MyCompetencies.cshtml" />
+    <Content Include="Areas\CLIP\Views\UserCompetency\UserCompetencies.cshtml" />
+    <Content Include="Areas\CLIP\Views\Web.config" />
+    <Content Include="Areas\CLIP\Views\_ViewStart.cshtml" />
     <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Scripts\bootstrap.bundle.js" />
@@ -282,6 +408,9 @@
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Services\CLIP\App_Data\aspnet-CLIP-20250424022340.mdf" />
     <Content Include="Services\CLIP\App_Data\aspnet-CLIP-20250424022340_log.ldf">
       <DependentUpon>aspnet-CLIP-20250424022340.mdf</DependentUpon>
@@ -556,6 +685,69 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Areas\CLIP\CLIPAreaRegistration.cs" />
+    <Compile Include="Areas\CLIP\Controllers\AccountController.cs" />
+    <Compile Include="Areas\CLIP\Controllers\CertificateOfFitnessController.cs" />
+    <Compile Include="Areas\CLIP\Controllers\CompetencyController.cs" />
+    <Compile Include="Areas\CLIP\Controllers\HomeController.cs" />
+    <Compile Include="Areas\CLIP\Controllers\ManageController.cs" />
+    <Compile Include="Areas\CLIP\Controllers\MonitoringController.cs" />
+    <Compile Include="Areas\CLIP\Controllers\PlantMonitoringController.cs" />
+    <Compile Include="Areas\CLIP\Controllers\UserCompetencyController.cs" />
+    <Compile Include="Areas\CLIP\Core\CustomAttributes.cs" />
+    <Compile Include="Areas\CLIP\Migrations\202504240642424_InitIdentity.cs" />
+    <Compile Include="Areas\CLIP\Migrations\202504240642424_InitIdentity.Designer.cs">
+      <DependentUpon>202504240642424_InitIdentity.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\CLIP\Migrations\202504250259166_AddEmpIDToApplicationUser.cs" />
+    <Compile Include="Areas\CLIP\Migrations\202504250259166_AddEmpIDToApplicationUser.Designer.cs">
+      <DependentUpon>202504250259166_AddEmpIDToApplicationUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\CLIP\Migrations\202504250320145_AddCompetencyTables.cs" />
+    <Compile Include="Areas\CLIP\Migrations\202504250320145_AddCompetencyTables.Designer.cs">
+      <DependentUpon>202504250320145_AddCompetencyTables.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\CLIP\Migrations\202504250338135_AddPlantAndUserPlantTables.cs" />
+    <Compile Include="Areas\CLIP\Migrations\202504250338135_AddPlantAndUserPlantTables.Designer.cs">
+      <DependentUpon>202504250338135_AddPlantAndUserPlantTables.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\CLIP\Migrations\202504250921370_AddMonitoringModuleTable.cs" />
+    <Compile Include="Areas\CLIP\Migrations\202504250921370_AddMonitoringModuleTable.Designer.cs">
+      <DependentUpon>202504250921370_AddMonitoringModuleTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\CLIP\Migrations\202504250944483_AddAreaPlant.cs" />
+    <Compile Include="Areas\CLIP\Migrations\202504250944483_AddAreaPlant.Designer.cs">
+      <DependentUpon>202504250944483_AddAreaPlant.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\CLIP\Migrations\202504280126265_RecreateCompetencyModulesTable.cs" />
+    <Compile Include="Areas\CLIP\Migrations\202504280126265_RecreateCompetencyModulesTable.Designer.cs">
+      <DependentUpon>202504280126265_RecreateCompetencyModulesTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\CLIP\Migrations\202504280151239_AllowNullValidity.cs" />
+    <Compile Include="Areas\CLIP\Migrations\202504280151239_AllowNullValidity.Designer.cs">
+      <DependentUpon>202504280151239_AllowNullValidity.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\CLIP\Migrations\202504280158101_MakeCompetencyNameUnique.cs" />
+    <Compile Include="Areas\CLIP\Migrations\202504280158101_MakeCompetencyNameUnique.Designer.cs">
+      <DependentUpon>202504280158101_MakeCompetencyNameUnique.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\CLIP\Migrations\202504280328587_CombinedChanges.cs" />
+    <Compile Include="Areas\CLIP\Migrations\202504280328587_CombinedChanges.Designer.cs">
+      <DependentUpon>202504280328587_CombinedChanges.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\CLIP\Migrations\Configuration.cs" />
+    <Compile Include="Areas\CLIP\Models\AccountViewModels.cs" />
+    <Compile Include="Areas\CLIP\Models\AreaPlant.cs" />
+    <Compile Include="Areas\CLIP\Models\CertificateOfFitness.cs" />
+    <Compile Include="Areas\CLIP\Models\CompetencyModule.cs" />
+    <Compile Include="Areas\CLIP\Models\IdentityModels.cs" />
+    <Compile Include="Areas\CLIP\Models\ManageViewModels.cs" />
+    <Compile Include="Areas\CLIP\Models\Monitoring.cs" />
+    <Compile Include="Areas\CLIP\Models\Plant.cs" />
+    <Compile Include="Areas\CLIP\Models\PlantMonitoring.cs" />
+    <Compile Include="Areas\CLIP\Models\UserCompetency.cs" />
+    <Compile Include="Areas\CLIP\Models\UserPlant.cs" />
+    <Compile Include="Areas\CLIP\Models\UserPoint.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -867,7 +1059,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Areas\CLIP\" />
     <Folder Include="Services\CLIP\obj\Debug\TempPE\" />
     <Folder Include="Services\FETS\obj\Debug\TempPE\" />
     <Folder Include="Uploads\Maps\" />
@@ -888,6 +1079,36 @@
     -->
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Areas\CLIP\Migrations\202504240642424_InitIdentity.resx">
+      <DependentUpon>202504240642424_InitIdentity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Areas\CLIP\Migrations\202504250259166_AddEmpIDToApplicationUser.resx">
+      <DependentUpon>202504250259166_AddEmpIDToApplicationUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Areas\CLIP\Migrations\202504250320145_AddCompetencyTables.resx">
+      <DependentUpon>202504250320145_AddCompetencyTables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Areas\CLIP\Migrations\202504250338135_AddPlantAndUserPlantTables.resx">
+      <DependentUpon>202504250338135_AddPlantAndUserPlantTables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Areas\CLIP\Migrations\202504250921370_AddMonitoringModuleTable.resx">
+      <DependentUpon>202504250921370_AddMonitoringModuleTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Areas\CLIP\Migrations\202504250944483_AddAreaPlant.resx">
+      <DependentUpon>202504250944483_AddAreaPlant.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Areas\CLIP\Migrations\202504280126265_RecreateCompetencyModulesTable.resx">
+      <DependentUpon>202504280126265_RecreateCompetencyModulesTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Areas\CLIP\Migrations\202504280151239_AllowNullValidity.resx">
+      <DependentUpon>202504280151239_AllowNullValidity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Areas\CLIP\Migrations\202504280158101_MakeCompetencyNameUnique.resx">
+      <DependentUpon>202504280158101_MakeCompetencyNameUnique.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Areas\CLIP\Migrations\202504280328587_CombinedChanges.resx">
+      <DependentUpon>202504280328587_CombinedChanges.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Services\CLIP\Migrations\202504240642424_InitIdentity.resx">
       <DependentUpon>202504240642424_InitIdentity.cs</DependentUpon>
     </EmbeddedResource>
@@ -962,9 +1183,13 @@
     <Error Condition="!Exists('packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
     <Error Condition="!Exists('packages\EntityFramework.6.5.1\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\EntityFramework.6.5.1\build\EntityFramework.props'))" />
     <Error Condition="!Exists('packages\EntityFramework.6.5.1\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\EntityFramework.6.5.1\build\EntityFramework.targets'))" />
+    <Error Condition="!Exists('packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\build\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\build\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets'))" />
+    <Error Condition="!Exists('packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets'))" />
   </Target>
   <Import Project="packages\EntityFramework.6.4.4\build\EntityFramework.targets" Condition="Exists('packages\EntityFramework.6.4.4\build\EntityFramework.targets')" />
   <Import Project="packages\EntityFramework.6.5.1\build\EntityFramework.targets" Condition="Exists('packages\EntityFramework.6.5.1\build\EntityFramework.targets')" />
+  <Import Project="packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\build\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets" Condition="Exists('packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\build\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets')" />
+  <Import Project="packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets" Condition="Exists('packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
