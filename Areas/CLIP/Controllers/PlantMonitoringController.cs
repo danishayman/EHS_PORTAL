@@ -16,7 +16,7 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
     [Authorize]
     public class PlantMonitoringController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private readonly ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: PlantMonitoring
         public ActionResult Index(string category = null, int? plantId = null, string status = null)
@@ -445,7 +445,7 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                     }
 
                     string fileName = Path.GetFileName(quoteDocument.FileName);
-                    string uniqueFileName = $"Quote_{id}_{DateTime.Now.ToString("yyyyMMddHHmmss")}_{fileName}";
+                    string uniqueFileName = $"Quote_{id}_{DateTime.Now:yyyyMMddHHmmss}_{fileName}";
                     string path = Path.Combine(Server.MapPath("~/uploads/Monitoring"), uniqueFileName);
                     
                     // Ensure directory exists
@@ -476,7 +476,7 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                     }
 
                     string fileName = Path.GetFileName(eprDocument.FileName);
-                    string uniqueFileName = $"EPR_{id}_{DateTime.Now.ToString("yyyyMMddHHmmss")}_{fileName}";
+                    string uniqueFileName = $"EPR_{id}_{DateTime.Now:yyyyMMddHHmmss}_{fileName}";
                     string path = Path.Combine(Server.MapPath("~/uploads/Monitoring"), uniqueFileName);
                     
                     // Ensure directory exists
@@ -507,7 +507,7 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                     }
 
                     string fileName = Path.GetFileName(workDocument.FileName);
-                    string uniqueFileName = $"Work_{id}_{DateTime.Now.ToString("yyyyMMddHHmmss")}_{fileName}";
+                    string uniqueFileName = $"Work_{id}_{DateTime.Now:yyyyMMddHHmmss}_{fileName}";
                     string path = Path.Combine(Server.MapPath("~/uploads/Monitoring"), uniqueFileName);
                     
                     // Ensure directory exists
