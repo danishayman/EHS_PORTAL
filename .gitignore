@@ -52,4 +52,8 @@ _ReSharper*/
 *.[Rr]e[Ss]harper
 *.DotSettings.user
 .sass-cache/
+.config/
+
+# Configuration files with sensitive data
+Web.config
 
