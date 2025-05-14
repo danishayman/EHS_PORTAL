@@ -21,7 +21,7 @@ namespace FETS.Pages.Admin
             // Check if user is authenticated and has admin rights
             if (!Request.IsAuthenticated || !RoleHelper.IsUserInRole("Administrator"))
             {
-                Response.Redirect("~/Services/FETS/Pages/Dashboard/Dashboard.aspx");
+                Response.Redirect("~/FETS/Dashboard.aspx");
                 return;
             }
 

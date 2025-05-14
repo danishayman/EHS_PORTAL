@@ -37,7 +37,7 @@ namespace FETS
                     if (currentPage.ToLower() != "publicdashboard.aspx")
                     {
                         // Redirect unauthenticated users to login page only if not on the PublicDashboard
-                        Response.Redirect("~/Areas/FETS/Pages/Login/Login.aspx");
+                        Response.Redirect("~/FETS/Login.aspx");
                     }
                 }
             }
@@ -60,27 +60,27 @@ namespace FETS
             btnActivityLogs.CssClass = "nav-link";
 
             // Set active class for the current page
-            if (currentUrl.Contains("/dashboard/"))
+            if (currentUrl.Contains("/dashboard") || currentUrl.Contains("/dashboard/"))
             {
                 btnDashboard.CssClass = "nav-link active";
             }
-            else if (currentUrl.Contains("/dataentry/"))
+            else if (currentUrl.Contains("/dataentry") || currentUrl.Contains("/dataentry/"))
             {
                 btnDataEntry.CssClass = "nav-link active";
             }
-            else if (currentUrl.Contains("/viewsection/"))
+            else if (currentUrl.Contains("/viewsection") || currentUrl.Contains("/viewsection/"))
             {
                 btnViewSection.CssClass = "nav-link active";
             }
-            else if (currentUrl.Contains("/maplayout/"))
+            else if (currentUrl.Contains("/maplayout") || currentUrl.Contains("/maplayout/"))
             {
                 btnMapLayout.CssClass = "nav-link active";
             }
-            else if (currentUrl.Contains("/profile/"))
+            else if (currentUrl.Contains("/profile") || currentUrl.Contains("/profile/"))
             {
                 btnProfile.CssClass = "nav-link active"; // Settings button (still links to Profile page)
             }
-            else if (currentUrl.Contains("/admin/activitylogs"))
+            else if (currentUrl.Contains("/activitylogs") || currentUrl.Contains("/admin/activitylogs"))
             {
                 btnActivityLogs.CssClass = "nav-link active";
             }
@@ -91,27 +91,27 @@ namespace FETS
         /// </summary>
         protected void btnDashboard_Click(object sender, EventArgs e)
         {
-            Response.Redirect("~/Areas/FETS/Pages/Dashboard/Dashboard.aspx");
+            Response.Redirect("~/FETS/Dashboard.aspx");
         }
 
         protected void btnDataEntry_Click(object sender, EventArgs e)
         {
-            Response.Redirect("~/Areas/FETS/Pages/DataEntry/DataEntry.aspx");
+            Response.Redirect("~/FETS/DataEntry.aspx");
         }
 
         protected void btnViewSection_Click(object sender, EventArgs e)
         {
-            Response.Redirect("~/Areas/FETS/Pages/ViewSection/ViewSection.aspx");
+            Response.Redirect("~/FETS/ViewSection.aspx");
         }
 
         protected void btnMapLayout_Click(object sender, EventArgs e)
         {
-            Response.Redirect("~/Areas/FETS/Pages/MapLayout/MapLayout.aspx");
+            Response.Redirect("~/FETS/MapLayout.aspx");
         }
 
         protected void btnProfile_Click(object sender, EventArgs e)
         {
-            Response.Redirect("~/Areas/FETS/Pages/Profile/Profile.aspx");
+            Response.Redirect("~/FETS/Profile.aspx");
         }
 
         /// <summary>
@@ -122,7 +122,7 @@ namespace FETS
             // Only allow administrators to access activity logs
             if (RoleHelper.IsUserInRole("Administrator"))
             {
-                Response.Redirect("~/Areas/FETS/Pages/Admin/ActivityLogs.aspx");
+                Response.Redirect("~/FETS/ActivityLogs.aspx");
             }
         }
 
@@ -143,7 +143,7 @@ namespace FETS
             }
 
             FormsAuthentication.SignOut();
-            Response.Redirect("~/Areas/FETS/Pages/Login/Login.aspx");
+            Response.Redirect("~/FETS/Login.aspx");
         }
 
         private string GetUserRoleFromTicket()
@@ -178,7 +178,7 @@ namespace FETS
             Session.Abandon();
             
             // Redirect to login page
-            Response.Redirect("~/Areas/FETS/Pages/Login/Login.aspx");
+            Response.Redirect("~/FETS/Login.aspx");
         }
     }
 }
