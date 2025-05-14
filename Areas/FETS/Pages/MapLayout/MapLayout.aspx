@@ -1,6 +1,8 @@
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="MapLayout.aspx.cs" Inherits="FETS.Pages.MapLayout.MapLayout" MasterPageFile="~/Services/FETS/Site.Master" %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="MapLayout.aspx.cs" Inherits="FETS.Pages.MapLayout.MapLayout" MasterPageFile="~/Areas/FETS/Site.Master" %>
 
 <asp:Content ID="HeadContent" ContentPlaceHolderID="HeadContent" runat="server">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="<%=ResolveUrl("~/Areas/FETS/Assets/css/styles.css")%>" rel="stylesheet" />
     <style>
         /* Base styles to match View Section and Data Entry */
         .dashboard-container {
@@ -602,7 +604,7 @@
                                             CommandArgument='<%# Eval("ImagePath") + "," + Eval("PlantName") + "," + Eval("LevelName") %>'
                                             CssClass="btn btn-sm btn-primary"
                                             Text="View"
-                                            OnClientClick='<%# "openMapModal(\"" + ResolveUrl("~/Uploads/Maps/" + Eval("ImagePath")) + "\", \"" + Eval("PlantName") + "\", \"" + Eval("LevelName") + "\"); return false;" %>' />
+                                            OnClientClick='<%# "openMapModal(\"" + ResolveUrl("~/Areas/FETS/Uploads/Maps/" + Eval("ImagePath")) + "\", \"" + Eval("PlantName") + "\", \"" + Eval("LevelName") + "\"); return false;" %>' />
                                         <asp:LinkButton ID="btnDelete" runat="server" 
                                             CommandName="DeleteMap" 
                                             CommandArgument='<%# Eval("MapID") %>'

@@ -60,7 +60,7 @@ namespace FETS.Pages.MapLayout
                             if (!reader.IsDBNull(reader.GetOrdinal("ImagePath")))
                             {
                                 string imagePath = reader["ImagePath"].ToString();
-                                imgMap.ImageUrl = $"~/Uploads/Maps/{imagePath}";
+                                imgMap.ImageUrl = $"~/Areas/FETS/Uploads/Maps/{imagePath}";
                                 lblLastUpdated.Text = Convert.ToDateTime(reader["UploadDate"]).ToString("MMM dd, yyyy HH:mm");
                             }
                             else
