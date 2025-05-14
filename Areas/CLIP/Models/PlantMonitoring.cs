@@ -6,129 +6,186 @@ namespace EHS_PORTAL.Areas.CLIP.Models
 {
     public class PlantMonitoring
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        
-        [Display(Name = "Plant")]
+
+        [Required]
         public int PlantID { get; set; }
-        
-        [Display(Name = "Monitoring Type")]
+
+        [Required]
         public int MonitoringID { get; set; }
-        
+
+        [StringLength(100)]
         public string Area { get; set; }
-        
-        public string Remarks { get; set; }
-        
+
         [Display(Name = "Expiry Date")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = false)]
         public DateTime? ExpDate { get; set; }
-        
+
         // Quotation Phase
-        [Display(Name = "Quote Date")]
+        [Display(Name = "Quotation Date")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = false)]
         public DateTime? QuoteDate { get; set; }
-        
-        [Display(Name = "Quote Submit Date")]
+
+        [Display(Name = "Quotation Submission Date")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = false)]
         public DateTime? QuoteSubmitDate { get; set; }
-        
-        [Display(Name = "Quote Complete Date")]
+
+        [Display(Name = "Quotation Completion Date")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = false)]
         public DateTime? QuoteCompleteDate { get; set; }
-        
-        [Display(Name = "Quote Assigned To")]
+
+        [StringLength(100)]
+        [Display(Name = "Quotation Assigned To")]
         public string QuoteUserAssign { get; set; }
-        
-        [Display(Name = "Quote Document")]
+
+        [StringLength(500)]
+        [Display(Name = "Quotation Document")]
         public string QuoteDoc { get; set; }
-        
+
         // Preparation Phase
-        [Display(Name = "EPR Date")]
+        [Display(Name = "Preparation Date")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = false)]
         public DateTime? EprDate { get; set; }
-        
-        [Display(Name = "EPR Submit Date")]
+
+        [Display(Name = "Preparation Submission Date")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = false)]
         public DateTime? EprSubmitDate { get; set; }
-        
-        [Display(Name = "EPR Complete Date")]
+
+        [Display(Name = "Preparation Completion Date")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = false)]
         public DateTime? EprCompleteDate { get; set; }
-        
-        [Display(Name = "EPR Assigned To")]
+
+        [StringLength(100)]
+        [Display(Name = "Preparation Assigned To")]
         public string EprUserAssign { get; set; }
-        
-        [Display(Name = "EPR Document")]
+
+        [StringLength(500)]
+        [Display(Name = "ePR Document")]
         public string EprDoc { get; set; }
-        
+
         // Work Execution Phase
         [Display(Name = "Work Date")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = false)]
         public DateTime? WorkDate { get; set; }
-        
-        [Display(Name = "Work Submit Date")]
+
+        [Display(Name = "Work Submission Date")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = false)]
         public DateTime? WorkSubmitDate { get; set; }
-        
-        [Display(Name = "Work Complete Date")]
+
+        [Display(Name = "Work Completion Date")]
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = false)]
         public DateTime? WorkCompleteDate { get; set; }
-        
+
+        [StringLength(100)]
         [Display(Name = "Work Assigned To")]
         public string WorkUserAssign { get; set; }
-        
+
+        [StringLength(500)]
         [Display(Name = "Work Document")]
         public string WorkDoc { get; set; }
-        
-        // Navigation Properties
+
+        [Display(Name = "Remarks")]
+        public string Remarks { get; set; }
+
+        [StringLength(50)]
+        [Display(Name = "Process Status")]
+        public string ProcStatus { get; set; }
+
+        [StringLength(50)]
+        [Display(Name = "Expiration Status")]
+        public string ExpStatus { get; set; }
+
+        // Navigation properties
         [ForeignKey("PlantID")]
         public virtual Plant Plant { get; set; }
-        
+
         [ForeignKey("MonitoringID")]
         public virtual Monitoring Monitoring { get; set; }
 
-        // Helper properties for status determination  
+        // Helper method to calculate process status
+        public void CalculateProcStatus()
+        {
+            if (WorkCompleteDate.HasValue)
+                ProcStatus = "Completed";
+            else if (WorkDate.HasValue)
+                ProcStatus = "Work In Progress";
+            else if (EprDate.HasValue)
+                ProcStatus = "ePR Raised";
+            else if (QuoteDate.HasValue)
+                ProcStatus = "Quotation Requested";
+            else
+                ProcStatus = "Not Started";
+        }
+
+        // Helper method to calculate expiration status
+        public void CalculateExpStatus()
+        {
+            if (!ExpDate.HasValue)
+                ExpStatus = "No Expiry";
+            else if (ExpDate < DateTime.Now)
+                ExpStatus = "Expired";
+            else if (ExpDate < DateTime.Now.AddDays(30))
+                ExpStatus = "Expiring Soon";
+            else
+                ExpStatus = "Valid";
+        }
+
+        // Helper method to calculate both statuses
+        public void CalculateStatuses()
+        {
+            CalculateProcStatus();
+            CalculateExpStatus();
+        }
+
         [NotMapped]
-        public string Status
+        public string ProcStatusCssClass
         {
             get
             {
-                if (WorkCompleteDate.HasValue)
-                    return "Completed";
-                else if (WorkDate.HasValue)
-                    return "In Progress";
-                else if (EprDate.HasValue)
-                    return "In Preparation";
-                else if (QuoteDate.HasValue)
-                    return "In Quotation";
-                else
-                    return "Not Started";
+                switch (ProcStatus)
+                {
+                    case "Completed":
+                        return "bg-success";
+                    case "Work In Progress":
+                        return "bg-warning";
+                    case "ePR Raised":
+                        return "bg-warning";
+                    case "Quotation Requested":
+                        return "bg-primary";
+                    case "Not Started":
+                        return "bg-secondary";
+                    default:
+                        return "";
+                }
             }
         }
 
         [NotMapped]
-        public string StatusCssClass
+        public string ExpStatusCssClass
         {
             get
             {
-                switch (Status)
+                switch (ExpStatus)
                 {
-                    case "Completed":
+                    case "Expired":
+                        return "bg-danger";
+                    case "Expiring Soon":
+                        return "bg-warning";
+                    case "Valid":
                         return "bg-success";
-                    case "In Progress":
-                        return "bg-warning";
-                    case "In Preparation":
-                        return "bg-warning";
-                    case "In Quotation":
+                    case "No Expiry":
                         return "bg-secondary";
                     default:
                         return "";
