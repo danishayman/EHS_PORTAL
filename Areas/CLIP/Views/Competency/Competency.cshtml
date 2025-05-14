@@ -45,9 +45,8 @@
                         <tr>
                             <th>Module Name</th>
                             <th>Description</th>
-                            <th>Validity (Years)</th>
-                            <th>Point Type</th>
-                            <th>Total Points</th>
+                            <th>Validity (Months)</th>
+                            <th>Mandatory</th>
                             @if (User.IsInRole("Admin"))
                             {
                                 <th>Actions</th>
@@ -60,9 +59,17 @@
                             <tr>
                                 <td>@module.ModuleName</td>
                                 <td>@(string.IsNullOrEmpty(module.Description) ? "-" : module.Description)</td>
-                                <td>@(module.ValidityMonths.HasValue ? Math.Floor((double)module.ValidityMonths.Value / 12).ToString() + " years" : "No validity")</td>
-                                <td>@(string.IsNullOrEmpty(module.PointType) ? "-" : module.PointType)</td>
-                                <td>@(module.TotalPoints.HasValue ? module.TotalPoints.ToString() : "-")</td>
+                                <td>@(module.ValidityMonths.HasValue ? module.ValidityMonths.ToString() : "No validity")</td>
+                                <td>
+                                    @if (module.IsMandatory)
+                                    {
+                                        <span class="badge bg-primary">Yes</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary">No</span>
+                                    }
+                                </td>
                                 @if (User.IsInRole("Admin"))
                                 {
                                     <td>

@@ -110,16 +110,28 @@ namespace EHS_PORTAL.Areas.CLIP.Models
 
             // Configure CertificateOfFitness relationships
             modelBuilder.Entity<CertificateOfFitness>()
-                .ToTable("CertificateOfFitness")
+                .ToTable("CertificateOfFitness");
+
+            modelBuilder.Entity<CertificateOfFitness>()
                 .HasRequired(cf => cf.Plant)
                 .WithMany()
                 .HasForeignKey(cf => cf.PlantId)
                 .WillCascadeOnDelete(false);
             
+            // Configure AreaPlant relationships
+            modelBuilder.Entity<AreaPlant>()
+                .HasRequired(ap => ap.Plant)
+                .WithMany()
+                .HasForeignKey(ap => ap.PlantId)
+                .WillCascadeOnDelete(true);
+                
             // Configure PlantMonitoring relationships
             modelBuilder.Entity<PlantMonitoring>()
+                .ToTable("PlantMonitoring");
+                
+            modelBuilder.Entity<PlantMonitoring>()
                 .HasRequired(pm => pm.Plant)
-                .WithMany()
+                .WithMany(p => p.PlantMonitorings)
                 .HasForeignKey(pm => pm.PlantID)
                 .WillCascadeOnDelete(false);
 
@@ -132,10 +144,6 @@ namespace EHS_PORTAL.Areas.CLIP.Models
             // Configure Monitoring table name
             modelBuilder.Entity<Monitoring>()
                 .ToTable("Monitoring");
-            
-            // Configure PlantMonitoring table name
-            modelBuilder.Entity<PlantMonitoring>()
-                .ToTable("PlantMonitoring");
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="packages\EntityFramework.6.5.1\build\EntityFramework.props" Condition="Exists('packages\EntityFramework.6.5.1\build\EntityFramework.props')" />
+  <Import Project="packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="packages\EntityFramework.6.4.4\build\EntityFramework.props" Condition="Exists('packages\EntityFramework.6.4.4\build\EntityFramework.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -23,6 +25,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -49,6 +52,7 @@
     </Reference>
     <Reference Include="BouncyCastle.Cryptography, Version=2.0.0.0, Culture=neutral, PublicKeyToken=072edcf4a5328938, processorArchitecture=MSIL">
       <HintPath>packages\BouncyCastle.Cryptography.2.5.1\lib\net461\BouncyCastle.Cryptography.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>packages\EntityFramework.6.5.1\lib\net45\EntityFramework.dll</HintPath>
@@ -58,8 +62,9 @@
       <HintPath>packages\EntityFramework.6.5.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="MailKit, Version=4.12.0.0, Culture=neutral, PublicKeyToken=4e064fe7c44a8f1b, processorArchitecture=MSIL">
+    <Reference Include="MailKit, Version=4.10.0.0, Culture=neutral, PublicKeyToken=4e064fe7c44a8f1b, processorArchitecture=MSIL">
       <HintPath>packages\MailKit.4.12.0\lib\net47\MailKit.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.AspNet.Identity.Core.2.2.4\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
@@ -73,8 +78,9 @@
       <HintPath>packages\Microsoft.AspNet.Identity.Owin.2.2.4\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=4.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=2.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\lib\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Owin, Version=4.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -117,8 +123,9 @@
       <HintPath>packages\Microsoft.Web.Infrastructure.2.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="MimeKit, Version=4.12.0.0, Culture=neutral, PublicKeyToken=bede1c8a46c66814, processorArchitecture=MSIL">
+    <Reference Include="MimeKit, Version=4.10.0.0, Culture=neutral, PublicKeyToken=bede1c8a46c66814, processorArchitecture=MSIL">
       <HintPath>packages\MimeKit.4.12.0\lib\net47\MimeKit.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -130,30 +137,38 @@
     </Reference>
     <Reference Include="System.Buffers, Version=4.0.5.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\System.Buffers.4.6.1\lib\net462\System.Buffers.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Formats.Asn1, Version=9.0.0.4, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+    <Reference Include="System.Formats.Asn1, Version=9.0.0.3, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\System.Formats.Asn1.9.0.4\lib\net462\System.Formats.Asn1.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="System.Memory, Version=4.0.5.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+    <Reference Include="System.Memory, Version=4.0.4.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\System.Memory.4.6.3\lib\net462\System.Memory.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="System.Net.Http, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="System.Net.Http, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>True</SpecificVersion>
+    </Reference>
     <Reference Include="System.Net.Http.WebRequest" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Numerics.Vectors, Version=4.1.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>packages\System.Numerics.Vectors.4.6.1\lib\net462\System.Numerics.Vectors.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>packages\System.Runtime.CompilerServices.Unsafe.6.1.2\lib\net462\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Security" />
-    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.4.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\System.Threading.Tasks.Extensions.4.6.3\lib\net462\System.Threading.Tasks.Extensions.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Core" />
@@ -163,8 +178,9 @@
       <HintPath>packages\Microsoft.AspNet.WebPages.3.3.0\lib\net45\System.Web.Helpers.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Web.Mvc, Version=5.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="System.Web.Mvc, Version=5.2.9.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.AspNet.Mvc.5.3.0\lib\net45\System.Web.Mvc.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Web.Optimization, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
@@ -199,10 +215,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\aspnet-CLIP-20250424022340.mdf" />
-    <Content Include="App_Data\aspnet-CLIP-20250424022340_log.ldf">
-      <DependentUpon>aspnet-CLIP-20250424022340.mdf</DependentUpon>
-    </Content>
     <Content Include="Areas\CLIP\Content\bootstrap-grid.css" />
     <Content Include="Areas\CLIP\Content\bootstrap-grid.min.css" />
     <Content Include="Areas\CLIP\Content\bootstrap-grid.rtl.css" />
@@ -221,229 +233,11 @@
     <Content Include="Areas\CLIP\Content\bootstrap.rtl.min.css" />
     <Content Include="Areas\CLIP\Content\Site.css" />
     <Content Include="Areas\CLIP\DATABASE\CREATE_DB29042025.sql" />
+    <Content Include="Areas\CLIP\DATABASE\SQL_Fix_PlantId.sql" />
     <Content Include="Areas\CLIP\DATABASE\Update_Competency.sql" />
     <Content Include="Areas\CLIP\DATABASE\upd_db.sql" />
     <Content Include="Areas\CLIP\favicon.ico" />
     <Content Include="Areas\CLIP\Images\logo.png" />
-    <Content Include="Areas\CLIP\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll" />
-    <Content Include="Areas\CLIP\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.pdb" />
-    <Content Include="Areas\CLIP\packages\bootstrap.5.2.3\bootstrap.png" />
-    <Content Include="Areas\CLIP\packages\bootstrap.5.2.3\contentFiles\any\any\wwwroot\css\bootstrap-grid.css" />
-    <Content Include="Areas\CLIP\packages\bootstrap.5.2.3\contentFiles\any\any\wwwroot\css\bootstrap-grid.min.css" />
-    <Content Include="Areas\CLIP\packages\bootstrap.5.2.3\contentFiles\any\any\wwwroot\css\bootstrap-grid.rtl.css" />
-    <Content Include="Areas\CLIP\packages\bootstrap.5.2.3\contentFiles\any\any\wwwroot\css\bootstrap-grid.rtl.min.css" />
-    <Content Include="Areas\CLIP\packages\bootstrap.5.2.3\contentFiles\any\any\wwwroot\css\bootstrap-reboot.css" />
-    <Content Include="Areas\CLIP\packages\bootstrap.5.2.3\contentFiles\any\any\wwwroot\css\bootstrap-reboot.min.css" />
-    <Content Include="Areas\CLIP\packages\bootstrap.5.2.3\contentFiles\any\any\wwwroot\css\bootstrap-reboot.rtl.css" />
-    <Content Include="Areas\CLIP\packages\bootstrap.5.2.3\contentFiles\any\any\wwwroot\css\bootstrap-reboot.rtl.min.css" />
-    <Content Include="Areas\CLIP\packages\bootstrap.5.2.3\contentFiles\any\any\wwwroot\css\bootstrap-utilities.css" />
-    <Content Include="Areas\CLIP\packages\bootstrap.5.2.3\contentFiles\any\any\wwwroot\css\bootstrap-utilities.min.css" />
-    <Content Include="Areas\CLIP\packages\bootstrap.5.2.3\contentFiles\any\any\wwwroot\css\bootstrap-utilities.rtl.css" />
-    <Content Include="Areas\CLIP\packages\bootstrap.5.2.3\contentFiles\any\any\wwwroot\css\bootstrap-utilities.rtl.min.css" />
-    <Content Include="Areas\CLIP\packages\bootstrap.5.2.3\contentFiles\any\any\wwwroot\css\bootstrap.css" />
-    <Content Include="Areas\CLIP\packages\bootstrap.5.2.3\contentFiles\any\any\wwwroot\css\bootstrap.min.css" />
-    <Content Include="Areas\CLIP\packages\bootstrap.5.2.3\contentFiles\any\any\wwwroot\css\bootstrap.rtl.css" />
-    <Content Include="Areas\CLIP\packages\bootstrap.5.2.3\contentFiles\any\any\wwwroot\css\bootstrap.rtl.min.css" />
-    <Content Include="Areas\CLIP\packages\bootstrap.5.2.3\contentFiles\any\any\wwwroot\js\bootstrap.bundle.js" />
-    <Content Include="Areas\CLIP\packages\bootstrap.5.2.3\contentFiles\any\any\wwwroot\js\bootstrap.bundle.min.js" />
-    <Content Include="Areas\CLIP\packages\bootstrap.5.2.3\contentFiles\any\any\wwwroot\js\bootstrap.esm.js" />
-    <Content Include="Areas\CLIP\packages\bootstrap.5.2.3\contentFiles\any\any\wwwroot\js\bootstrap.esm.min.js" />
-    <Content Include="Areas\CLIP\packages\bootstrap.5.2.3\contentFiles\any\any\wwwroot\js\bootstrap.js" />
-    <Content Include="Areas\CLIP\packages\bootstrap.5.2.3\contentFiles\any\any\wwwroot\js\bootstrap.min.js" />
-    <Content Include="Areas\CLIP\packages\bootstrap.5.2.3\content\Content\bootstrap-grid.css" />
-    <Content Include="Areas\CLIP\packages\bootstrap.5.2.3\content\Content\bootstrap-grid.min.css" />
-    <Content Include="Areas\CLIP\packages\bootstrap.5.2.3\content\Content\bootstrap-grid.rtl.css" />
-    <Content Include="Areas\CLIP\packages\bootstrap.5.2.3\content\Content\bootstrap-grid.rtl.min.css" />
-    <Content Include="Areas\CLIP\packages\bootstrap.5.2.3\content\Content\bootstrap-reboot.css" />
-    <Content Include="Areas\CLIP\packages\bootstrap.5.2.3\content\Content\bootstrap-reboot.min.css" />
-    <Content Include="Areas\CLIP\packages\bootstrap.5.2.3\content\Content\bootstrap-reboot.rtl.css" />
-    <Content Include="Areas\CLIP\packages\bootstrap.5.2.3\content\Content\bootstrap-reboot.rtl.min.css" />
-    <Content Include="Areas\CLIP\packages\bootstrap.5.2.3\content\Content\bootstrap-utilities.css" />
-    <Content Include="Areas\CLIP\packages\bootstrap.5.2.3\content\Content\bootstrap-utilities.min.css" />
-    <Content Include="Areas\CLIP\packages\bootstrap.5.2.3\content\Content\bootstrap-utilities.rtl.css" />
-    <Content Include="Areas\CLIP\packages\bootstrap.5.2.3\content\Content\bootstrap-utilities.rtl.min.css" />
-    <Content Include="Areas\CLIP\packages\bootstrap.5.2.3\content\Content\bootstrap.css" />
-    <Content Include="Areas\CLIP\packages\bootstrap.5.2.3\content\Content\bootstrap.min.css" />
-    <Content Include="Areas\CLIP\packages\bootstrap.5.2.3\content\Content\bootstrap.rtl.css" />
-    <Content Include="Areas\CLIP\packages\bootstrap.5.2.3\content\Content\bootstrap.rtl.min.css" />
-    <Content Include="Areas\CLIP\packages\bootstrap.5.2.3\content\Scripts\bootstrap.bundle.js" />
-    <Content Include="Areas\CLIP\packages\bootstrap.5.2.3\content\Scripts\bootstrap.bundle.min.js" />
-    <Content Include="Areas\CLIP\packages\bootstrap.5.2.3\content\Scripts\bootstrap.esm.js" />
-    <Content Include="Areas\CLIP\packages\bootstrap.5.2.3\content\Scripts\bootstrap.esm.min.js" />
-    <Content Include="Areas\CLIP\packages\bootstrap.5.2.3\content\Scripts\bootstrap.js" />
-    <Content Include="Areas\CLIP\packages\bootstrap.5.2.3\content\Scripts\bootstrap.min.js" />
-    <Content Include="Areas\CLIP\packages\EntityFramework.6.4.4\build\Microsoft.Data.Entity.Build.Tasks.dll" />
-    <Content Include="Areas\CLIP\packages\EntityFramework.6.4.4\Icon.png" />
-    <Content Include="Areas\CLIP\packages\EntityFramework.6.4.4\lib\net40\EntityFramework.dll" />
-    <Content Include="Areas\CLIP\packages\EntityFramework.6.4.4\lib\net40\EntityFramework.SqlServer.dll" />
-    <Content Include="Areas\CLIP\packages\EntityFramework.6.4.4\lib\net40\EntityFramework.SqlServer.xml" />
-    <Content Include="Areas\CLIP\packages\EntityFramework.6.4.4\lib\net40\EntityFramework.xml" />
-    <Content Include="Areas\CLIP\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll" />
-    <Content Include="Areas\CLIP\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll" />
-    <Content Include="Areas\CLIP\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.xml" />
-    <Content Include="Areas\CLIP\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.xml" />
-    <Content Include="Areas\CLIP\packages\EntityFramework.6.4.4\lib\netstandard2.1\EntityFramework.dll" />
-    <Content Include="Areas\CLIP\packages\EntityFramework.6.4.4\lib\netstandard2.1\EntityFramework.SqlServer.dll" />
-    <Content Include="Areas\CLIP\packages\EntityFramework.6.4.4\lib\netstandard2.1\EntityFramework.SqlServer.xml" />
-    <Content Include="Areas\CLIP\packages\EntityFramework.6.4.4\lib\netstandard2.1\EntityFramework.xml" />
-    <Content Include="Areas\CLIP\packages\EntityFramework.6.4.4\tools\about_EntityFramework6.help.txt" />
-    <Content Include="Areas\CLIP\packages\EntityFramework.6.4.4\tools\net40\any\ef6.exe" />
-    <Content Include="Areas\CLIP\packages\EntityFramework.6.4.4\tools\net40\any\ef6.pdb" />
-    <Content Include="Areas\CLIP\packages\EntityFramework.6.4.4\tools\net40\win-x86\ef6.exe" />
-    <Content Include="Areas\CLIP\packages\EntityFramework.6.4.4\tools\net40\win-x86\ef6.pdb" />
-    <Content Include="Areas\CLIP\packages\EntityFramework.6.4.4\tools\net45\any\ef6.exe" />
-    <Content Include="Areas\CLIP\packages\EntityFramework.6.4.4\tools\net45\any\ef6.pdb" />
-    <Content Include="Areas\CLIP\packages\EntityFramework.6.4.4\tools\net45\win-x86\ef6.exe" />
-    <Content Include="Areas\CLIP\packages\EntityFramework.6.4.4\tools\net45\win-x86\ef6.pdb" />
-    <Content Include="Areas\CLIP\packages\EntityFramework.6.4.4\tools\netcoreapp3.0\any\ef6.dll" />
-    <Content Include="Areas\CLIP\packages\EntityFramework.6.4.4\tools\netcoreapp3.0\any\ef6.pdb" />
-    <None Include="Areas\CLIP\packages\jQuery.3.7.0\Content\Scripts\jquery-3.7.0-vsdoc.js" />
-    <Content Include="Areas\CLIP\packages\jQuery.3.7.0\Content\Scripts\jquery-3.7.0.js" />
-    <Content Include="Areas\CLIP\packages\jQuery.3.7.0\Content\Scripts\jquery-3.7.0.min.js" />
-    <Content Include="Areas\CLIP\packages\jQuery.3.7.0\Content\Scripts\jquery-3.7.0.slim.js" />
-    <Content Include="Areas\CLIP\packages\jQuery.3.7.0\Content\Scripts\jquery-3.7.0.slim.min.js" />
-    <None Include="Areas\CLIP\packages\jQuery.3.7.0\Tools\jquery-3.7.0.intellisense.js" />
-    <None Include="Areas\CLIP\packages\jQuery.Validation.1.19.5\Content\Scripts\jquery.validate-vsdoc.js" />
-    <Content Include="Areas\CLIP\packages\jQuery.Validation.1.19.5\Content\Scripts\jquery.validate.js" />
-    <Content Include="Areas\CLIP\packages\jQuery.Validation.1.19.5\Content\Scripts\jquery.validate.min.js" />
-    <Content Include="Areas\CLIP\packages\Microsoft.AspNet.Identity.Core.2.2.4\lib\net45\Microsoft.AspNet.Identity.Core.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.AspNet.Identity.Core.2.2.4\lib\net45\Microsoft.AspNet.Identity.Core.xml" />
-    <Content Include="Areas\CLIP\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.4\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.4\lib\net45\Microsoft.AspNet.Identity.EntityFramework.xml" />
-    <Content Include="Areas\CLIP\packages\Microsoft.AspNet.Identity.Owin.2.2.4\lib\net45\Microsoft.AspNet.Identity.Owin.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.AspNet.Identity.Owin.2.2.4\lib\net45\Microsoft.AspNet.Identity.Owin.xml" />
-    <Content Include="Areas\CLIP\packages\Microsoft.AspNet.Mvc.5.2.9\lib\net45\System.Web.Mvc.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.AspNet.Mvc.5.2.9\lib\net45\System.Web.Mvc.xml" />
-    <Content Include="Areas\CLIP\packages\Microsoft.AspNet.Mvc.5.2.9\NET.icon.png" />
-    <Content Include="Areas\CLIP\packages\Microsoft.AspNet.Mvc.5.2.9\NET_Library_EULA_ENU.txt" />
-    <Content Include="Areas\CLIP\packages\Microsoft.AspNet.Razor.3.2.9\lib\net45\System.Web.Razor.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.AspNet.Razor.3.2.9\lib\net45\System.Web.Razor.xml" />
-    <Content Include="Areas\CLIP\packages\Microsoft.AspNet.Razor.3.2.9\NET.icon.png" />
-    <Content Include="Areas\CLIP\packages\Microsoft.AspNet.Razor.3.2.9\NET_Library_EULA_ENU.txt" />
-    <Content Include="Areas\CLIP\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\system.web.optimization.xml" />
-    <Content Include="Areas\CLIP\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.Helpers.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.Helpers.xml" />
-    <Content Include="Areas\CLIP\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.WebPages.Deployment.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.WebPages.Deployment.xml" />
-    <Content Include="Areas\CLIP\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.WebPages.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.WebPages.Razor.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.WebPages.Razor.xml" />
-    <Content Include="Areas\CLIP\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.WebPages.xml" />
-    <Content Include="Areas\CLIP\packages\Microsoft.AspNet.WebPages.3.2.9\NET.icon.png" />
-    <Content Include="Areas\CLIP\packages\Microsoft.AspNet.WebPages.3.2.9\NET_Library_EULA_ENU.txt" />
-    <Content Include="Areas\CLIP\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml" />
-    <Content Include="Areas\CLIP\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\Roslyn45\csc.exe" />
-    <Content Include="Areas\CLIP\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\Roslyn45\csi.exe" />
-    <Content Include="Areas\CLIP\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\Roslyn45\Microsoft.Build.Tasks.CodeAnalysis.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\Roslyn45\Microsoft.CodeAnalysis.CSharp.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\Roslyn45\Microsoft.CodeAnalysis.CSharp.Scripting.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\Roslyn45\Microsoft.CodeAnalysis.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\Roslyn45\Microsoft.CodeAnalysis.Scripting.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\Roslyn45\Microsoft.CodeAnalysis.VisualBasic.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\Roslyn45\Microsoft.DiaSymReader.Native.amd64.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\Roslyn45\Microsoft.DiaSymReader.Native.x86.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\Roslyn45\System.AppContext.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\Roslyn45\System.Collections.Immutable.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\Roslyn45\System.Diagnostics.StackTrace.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\Roslyn45\System.IO.FileSystem.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\Roslyn45\System.IO.FileSystem.Primitives.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\Roslyn45\System.Reflection.Metadata.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\Roslyn45\vbc.exe" />
-    <Content Include="Areas\CLIP\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\Roslyn45\VBCSCompiler.exe" />
-    <Content Include="Areas\CLIP\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\RoslynLatest\csc.exe" />
-    <Content Include="Areas\CLIP\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\RoslynLatest\csi.exe" />
-    <Content Include="Areas\CLIP\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\RoslynLatest\Microsoft.Build.Tasks.CodeAnalysis.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\RoslynLatest\Microsoft.CodeAnalysis.CSharp.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\RoslynLatest\Microsoft.CodeAnalysis.CSharp.Scripting.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\RoslynLatest\Microsoft.CodeAnalysis.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\RoslynLatest\Microsoft.CodeAnalysis.Scripting.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\RoslynLatest\Microsoft.CodeAnalysis.VisualBasic.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\RoslynLatest\Microsoft.DiaSymReader.Native.amd64.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\RoslynLatest\Microsoft.DiaSymReader.Native.x86.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\RoslynLatest\Microsoft.Win32.Primitives.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\RoslynLatest\System.AppContext.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\RoslynLatest\System.Collections.Immutable.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\RoslynLatest\System.Console.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\RoslynLatest\System.Diagnostics.DiagnosticSource.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\RoslynLatest\System.Diagnostics.FileVersionInfo.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\RoslynLatest\System.Diagnostics.StackTrace.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\RoslynLatest\System.Globalization.Calendars.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\RoslynLatest\System.IO.Compression.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\RoslynLatest\System.IO.Compression.ZipFile.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\RoslynLatest\System.IO.FileSystem.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\RoslynLatest\System.IO.FileSystem.Primitives.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\RoslynLatest\System.Net.Http.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\RoslynLatest\System.Net.Sockets.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\RoslynLatest\System.Reflection.Metadata.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\RoslynLatest\System.Runtime.InteropServices.RuntimeInformation.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\RoslynLatest\System.Security.Cryptography.Algorithms.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\RoslynLatest\System.Security.Cryptography.Encoding.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\RoslynLatest\System.Security.Cryptography.Primitives.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\RoslynLatest\System.Security.Cryptography.X509Certificates.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\RoslynLatest\System.Text.Encoding.CodePages.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\RoslynLatest\System.Threading.Tasks.Extensions.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\RoslynLatest\System.ValueTuple.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\RoslynLatest\System.Xml.ReaderWriter.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\RoslynLatest\System.Xml.XmlDocument.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\RoslynLatest\System.Xml.XPath.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\RoslynLatest\System.Xml.XPath.XDocument.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\RoslynLatest\vbc.exe" />
-    <Content Include="Areas\CLIP\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\tools\RoslynLatest\VBCSCompiler.exe" />
-    <Content Include="Areas\CLIP\packages\Microsoft.jQuery.Unobtrusive.Validation.3.2.11\Content\Scripts\jquery.validate.unobtrusive.js" />
-    <Content Include="Areas\CLIP\packages\Microsoft.jQuery.Unobtrusive.Validation.3.2.11\Content\Scripts\jquery.validate.unobtrusive.min.js" />
-    <Content Include="Areas\CLIP\packages\Microsoft.Owin.4.2.2\Icon.png" />
-    <Content Include="Areas\CLIP\packages\Microsoft.Owin.4.2.2\lib\net45\Microsoft.Owin.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.Owin.4.2.2\lib\net45\Microsoft.Owin.xml" />
-    <Content Include="Areas\CLIP\packages\Microsoft.Owin.Host.SystemWeb.4.2.2\Icon.png" />
-    <Content Include="Areas\CLIP\packages\Microsoft.Owin.Host.SystemWeb.4.2.2\lib\net45\Microsoft.Owin.Host.SystemWeb.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.Owin.Host.SystemWeb.4.2.2\lib\net45\Microsoft.Owin.Host.SystemWeb.xml" />
-    <Content Include="Areas\CLIP\packages\Microsoft.Owin.Security.4.2.2\Icon.png" />
-    <Content Include="Areas\CLIP\packages\Microsoft.Owin.Security.4.2.2\lib\net45\Microsoft.Owin.Security.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.Owin.Security.4.2.2\lib\net45\Microsoft.Owin.Security.xml" />
-    <Content Include="Areas\CLIP\packages\Microsoft.Owin.Security.Cookies.4.2.2\Icon.png" />
-    <Content Include="Areas\CLIP\packages\Microsoft.Owin.Security.Cookies.4.2.2\lib\net45\Microsoft.Owin.Security.Cookies.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.Owin.Security.Cookies.4.2.2\lib\net45\Microsoft.Owin.Security.Cookies.xml" />
-    <Content Include="Areas\CLIP\packages\Microsoft.Owin.Security.Facebook.4.2.2\Icon.png" />
-    <Content Include="Areas\CLIP\packages\Microsoft.Owin.Security.Facebook.4.2.2\lib\net45\Microsoft.Owin.Security.Facebook.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.Owin.Security.Facebook.4.2.2\lib\net45\Microsoft.Owin.Security.Facebook.xml" />
-    <Content Include="Areas\CLIP\packages\Microsoft.Owin.Security.Google.4.2.2\Icon.png" />
-    <Content Include="Areas\CLIP\packages\Microsoft.Owin.Security.Google.4.2.2\lib\net45\Microsoft.Owin.Security.Google.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.Owin.Security.Google.4.2.2\lib\net45\Microsoft.Owin.Security.Google.xml" />
-    <Content Include="Areas\CLIP\packages\Microsoft.Owin.Security.MicrosoftAccount.4.2.2\Icon.png" />
-    <Content Include="Areas\CLIP\packages\Microsoft.Owin.Security.MicrosoftAccount.4.2.2\lib\net45\Microsoft.Owin.Security.MicrosoftAccount.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.Owin.Security.MicrosoftAccount.4.2.2\lib\net45\Microsoft.Owin.Security.MicrosoftAccount.xml" />
-    <Content Include="Areas\CLIP\packages\Microsoft.Owin.Security.OAuth.4.2.2\Icon.png" />
-    <Content Include="Areas\CLIP\packages\Microsoft.Owin.Security.OAuth.4.2.2\lib\net45\Microsoft.Owin.Security.OAuth.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.Owin.Security.OAuth.4.2.2\lib\net45\Microsoft.Owin.Security.OAuth.xml" />
-    <Content Include="Areas\CLIP\packages\Microsoft.Owin.Security.Twitter.4.2.2\Icon.png" />
-    <Content Include="Areas\CLIP\packages\Microsoft.Owin.Security.Twitter.4.2.2\lib\net45\Microsoft.Owin.Security.Twitter.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.Owin.Security.Twitter.4.2.2\lib\net45\Microsoft.Owin.Security.Twitter.xml" />
-    <Content Include="Areas\CLIP\packages\Microsoft.Web.Infrastructure.2.0.0\lib\net40\Microsoft.Web.Infrastructure.dll" />
-    <Content Include="Areas\CLIP\packages\Microsoft.Web.Infrastructure.2.0.0\NET.icon.png" />
-    <Content Include="Areas\CLIP\packages\Microsoft.Web.Infrastructure.2.0.0\NET_Library_EULA_ENU.txt" />
-    <Content Include="Areas\CLIP\packages\Modernizr.2.8.3\Content\Scripts\modernizr-2.8.3.js" />
-    <Content Include="Areas\CLIP\packages\Newtonsoft.Json.13.0.3\lib\net20\Newtonsoft.Json.dll" />
-    <Content Include="Areas\CLIP\packages\Newtonsoft.Json.13.0.3\lib\net20\Newtonsoft.Json.xml" />
-    <Content Include="Areas\CLIP\packages\Newtonsoft.Json.13.0.3\lib\net35\Newtonsoft.Json.dll" />
-    <Content Include="Areas\CLIP\packages\Newtonsoft.Json.13.0.3\lib\net35\Newtonsoft.Json.xml" />
-    <Content Include="Areas\CLIP\packages\Newtonsoft.Json.13.0.3\lib\net40\Newtonsoft.Json.dll" />
-    <Content Include="Areas\CLIP\packages\Newtonsoft.Json.13.0.3\lib\net40\Newtonsoft.Json.xml" />
-    <Content Include="Areas\CLIP\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll" />
-    <Content Include="Areas\CLIP\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.xml" />
-    <Content Include="Areas\CLIP\packages\Newtonsoft.Json.13.0.3\lib\net6.0\Newtonsoft.Json.dll" />
-    <Content Include="Areas\CLIP\packages\Newtonsoft.Json.13.0.3\lib\net6.0\Newtonsoft.Json.xml" />
-    <Content Include="Areas\CLIP\packages\Newtonsoft.Json.13.0.3\lib\netstandard1.0\Newtonsoft.Json.dll" />
-    <Content Include="Areas\CLIP\packages\Newtonsoft.Json.13.0.3\lib\netstandard1.0\Newtonsoft.Json.xml" />
-    <Content Include="Areas\CLIP\packages\Newtonsoft.Json.13.0.3\lib\netstandard1.3\Newtonsoft.Json.dll" />
-    <Content Include="Areas\CLIP\packages\Newtonsoft.Json.13.0.3\lib\netstandard1.3\Newtonsoft.Json.xml" />
-    <Content Include="Areas\CLIP\packages\Newtonsoft.Json.13.0.3\lib\netstandard2.0\Newtonsoft.Json.dll" />
-    <Content Include="Areas\CLIP\packages\Newtonsoft.Json.13.0.3\lib\netstandard2.0\Newtonsoft.Json.xml" />
-    <Content Include="Areas\CLIP\packages\Newtonsoft.Json.13.0.3\packageIcon.png" />
-    <Content Include="Areas\CLIP\packages\Owin.1.0\lib\net40\Owin.dll" />
-    <Content Include="Areas\CLIP\packages\WebGrease.1.6.0\lib\WebGrease.dll" />
-    <Content Include="Areas\CLIP\packages\WebGrease.1.6.0\tools\WG.EXE" />
     <Content Include="Areas\CLIP\Scripts\bootstrap.bundle.js" />
     <Content Include="Areas\CLIP\Scripts\bootstrap.bundle.min.js" />
     <Content Include="Areas\CLIP\Scripts\bootstrap.esm.js" />
@@ -461,82 +255,6 @@
     <Content Include="Areas\CLIP\Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Areas\CLIP\Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Areas\CLIP\Scripts\modernizr-2.8.3.js" />
-    <Content Include="Areas\FETS\Assets\css\activitylogs.css" />
-    <Content Include="Areas\FETS\Assets\css\styles.css" />
-    <Content Include="Areas\FETS\DATABASE\FETS_DATABSE.sql" />
-    <Content Include="Areas\FETS\DATABASE\storeprod_followup.sql" />
-    <Content Include="Areas\FETS\EmailTemplates\ServiceEmailTemplate.html" />
-    <Content Include="Areas\FETS\EmailTemplates\ServiceReminderTemplate.html" />
-    <Content Include="Areas\FETS\favicon.ico" />
-    <Content Include="Areas\FETS\Pages\Admin\ActivityLogs.aspx" />
-    <Content Include="Areas\FETS\Pages\Dashboard\Dashboard.aspx" />
-    <Content Include="Areas\FETS\Pages\DataEntry\DataEntry.aspx" />
-    <Content Include="Areas\FETS\Pages\Login\Login.aspx" />
-    <Content Include="Areas\FETS\Pages\MapLayout\MapLayout.aspx" />
-    <Content Include="Areas\FETS\Pages\MapLayout\ViewMap.aspx" />
-    <Content Include="Areas\FETS\Pages\Profile\Profile.aspx" />
-    <Content Include="Areas\FETS\Pages\PublicDashboard\PublicDashboard.aspx" />
-    <Content Include="Areas\FETS\Pages\ViewSection\ViewSection.aspx" />
-    <Content Include="Areas\FETS\Properties\PublishProfiles\FolderProfile.pubxml.user" />
-    <Content Include="Areas\FETS\Properties\PublishProfiles\FolderProfile1.pubxml.user" />
-    <Content Include="Areas\FETS\Properties\PublishProfiles\FolderProfile2.pubxml.user" />
-    <Content Include="Areas\FETS\Properties\PublishProfiles\FolderProfile3.pubxml.user" />
-    <Content Include="Areas\FETS\Properties\PublishProfiles\FolderProfile4.pubxml.user" />
-    <Content Include="Areas\FETS\Properties\PublishProfiles\FolderProfile5.pubxml.user" />
-    <Content Include="Areas\FETS\Properties\PublishProfiles\FolderProfile6.pubxml.user" />
-    <Content Include="Areas\FETS\screenshots\dashboard.png" />
-    <Content Include="Areas\FETS\screenshots\dashboard2.png" />
-    <Content Include="Areas\FETS\screenshots\dashboard3.png" />
-    <Content Include="Areas\FETS\Scripts\jquery-3.7.1.min.js" />
-    <Content Include="Areas\FETS\Uploads\Maps\01d0ca0c-9ead-4642-8e36-da9b77596719.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\07bdef70-07ae-404f-980e-b3b5f9121ed4.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\0a55f21b-5249-4d40-aec1-16042bc29383.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\0ea08f66-9f34-49ab-b3fa-afb7b8729795.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\1ecf1e25-e643-4589-a074-f5d6dd540f73.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\1f183eb8-d50e-4fc9-aba7-457b7e30b6ef.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\2cd25e90-9dd4-4a3b-95f3-0a5c3eea4f0c.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\3225fb0c-b0dc-4e5f-b906-f9603b94b116.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\37e5a6d4-cc38-4d59-a9e0-74a4e26facc5.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\3abdc87b-08af-48fd-901f-39ddd4a0ac0c.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\3eb76a9a-6ffb-4e4a-9f22-888678793bfd.jpg" />
-    <Content Include="Areas\FETS\Uploads\Maps\40043aeb-cc7a-485a-8ddf-989b57dbf869.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\482b7eb2-0a8c-470c-9359-d56ea28ec9c0.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\58615717-97b3-49b3-8869-bc4e9df78ce4.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\643cd29e-08c1-4c53-9013-18dd419b0695.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\74d87cf6-3f90-4283-bbbb-ab7fab829369.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\821e3996-f1b0-449f-9d2e-cc73c3405262.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\88892736-7510-415e-85cf-28e8ce2a6590.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\8c689bbf-9ed9-44c4-98de-e1fd12d37d7c.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\b15fc469-ee3c-4354-bd63-12fe88648ad0.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\b6acebd2-08b5-462b-9530-e9de3c75d0c8.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\b8e2e677-66ab-4298-ba22-931227a7b31c.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\bd19d0bc-6b9a-49fb-a2f7-a2e67fd58e3c.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\d6ed33cc-d0a0-4c16-8289-af20b7a96373.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\fed0d318-0eed-4df1-ac22-5985a58a020d.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\p1-lvl1.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\p1-lvl2.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\p1-lvl3.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\p21-lvl 1.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\p21-lvl2.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\p3-lvl1.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\p3-lvl2.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\p3-lvl3.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\p5-lvl1.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\p5-lvl2.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\p5-lvl3.png" />
-    <Content Include="Areas\FETS\Uploads\misc\3rdwarning.jpg" />
-    <Content Include="Areas\FETS\Uploads\misc\felist.png" />
-    <Content Include="Areas\FETS\Uploads\misc\front-gate.jpg" />
-    <Content Include="Areas\FETS\Uploads\misc\image-1.png" />
-    <Content Include="Areas\FETS\Uploads\misc\image-2.png" />
-    <Content Include="Areas\FETS\Uploads\misc\login.png" />
-    <Content Include="Areas\FETS\Uploads\misc\logo.jpeg" />
-    <Content Include="Areas\FETS\Uploads\misc\mapupload.png" />
-    <Content Include="Areas\FETS\Uploads\misc\publicdashboard1.jpg" />
-    <Content Include="Areas\FETS\Uploads\misc\publicdashboard2.jpg" />
-    <Content Include="Areas\FETS\Uploads\misc\publicdashboard3.jpg" />
-    <Content Include="Areas\FETS\Uploads\misc\viewmap.png" />
-    <Content Include="Areas\FETS\Uploads\misc\warning.png" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
     <Content Include="Content\bootstrap-grid.rtl.css" />
@@ -558,30 +276,123 @@
     <Content Include="Global.asax" />
     <Content Include="images\clip.png" />
     <Content Include="images\data.png" />
+    <Content Include="images\favicon.ico" />
     <Content Include="images\fets.png" />
+    <Content Include="images\fire-extinguisher-15247.png" />
     <Content Include="images\logo.png" />
     <Content Include="images\person.jpeg" />
     <Content Include="images\ppe.png" />
     <Content Include="images\ptw.png" />
+    <Content Include="images\sdes.png" />
     <Content Include="images\training.png" />
     <Content Include="images\wallpaper.jpg" />
     <Content Include="index.html" />
     <Content Include="js\lanyard.js" />
     <Content Include="js\main.js" />
+    <Content Include="nuget.exe" />
+    <Content Include="Content\bootstrap.rtl.min.css.map" />
+    <Content Include="Content\bootstrap.rtl.css.map" />
+    <Content Include="Content\bootstrap.min.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Content\bootstrap-utilities.rtl.min.css.map" />
+    <Content Include="Content\bootstrap-utilities.rtl.css.map" />
+    <Content Include="Content\bootstrap-utilities.min.css.map" />
+    <Content Include="Content\bootstrap-utilities.css.map" />
+    <Content Include="Content\bootstrap-reboot.rtl.min.css.map" />
+    <Content Include="Content\bootstrap-reboot.rtl.css.map" />
+    <Content Include="Content\bootstrap-reboot.min.css.map" />
+    <Content Include="Content\bootstrap-reboot.css.map" />
+    <Content Include="Content\bootstrap-grid.rtl.min.css.map" />
+    <Content Include="Content\bootstrap-grid.rtl.css.map" />
+    <Content Include="Content\bootstrap-grid.min.css.map" />
+    <Content Include="Content\bootstrap-grid.css.map" />
+    <Content Include="Areas\CLIP\Content\bootstrap-grid.css.map" />
+    <Content Include="Areas\CLIP\Content\bootstrap-grid.min.css.map" />
+    <Content Include="Areas\CLIP\Content\bootstrap-grid.rtl.css.map" />
+    <Content Include="Areas\CLIP\Content\bootstrap-grid.rtl.min.css.map" />
+    <Content Include="Areas\CLIP\Content\bootstrap-reboot.css.map" />
+    <Content Include="Areas\CLIP\Content\bootstrap-reboot.min.css.map" />
+    <Content Include="Areas\CLIP\Content\bootstrap-reboot.rtl.css.map" />
+    <Content Include="Areas\CLIP\Content\bootstrap-reboot.rtl.min.css.map" />
+    <Content Include="Areas\CLIP\Content\bootstrap-utilities.css.map" />
+    <Content Include="Areas\CLIP\Content\bootstrap-utilities.min.css.map" />
+    <Content Include="Areas\CLIP\Content\bootstrap-utilities.rtl.css.map" />
+    <Content Include="Areas\CLIP\Content\bootstrap-utilities.rtl.min.css.map" />
+    <Content Include="Areas\CLIP\Content\bootstrap.css.map" />
+    <Content Include="Areas\CLIP\Content\bootstrap.min.css.map" />
+    <Content Include="Areas\CLIP\Content\bootstrap.rtl.css.map" />
+    <Content Include="Areas\CLIP\Content\bootstrap.rtl.min.css.map" />
+    <Content Include="Areas\CLIP\Scripts\bootstrap.bundle.js.map" />
+    <Content Include="Areas\CLIP\Scripts\bootstrap.bundle.min.js.map" />
+    <Content Include="Areas\CLIP\Scripts\bootstrap.esm.js.map" />
+    <Content Include="Areas\CLIP\Scripts\bootstrap.esm.min.js.map" />
+    <Content Include="Areas\CLIP\Scripts\bootstrap.js.map" />
+    <Content Include="Areas\CLIP\Scripts\bootstrap.min.js.map" />
+    <Content Include="Areas\CLIP\Scripts\jquery-3.7.0.min.map" />
+    <Content Include="Areas\CLIP\Scripts\jquery-3.7.0.slim.min.map" />
+    <Content Include="Areas\CLIP\uploads\Monitoring\Quote_2_20250430162618_Competency.xlsx" />
+    <Content Include="Areas\CLIP\Views\Account\ConfirmEmail.cshtml" />
+    <Content Include="Areas\CLIP\Views\Account\ExternalLoginConfirmation.cshtml" />
+    <Content Include="Areas\CLIP\Views\Account\ExternalLoginFailure.cshtml" />
+    <Content Include="Areas\CLIP\Views\Account\ForgotPassword.cshtml" />
+    <Content Include="Areas\CLIP\Views\Account\ForgotPasswordConfirmation.cshtml" />
+    <Content Include="Areas\CLIP\Views\Account\Login.cshtml" />
+    <Content Include="Areas\CLIP\Views\Account\Register.cshtml" />
+    <Content Include="Areas\CLIP\Views\Account\ResetPassword.cshtml" />
+    <Content Include="Areas\CLIP\Views\Account\ResetPasswordConfirmation.cshtml" />
+    <Content Include="Areas\CLIP\Views\Account\SendCode.cshtml" />
+    <Content Include="Areas\CLIP\Views\Account\VerifyCode.cshtml" />
+    <Content Include="Areas\CLIP\Views\Account\_ExternalLoginsListPartial.cshtml" />
+    <Content Include="Areas\CLIP\Views\CertificateOfFitness\Create.cshtml" />
+    <Content Include="Areas\CLIP\Views\CertificateOfFitness\Delete.cshtml" />
+    <Content Include="Areas\CLIP\Views\CertificateOfFitness\Details.cshtml" />
+    <Content Include="Areas\CLIP\Views\CertificateOfFitness\Edit.cshtml" />
+    <Content Include="Areas\CLIP\Views\CertificateOfFitness\Index.cshtml" />
+    <Content Include="Areas\CLIP\Views\CertificateOfFitness\UPLOADS\20250429153512_CF - PMA-PP_22 98629.pdf" />
+    <Content Include="Areas\CLIP\Views\Competency\AddCompetency.cshtml" />
+    <Content Include="Areas\CLIP\Views\Competency\Competency.cshtml" />
+    <Content Include="Areas\CLIP\Views\Competency\EditCompetency.cshtml" />
+    <Content Include="Areas\CLIP\Views\Home\About.cshtml" />
+    <Content Include="Areas\CLIP\Views\Home\Contact.cshtml" />
+    <Content Include="Areas\CLIP\Views\Home\Index.cshtml" />
+    <Content Include="Areas\CLIP\Views\Home\Welcome.cshtml" />
+    <Content Include="Areas\CLIP\Views\Manage\AddPhoneNumber.cshtml" />
+    <Content Include="Areas\CLIP\Views\Manage\ChangePassword.cshtml" />
+    <Content Include="Areas\CLIP\Views\Manage\Index.cshtml" />
+    <Content Include="Areas\CLIP\Views\Manage\ManageLogins.cshtml" />
+    <Content Include="Areas\CLIP\Views\Manage\SetPassword.cshtml" />
+    <Content Include="Areas\CLIP\Views\Manage\VerifyPhoneNumber.cshtml" />
+    <Content Include="Areas\CLIP\Views\Monitoring\Create.cshtml" />
+    <Content Include="Areas\CLIP\Views\Monitoring\Delete.cshtml" />
+    <Content Include="Areas\CLIP\Views\Monitoring\Details.cshtml" />
+    <Content Include="Areas\CLIP\Views\Monitoring\Edit.cshtml" />
+    <Content Include="Areas\CLIP\Views\Monitoring\Index.cshtml" />
+    <Content Include="Areas\CLIP\Views\PlantMonitoring\Create.cshtml" />
+    <Content Include="Areas\CLIP\Views\PlantMonitoring\Delete.cshtml" />
+    <Content Include="Areas\CLIP\Views\PlantMonitoring\Details.cshtml" />
+    <Content Include="Areas\CLIP\Views\PlantMonitoring\Edit.cshtml" />
+    <Content Include="Areas\CLIP\Views\PlantMonitoring\Index.cshtml" />
+    <Content Include="Areas\CLIP\Views\PlantMonitoring\Schedule.cshtml" />
+    <Content Include="Areas\CLIP\Views\PlantMonitoring\UpdateStatus.cshtml" />
+    <Content Include="Areas\CLIP\Views\Shared\Error.cshtml" />
+    <Content Include="Areas\CLIP\Views\Shared\Lockout.cshtml" />
+    <Content Include="Areas\CLIP\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\CLIP\Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Areas\CLIP\Views\UserCompetency\Assign.cshtml" />
+    <Content Include="Areas\CLIP\Views\UserCompetency\Edit.cshtml" />
+    <Content Include="Areas\CLIP\Views\UserCompetency\Index.cshtml" />
+    <Content Include="Areas\CLIP\Views\UserCompetency\MyCompetencies.cshtml" />
+    <Content Include="Areas\CLIP\Views\UserCompetency\UserCompetencies.cshtml" />
+    <Content Include="Areas\CLIP\Views\Web.config" />
+    <Content Include="Areas\CLIP\Views\_ViewStart.cshtml" />
+    <None Include="packages.config" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.esm.js" />
     <Content Include="Scripts\bootstrap.esm.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <None Include="Areas\FETS\Properties\PublishProfiles\FolderProfile.pubxml" />
-    <None Include="Areas\FETS\Properties\PublishProfiles\FolderProfile1.pubxml" />
-    <None Include="Areas\FETS\Properties\PublishProfiles\FolderProfile2.pubxml" />
-    <None Include="Areas\FETS\Properties\PublishProfiles\FolderProfile3.pubxml" />
-    <None Include="Areas\FETS\Properties\PublishProfiles\FolderProfile4.pubxml" />
-    <None Include="Areas\FETS\Properties\PublishProfiles\FolderProfile5.pubxml" />
-    <None Include="Areas\FETS\Properties\PublishProfiles\FolderProfile6.pubxml" />
-    <Content Include="Areas\FETS\Site.Master" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-3.7.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.7.1.js" />
@@ -594,78 +405,73 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
-    <Content Include="Areas\FETS\favicon.ico" />
-    <Content Include="Areas\FETS\screenshots\dashboard.png" />
-    <Content Include="Areas\FETS\screenshots\dashboard2.png" />
-    <Content Include="Areas\FETS\screenshots\dashboard3.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\01d0ca0c-9ead-4642-8e36-da9b77596719.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\07bdef70-07ae-404f-980e-b3b5f9121ed4.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\0a55f21b-5249-4d40-aec1-16042bc29383.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\0ea08f66-9f34-49ab-b3fa-afb7b8729795.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\1ecf1e25-e643-4589-a074-f5d6dd540f73.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\1f183eb8-d50e-4fc9-aba7-457b7e30b6ef.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\2cd25e90-9dd4-4a3b-95f3-0a5c3eea4f0c.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\3225fb0c-b0dc-4e5f-b906-f9603b94b116.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\37e5a6d4-cc38-4d59-a9e0-74a4e26facc5.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\3abdc87b-08af-48fd-901f-39ddd4a0ac0c.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\3eb76a9a-6ffb-4e4a-9f22-888678793bfd.jpg" />
-    <Content Include="Areas\FETS\Uploads\Maps\40043aeb-cc7a-485a-8ddf-989b57dbf869.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\482b7eb2-0a8c-470c-9359-d56ea28ec9c0.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\58615717-97b3-49b3-8869-bc4e9df78ce4.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\643cd29e-08c1-4c53-9013-18dd419b0695.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\74d87cf6-3f90-4283-bbbb-ab7fab829369.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\821e3996-f1b0-449f-9d2e-cc73c3405262.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\88892736-7510-415e-85cf-28e8ce2a6590.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\8c689bbf-9ed9-44c4-98de-e1fd12d37d7c.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\b15fc469-ee3c-4354-bd63-12fe88648ad0.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\b6acebd2-08b5-462b-9530-e9de3c75d0c8.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\b8e2e677-66ab-4298-ba22-931227a7b31c.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\bd19d0bc-6b9a-49fb-a2f7-a2e67fd58e3c.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\d6ed33cc-d0a0-4c16-8289-af20b7a96373.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\fed0d318-0eed-4df1-ac22-5985a58a020d.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\p1-lvl1.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\p1-lvl2.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\p1-lvl3.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\p21-lvl 1.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\p21-lvl2.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\p3-lvl1.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\p3-lvl2.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\p3-lvl3.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\p5-lvl1.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\p5-lvl2.png" />
-    <Content Include="Areas\FETS\Uploads\Maps\p5-lvl3.png" />
-    <Content Include="Areas\FETS\Uploads\misc\3rdwarning.jpg" />
-    <Content Include="Areas\FETS\Uploads\misc\felist.png" />
-    <Content Include="Areas\FETS\Uploads\misc\front-gate.jpg" />
-    <Content Include="Areas\FETS\Uploads\misc\image-1.png" />
-    <Content Include="Areas\FETS\Uploads\misc\image-2.png" />
-    <Content Include="Areas\FETS\Uploads\misc\login.png" />
-    <Content Include="Areas\FETS\Uploads\misc\logo.jpeg" />
-    <Content Include="Areas\FETS\Uploads\misc\mapupload.png" />
-    <Content Include="Areas\FETS\Uploads\misc\publicdashboard1.jpg" />
-    <Content Include="Areas\FETS\Uploads\misc\publicdashboard2.jpg" />
-    <Content Include="Areas\FETS\Uploads\misc\publicdashboard3.jpg" />
-    <Content Include="Areas\FETS\Uploads\misc\viewmap.png" />
-    <Content Include="Areas\FETS\Uploads\misc\warning.png" />
+    <Content Include="Services\FETS\favicon.ico" />
+    <Content Include="Services\FETS\screenshots\dashboard.png" />
+    <Content Include="Services\FETS\screenshots\dashboard2.png" />
+    <Content Include="Services\FETS\screenshots\dashboard3.png" />
+    <Content Include="Services\FETS\Uploads\Maps\01d0ca0c-9ead-4642-8e36-da9b77596719.png" />
+    <Content Include="Services\FETS\Uploads\Maps\07bdef70-07ae-404f-980e-b3b5f9121ed4.png" />
+    <Content Include="Services\FETS\Uploads\Maps\0a55f21b-5249-4d40-aec1-16042bc29383.png" />
+    <Content Include="Services\FETS\Uploads\Maps\0ea08f66-9f34-49ab-b3fa-afb7b8729795.png" />
+    <Content Include="Services\FETS\Uploads\Maps\1ecf1e25-e643-4589-a074-f5d6dd540f73.png" />
+    <Content Include="Services\FETS\Uploads\Maps\1f183eb8-d50e-4fc9-aba7-457b7e30b6ef.png" />
+    <Content Include="Services\FETS\Uploads\Maps\2cd25e90-9dd4-4a3b-95f3-0a5c3eea4f0c.png" />
+    <Content Include="Services\FETS\Uploads\Maps\3225fb0c-b0dc-4e5f-b906-f9603b94b116.png" />
+    <Content Include="Services\FETS\Uploads\Maps\37e5a6d4-cc38-4d59-a9e0-74a4e26facc5.png" />
+    <Content Include="Services\FETS\Uploads\Maps\3abdc87b-08af-48fd-901f-39ddd4a0ac0c.png" />
+    <Content Include="Services\FETS\Uploads\Maps\3eb76a9a-6ffb-4e4a-9f22-888678793bfd.jpg" />
+    <Content Include="Services\FETS\Uploads\Maps\40043aeb-cc7a-485a-8ddf-989b57dbf869.png" />
+    <Content Include="Services\FETS\Uploads\Maps\482b7eb2-0a8c-470c-9359-d56ea28ec9c0.png" />
+    <Content Include="Services\FETS\Uploads\Maps\58615717-97b3-49b3-8869-bc4e9df78ce4.png" />
+    <Content Include="Services\FETS\Uploads\Maps\643cd29e-08c1-4c53-9013-18dd419b0695.png" />
+    <Content Include="Services\FETS\Uploads\Maps\74d87cf6-3f90-4283-bbbb-ab7fab829369.png" />
+    <Content Include="Services\FETS\Uploads\Maps\821e3996-f1b0-449f-9d2e-cc73c3405262.png" />
+    <Content Include="Services\FETS\Uploads\Maps\88892736-7510-415e-85cf-28e8ce2a6590.png" />
+    <Content Include="Services\FETS\Uploads\Maps\8c689bbf-9ed9-44c4-98de-e1fd12d37d7c.png" />
+    <Content Include="Services\FETS\Uploads\Maps\b15fc469-ee3c-4354-bd63-12fe88648ad0.png" />
+    <Content Include="Services\FETS\Uploads\Maps\b6acebd2-08b5-462b-9530-e9de3c75d0c8.png" />
+    <Content Include="Services\FETS\Uploads\Maps\b8e2e677-66ab-4298-ba22-931227a7b31c.png" />
+    <Content Include="Services\FETS\Uploads\Maps\bd19d0bc-6b9a-49fb-a2f7-a2e67fd58e3c.png" />
+    <Content Include="Services\FETS\Uploads\Maps\d6ed33cc-d0a0-4c16-8289-af20b7a96373.png" />
+    <Content Include="Services\FETS\Uploads\Maps\fed0d318-0eed-4df1-ac22-5985a58a020d.png" />
+    <Content Include="Services\FETS\Uploads\Maps\p1-lvl1.png" />
+    <Content Include="Services\FETS\Uploads\Maps\p1-lvl2.png" />
+    <Content Include="Services\FETS\Uploads\Maps\p1-lvl3.png" />
+    <Content Include="Services\FETS\Uploads\Maps\p21-lvl 1.png" />
+    <Content Include="Services\FETS\Uploads\Maps\p21-lvl2.png" />
+    <Content Include="Services\FETS\Uploads\Maps\p3-lvl1.png" />
+    <Content Include="Services\FETS\Uploads\Maps\p3-lvl2.png" />
+    <Content Include="Services\FETS\Uploads\Maps\p3-lvl3.png" />
+    <Content Include="Services\FETS\Uploads\Maps\p5-lvl1.png" />
+    <Content Include="Services\FETS\Uploads\Maps\p5-lvl2.png" />
+    <Content Include="Services\FETS\Uploads\Maps\p5-lvl3.png" />
+    <Content Include="Services\FETS\Uploads\misc\3rdwarning.jpg" />
+    <Content Include="Services\FETS\Uploads\misc\felist.png" />
+    <Content Include="Services\FETS\Uploads\misc\front-gate.jpg" />
+    <Content Include="Services\FETS\Uploads\misc\image-1.png" />
+    <Content Include="Services\FETS\Uploads\misc\image-2.png" />
+    <Content Include="Services\FETS\Uploads\misc\login.png" />
+    <Content Include="Services\FETS\Uploads\misc\logo.jpeg" />
+    <Content Include="Services\FETS\Uploads\misc\mapupload.png" />
+    <Content Include="Services\FETS\Uploads\misc\publicdashboard1.jpg" />
+    <Content Include="Services\FETS\Uploads\misc\publicdashboard2.jpg" />
+    <Content Include="Services\FETS\Uploads\misc\publicdashboard3.jpg" />
+    <Content Include="Services\FETS\Uploads\misc\viewmap.png" />
+    <Content Include="Services\FETS\Uploads\misc\warning.png" />
     <Content Include="Services\PPE\index.html" />
     <Content Include="Services\PTW\index.html" />
     <Content Include="Services\Training\index.html" />
     <Content Include="Web.config" />
     <!-- FETS Project Files -->
-    <Content Include="Areas\FETS\Site.Master" />
-    <Content Include="Areas\FETS\Assets\**\*.*" />
-    <Content Include="Areas\FETS\Pages\**\*.aspx" />
-    <Content Include="Areas\FETS\Pages\**\*.ascx" />
-    <Content Include="Areas\FETS\EmailTemplates\**\*.*" />
-    <Content Include="Areas\FETS\Scripts\**\*.js" />
-    <Content Include="Areas\FETS\DATABASE\**\*.sql" />
+    <Content Include="Services\FETS\Site.Master" />
+    <Content Include="Services\FETS\Assets\**\*.*" />
+    <Content Include="Services\FETS\Pages\**\*.aspx" />
+    <Content Include="Services\FETS\Pages\**\*.ascx" />
+    <Content Include="Services\FETS\EmailTemplates\**\*.*" />
+    <Content Include="Services\FETS\Scripts\**\*.js" />
+    <Content Include="Services\FETS\DATABASE\**\*.sql" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Start\BundleConfig.cs" />
-    <Compile Include="App_Start\FilterConfig.cs" />
-    <Compile Include="App_Start\IdentityConfig.cs" />
-    <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Areas\CLIP\CLIPAreaRegistration.cs" />
     <Compile Include="Areas\CLIP\Controllers\AccountController.cs" />
     <Compile Include="Areas\CLIP\Controllers\CertificateOfFitnessController.cs" />
@@ -683,7 +489,6 @@
     <Compile Include="Areas\CLIP\Models\IdentityModels.cs" />
     <Compile Include="Areas\CLIP\Models\ManageViewModels.cs" />
     <Compile Include="Areas\CLIP\Models\Monitoring.cs" />
-    <Compile Include="Areas\CLIP\Models\MonitoringDocument.cs" />
     <Compile Include="Areas\CLIP\Models\Plant.cs" />
     <Compile Include="Areas\CLIP\Models\PlantMonitoring.cs" />
     <Compile Include="Areas\CLIP\Models\UserCompetency.cs" />
@@ -767,48 +572,53 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Areas\FETS\Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\FETS\Properties\AssemblyInfo.cs" />
     <!-- FETS Project Compile Files -->
-    <Compile Include="Areas\FETS\Site.Master.cs">
+    <Compile Include="Services\FETS\Site.Master.cs">
       <DependentUpon>Site.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Areas\FETS\Site.Master.designer.cs">
+    <Compile Include="Services\FETS\Site.Master.designer.cs">
       <DependentUpon>Site.Master</DependentUpon>
     </Compile>
-    <Compile Include="Areas\FETS\Pages\Admin\ActivityLogs.aspx.cs">
+    <Compile Include="Services\FETS\Pages\Admin\ActivityLogs.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Areas\FETS\Pages\Dashboard\Dashboard.aspx.cs">
+    <Compile Include="Services\FETS\Pages\Dashboard\Dashboard.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Areas\FETS\Pages\DataEntry\DataEntry.aspx.cs">
+    <Compile Include="Services\FETS\Pages\DataEntry\DataEntry.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Areas\FETS\Pages\Login\Login.aspx.cs">
+    <Compile Include="Services\FETS\Pages\Login\Login.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Areas\FETS\Pages\MapLayout\MapLayout.aspx.cs">
+    <Compile Include="Services\FETS\Pages\MapLayout\MapLayout.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Areas\FETS\Pages\MapLayout\ViewMap.aspx.cs">
+    <Compile Include="Services\FETS\Pages\MapLayout\ViewMap.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Areas\FETS\Pages\Profile\Profile.aspx.cs">
+    <Compile Include="Services\FETS\Pages\Profile\Profile.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Areas\FETS\Pages\PublicDashboard\PublicDashboard.aspx.cs">
+    <Compile Include="Services\FETS\Pages\PublicDashboard\PublicDashboard.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Areas\FETS\Pages\ViewSection\ViewSection.aspx.cs">
+    <Compile Include="Services\FETS\Pages\ViewSection\ViewSection.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Areas\FETS\Pages\**\*.aspx.designer.cs" />
-    <Compile Include="Areas\FETS\Pages\**\*.ascx.cs" />
-    <Compile Include="Areas\FETS\Pages\**\*.ascx.designer.cs" />
-    <Compile Include="Areas\FETS\App_Code\**\*.cs" />
-    <Compile Include="Areas\FETS\Models\**\*.cs" />
+    <Compile Include="Services\FETS\Pages\**\*.aspx.designer.cs" />
+    <Compile Include="Services\FETS\Pages\**\*.ascx.cs" />
+    <Compile Include="Services\FETS\Pages\**\*.ascx.designer.cs" />
+    <Compile Include="Services\FETS\App_Code\**\*.cs" />
+    <Compile Include="Services\FETS\Models\**\*.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\CLIP\App_Start\BundleConfig.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\CLIP\Content\bootstrap-grid.css.map" />
@@ -1082,13 +892,13 @@
     <Content Include="Scripts\bootstrap.bundle.js.map" />
     <Content Include="Scripts\jquery-3.7.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.7.1.min.map" />
-    <None Include="Areas\FETS\Properties\PublishProfiles\FolderProfile.pubxml" />
-    <None Include="Areas\FETS\Properties\PublishProfiles\FolderProfile1.pubxml" />
-    <None Include="Areas\FETS\Properties\PublishProfiles\FolderProfile2.pubxml" />
-    <None Include="Areas\FETS\Properties\PublishProfiles\FolderProfile3.pubxml" />
-    <None Include="Areas\FETS\Properties\PublishProfiles\FolderProfile4.pubxml" />
-    <None Include="Areas\FETS\Properties\PublishProfiles\FolderProfile5.pubxml" />
-    <None Include="Areas\FETS\Properties\PublishProfiles\FolderProfile6.pubxml" />
+    <None Include="Services\FETS\Properties\PublishProfiles\FolderProfile.pubxml" />
+    <None Include="Services\FETS\Properties\PublishProfiles\FolderProfile1.pubxml" />
+    <None Include="Services\FETS\Properties\PublishProfiles\FolderProfile2.pubxml" />
+    <None Include="Services\FETS\Properties\PublishProfiles\FolderProfile3.pubxml" />
+    <None Include="Services\FETS\Properties\PublishProfiles\FolderProfile4.pubxml" />
+    <None Include="Services\FETS\Properties\PublishProfiles\FolderProfile5.pubxml" />
+    <None Include="Services\FETS\Properties\PublishProfiles\FolderProfile6.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1099,7 +909,6 @@
   <ItemGroup>
     <Folder Include="Areas\CLIP\Views\Dashboard\" />
     <Folder Include="Areas\CLIP\Views\UserPoints\" />
-    <Folder Include="Areas\FETS\Assets\js\" />
     <Folder Include="Uploads\Maps\" />
   </ItemGroup>
   <PropertyGroup>
@@ -1131,11 +940,15 @@
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
+    <Error Condition="!Exists('packages\EntityFramework.6.4.4\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\EntityFramework.6.4.4\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('packages\EntityFramework.6.4.4\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\EntityFramework.6.4.4\build\EntityFramework.targets'))" />
+    <Error Condition="!Exists('packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
     <Error Condition="!Exists('packages\EntityFramework.6.5.1\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\EntityFramework.6.5.1\build\EntityFramework.props'))" />
     <Error Condition="!Exists('packages\EntityFramework.6.5.1\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\EntityFramework.6.5.1\build\EntityFramework.targets'))" />
     <Error Condition="!Exists('packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\build\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\build\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets'))" />
     <Error Condition="!Exists('packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets'))" />
   </Target>
+  <Import Project="packages\EntityFramework.6.4.4\build\EntityFramework.targets" Condition="Exists('packages\EntityFramework.6.4.4\build\EntityFramework.targets')" />
   <Import Project="packages\EntityFramework.6.5.1\build\EntityFramework.targets" Condition="Exists('packages\EntityFramework.6.5.1\build\EntityFramework.targets')" />
   <Import Project="packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\build\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets" Condition="Exists('packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.4.1.0\build\net472\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.targets')" />
   <Import Project="packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets" Condition="Exists('packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets')" />
