@@ -1,8 +1,8 @@
-<%@ Page Title="" Language="C#" MasterPageFile="~/Services/FETS/Site.Master" AutoEventWireup="true" CodeBehind="ActivityLogs.aspx.cs" Inherits="FETS.Pages.Admin.ActivityLogs" %>
+<%@ Page Title="" Language="C#" MasterPageFile="~/Areas/FETS/Site.Master" AutoEventWireup="true" CodeBehind="ActivityLogs.aspx.cs" Inherits="FETS.Pages.Admin.ActivityLogs" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <!-- Reference to new CSS file -->
-    <link href="/Assets/css/activitylogs.css" rel="stylesheet" />
+    <link href="<%=ResolveUrl("~/Areas/FETS/Assets/css/activitylogs.css")%>" rel="stylesheet" />
     <!-- Font Awesome for better icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
     

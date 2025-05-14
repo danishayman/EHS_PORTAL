@@ -1,7 +1,9 @@
 <%@ Page Language="C#" AutoEventWireup="true" CodeBehind="DataEntry.aspx.cs" Inherits="FETS.Pages.DataEntry.DataEntry"
-    MasterPageFile="~/Services/FETS/Site.Master" %>
+    MasterPageFile="~/Areas/FETS/Site.Master" %>
 
     <asp:Content ID="HeadContent" ContentPlaceHolderID="HeadContent" runat="server">
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+        <link href="<%=ResolveUrl("~/Areas/FETS/Assets/css/styles.css")%>" rel="stylesheet" />
         <!-- Styles for the data entry form and UI elements -->
         <style>
             .content-container {

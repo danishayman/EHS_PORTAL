@@ -1,10 +1,10 @@
-<%@ Page Language="C#" MasterPageFile="~/Services/FETS/Site.Master" AutoEventWireup="true" CodeBehind="ViewSection.aspx.cs"
+<%@ Page Language="C#" MasterPageFile="~/Areas/FETS/Site.Master" AutoEventWireup="true" CodeBehind="ViewSection.aspx.cs"
     Inherits="FETS.Pages.ViewSection.ViewSection" %>
 
 <asp:Content ID="HeadContent" ContentPlaceHolderID="HeadContent" runat="server">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-    <link href="../../Assets/css/styles.css" rel="stylesheet" />
+    <link href="<%=ResolveUrl("~/Areas/FETS/Assets/css/styles.css")%>" rel="stylesheet" />
 </asp:Content>
 
     <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
@@ -535,7 +535,7 @@
                                                     <asp:Repeater ID="rptMaps" runat="server">
                                                         <ItemTemplate>
                                                             <div class="map-data-item" 
-                                                                data-image-url="<%# ResolveUrl("~/Uploads/Maps/" + Eval("ImagePath")) %>"
+                                                                data-image-url="<%# ResolveUrl("~/Areas/FETS/Uploads/Maps/" + Eval("ImagePath")) %>"
                                                                 data-level="<%# Eval("LevelName") %>" 
                                                                 data-update-date="<%# Eval("UploadDate", "{0:MM/dd/yyyy}") %>"
                                                                 data-plant="<%# Eval("PlantName") %>">

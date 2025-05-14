@@ -15,11 +15,12 @@
     <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
     <!-- Custom Styles -->
-    <link href="~/Assets/css/styles.css" rel="stylesheet" type="text/css" />
+    <link href="<%=ResolveUrl("~/Areas/FETS/Assets/css/styles.css")%>" rel="stylesheet" type="text/css" />
     <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="<%=ResolveUrl("~/Areas/FETS/Scripts/jquery-3.6.0.min.js")%>"></script>
     <!-- Bootstrap 5 Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="<%=ResolveUrl("~/Areas/FETS/Scripts/bootstrap.bundle.min.js")%>"></script>
+    <script src="<%=ResolveUrl("~/Areas/FETS/Scripts/site.js")%>"></script>
     <style>
         /* Base page styling */
         body {

@@ -13,7 +13,7 @@ namespace FETS.Pages.MapLayout
         {
             if (!User.Identity.IsAuthenticated)
             {
-                Response.Redirect("~/Services/FETS/Pages/Login/Login.aspx");
+                Response.Redirect("~/FETS/Login");
                 return;
             }
 
@@ -31,7 +31,7 @@ namespace FETS.Pages.MapLayout
 
             if (string.IsNullOrEmpty(plantId) || string.IsNullOrEmpty(levelId))
             {
-                Response.Redirect("~/Services/FETS/Pages/MapLayout/MapLayout.aspx");
+                Response.Redirect("~/FETS/MapLayout");
                 return;
             }
 
@@ -60,7 +60,7 @@ namespace FETS.Pages.MapLayout
                             if (!reader.IsDBNull(reader.GetOrdinal("ImagePath")))
                             {
                                 string imagePath = reader["ImagePath"].ToString();
-                                imgMap.ImageUrl = $"~/Uploads/Maps/{imagePath}";
+                                imgMap.ImageUrl = $"~/Areas/FETS/Uploads/Maps/{imagePath}";
                                 lblLastUpdated.Text = Convert.ToDateTime(reader["UploadDate"]).ToString("MMM dd, yyyy HH:mm");
                             }
                             else
@@ -119,14 +119,14 @@ namespace FETS.Pages.MapLayout
 
         protected void btnBack_Click(object sender, EventArgs e)
         {
-            Response.Redirect("~/Services/FETS/Pages/MapLayout/MapLayout.aspx");
+            Response.Redirect("~/FETS/MapLayout");
         }
 
         protected void btnLogout_Click(object sender, EventArgs e)
         {
             FormsAuthentication.SignOut();
             Session.Clear();
-            Response.Redirect("~/Services/FETS/Pages/Login/Login.aspx");
+            Response.Redirect("~/FETS/Login");
         }
     }
 } 

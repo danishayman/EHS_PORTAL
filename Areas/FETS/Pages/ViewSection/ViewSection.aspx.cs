@@ -88,7 +88,7 @@ namespace FETS.Pages.ViewSection
             if (!User.Identity.IsAuthenticated)
             {
                 // Redirect to login page
-                Response.Redirect("~/Services/FETS/Pages/Login/Login.aspx");
+                Response.Redirect("~/FETS/Login");
             }
 
             // Add this line to get user's plant and role
@@ -3054,7 +3054,7 @@ namespace FETS.Pages.ViewSection
                             // Load the first map data to initialize the display
                             if (dt.Rows.Count > 0)
                             {
-                                string imageUrl = ResolveUrl($"~/Uploads/Maps/{firstMap["ImagePath"]}");
+                                string imageUrl = ResolveUrl($"~/Areas/FETS/Uploads/Maps/{firstMap["ImagePath"]}");
                                 string levelName = firstMap["LevelName"].ToString();
                                 string updateDate = Convert.ToDateTime(firstMap["UploadDate"]).ToString("MM/dd/yyyy");
                                 
@@ -3104,7 +3104,7 @@ namespace FETS.Pages.ViewSection
         /// </summary>
         protected string GetMapImageUrl(string imagePath)
         {
-            return $"~/Uploads/Maps/{imagePath}";
+            return $"~/Areas/FETS/Uploads/Maps/{imagePath}";
         }
         
         /// <summary>

@@ -12,7 +12,7 @@
     <!-- Link to Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
     <!-- Link to external CSS styles -->
-    <link href="Assets/css/styles.css" rel="stylesheet" />
+    <link href="<%=ResolveUrl("~/Areas/FETS/Assets/css/styles.css")%>" rel="stylesheet" />
     <style>
         /* General body styling */
         body {
@@ -347,7 +347,7 @@
 <body>
     <!-- Left panel with background image -->
     <div class="left-panel">
-        <img src="<%=ResolveUrl("~/Services/FETS/Uploads/misc/front-gate.jpg")%>" alt="Left Panel Background">
+        <img src="<%=ResolveUrl("~/Areas/FETS/Uploads/misc/front-gate.jpg")%>" alt="Left Panel Background">
     </div>
 
     <!-- Right panel with login form -->
@@ -355,7 +355,7 @@
         <form id="form1" runat="server">
             <!-- Logo container -->
             <div class="logo-container">
-                <img src="<%=ResolveUrl("~/Services/FETS/Uploads/misc/logo.jpeg")%>" alt="FETS Logo" class="logo" />
+                <img src="<%=ResolveUrl("~/Areas/FETS/Uploads/misc/logo.jpeg")%>" alt="FETS Logo" class="logo" />
             </div>
 
             <!-- Login container -->
@@ -387,7 +387,7 @@
                 
                 <!-- Back to Dashboard Button -->
                 <div class="back-to-dashboard">
-                    <a href="../../Pages/PublicDashboard/PublicDashboard.aspx" class="btn-back">
+                    <a href="../FETS/PublicDashboard" class="btn-back">
                         <i class="fas fa-arrow-left"></i> Back to Dashboard
                     </a>
                 </div>

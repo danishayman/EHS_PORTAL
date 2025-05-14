@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="<%=ResolveUrl("~/Areas/FETS/Assets/css/styles.css")%>" rel="stylesheet" />
     <style>
         :root {
             --primary-color: #007bff;
@@ -424,7 +425,7 @@
         <div class="dashboard-container">
             <div class="dashboard-header uniform-width-container">
                 <div class="logo-container">
-                    <img src="<%=ResolveUrl("~/Services/FETS/Uploads/misc/logo.jpeg")%>" alt="INARI Logo" class="logo" />
+                    <img src="<%=ResolveUrl("~/Areas/FETS/Uploads/misc/logo.jpeg")%>" alt="INARI Logo" class="logo" />
                 </div>
                 <h2>ENVIRONMENT, HEALTH AND SAFETY DEPARTMENT (EHS)</h2>
                 <h3>FIRE EXTINGUISHER TRACKING DASHBOARD</h3>
@@ -529,7 +530,7 @@
                 <div class="login-section">
                     <h3>Authorized Access</h3>
                     <p>Log in to access complete system features including data entry, map view, and service management.</p>
-                    <a href="<%=ResolveUrl("~/Services/FETS/Pages/Login/Login.aspx")%>" class="btn-login">Login to System</a>
+                    <a href="<%=ResolveUrl("~/FETS/Login")%>" class="btn-login">Login to System</a>
                 </div>
             </div>
 

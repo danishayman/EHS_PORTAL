@@ -23,7 +23,7 @@ namespace FETS.Pages.MapLayout
             if (!User.Identity.IsAuthenticated)
             {
                 // Redirect to login page
-                Response.Redirect("~/Services/FETS/Pages/Login/Login.aspx");
+                Response.Redirect("~/FETS/Login");
             }
 
             // Get user's assigned plant and role
@@ -344,7 +344,7 @@ namespace FETS.Pages.MapLayout
             try
             {
                 string fileName = $"{Guid.NewGuid()}{fileExtension}";
-                string uploadPath = Server.MapPath("~/Uploads/Maps");
+                string uploadPath = Server.MapPath("~/Areas/FETS/Uploads/Maps");
                 
                 if (!Directory.Exists(uploadPath))
                     Directory.CreateDirectory(uploadPath);
@@ -436,7 +436,7 @@ namespace FETS.Pages.MapLayout
 
         protected string GetMapImageUrl(string imagePath)
         {
-            return $"~/Uploads/Maps/{imagePath}";
+            return $"~/Areas/FETS/Uploads/Maps/{imagePath}";
         }
 
         protected void gvMaps_PageIndexChanging(object sender, GridViewPageEventArgs e)
@@ -500,7 +500,7 @@ namespace FETS.Pages.MapLayout
                 // Delete the physical file
                 if (!string.IsNullOrEmpty(imagePath))
                 {
-                    string filePath = Server.MapPath($"~/Uploads/Maps/{imagePath}");
+                    string filePath = Server.MapPath($"~/Areas/FETS/Uploads/Maps/{imagePath}");
                     if (File.Exists(filePath))
                     {
                         File.Delete(filePath);
