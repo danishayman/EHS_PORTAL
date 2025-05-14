@@ -88,7 +88,7 @@ namespace FETS.Pages.ViewSection
             if (!User.Identity.IsAuthenticated)
             {
                 // Redirect to login page
-                Response.Redirect("~/FETS/Login.aspx");
+                Response.Redirect("~/FETS/Login");
             }
 
             // Add this line to get user's plant and role

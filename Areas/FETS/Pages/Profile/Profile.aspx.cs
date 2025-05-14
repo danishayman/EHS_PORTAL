@@ -22,7 +22,7 @@ namespace FETS.Pages.Profile
             if (!User.Identity.IsAuthenticated)
             {
                 // Redirect to login page
-                Response.Redirect("~/FETS/Login.aspx");
+                Response.Redirect("~/FETS/Login");
             }
 
             if (!IsPostBack)
