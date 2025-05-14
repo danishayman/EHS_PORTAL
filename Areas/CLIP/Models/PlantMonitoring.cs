@@ -1,7 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
-// Remove ambiguous namespace
-// using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EHS_PORTAL.Areas.CLIP.Models
 {
@@ -91,14 +90,14 @@ namespace EHS_PORTAL.Areas.CLIP.Models
         public string WorkDoc { get; set; }
         
         // Navigation Properties
-        // Remove ambiguous attribute
+        [ForeignKey("PlantID")]
         public virtual Plant Plant { get; set; }
         
-        // Remove ambiguous attribute
+        [ForeignKey("MonitoringID")]
         public virtual Monitoring Monitoring { get; set; }
 
         // Helper properties for status determination  
-        // Remove ambiguous attribute
+        [NotMapped]
         public string Status
         {
             get
@@ -116,7 +115,7 @@ namespace EHS_PORTAL.Areas.CLIP.Models
             }
         }
 
-        // Remove ambiguous attribute
+        [NotMapped]
         public string StatusCssClass
         {
             get
