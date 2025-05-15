@@ -7,6 +7,13 @@ using Microsoft.Owin.Security.Google;
 using Owin;
 using EHS_PORTAL.Areas.CLIP.Models;
 
+// Use aliases for identity classes
+using ApplicationDbContext = EHS_PORTAL.ApplicationDbContext;
+using ApplicationUserManager = EHS_PORTAL.ApplicationUserManager;
+using ApplicationSignInManager = EHS_PORTAL.ApplicationSignInManager;
+using ApplicationRoleManager = EHS_PORTAL.ApplicationRoleManager;
+using ApplicationUser = EHS_PORTAL.ApplicationUser;
+
 namespace EHS_PORTAL
 {
     public partial class Startup

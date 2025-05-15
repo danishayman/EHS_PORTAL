@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace EHS_PORTAL.Areas.CLIP.Models
+namespace CLIP.Models
 {
     public class Monitoring
     {
@@ -13,6 +13,7 @@ namespace EHS_PORTAL.Areas.CLIP.Models
         }
 
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int MonitoringID { get; set; }
 
         [Required]

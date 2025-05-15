@@ -10,6 +10,14 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using EHS_PORTAL.Areas.CLIP.Models;
 using System.Collections.Generic;
+using System.Web.Mvc.Html;
+
+// Use aliases for identity classes
+using ApplicationSignInManager = EHS_PORTAL.ApplicationSignInManager;
+using ApplicationUserManager = EHS_PORTAL.ApplicationUserManager;
+using ApplicationRoleManager = EHS_PORTAL.ApplicationRoleManager;
+using ApplicationDbContext = EHS_PORTAL.ApplicationDbContext;
+using ApplicationUser = EHS_PORTAL.ApplicationUser;
 
 namespace EHS_PORTAL.Areas.CLIP.Controllers
 {
@@ -471,7 +479,7 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Welcome", "Home");
+            return RedirectToAction("Index", "Home");
         }
 
         //

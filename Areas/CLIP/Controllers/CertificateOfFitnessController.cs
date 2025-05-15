@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Web;
 
-namespace EHS_PORTAL.Areas.CLIP.Controllers
+namespace CLIP.Controllers
 {
     [Authorize]
     public class CertificateOfFitnessController : Controller

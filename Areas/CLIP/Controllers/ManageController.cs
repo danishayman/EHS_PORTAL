@@ -8,6 +8,12 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using EHS_PORTAL.Areas.CLIP.Models;
 
+// Use aliases for identity classes
+using ApplicationSignInManager = EHS_PORTAL.ApplicationSignInManager;
+using ApplicationUserManager = EHS_PORTAL.ApplicationUserManager;
+using ApplicationDbContext = EHS_PORTAL.ApplicationDbContext;
+using ApplicationUser = EHS_PORTAL.ApplicationUser;
+
 namespace EHS_PORTAL.Areas.CLIP.Controllers
 {
     [Authorize]

@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Web.Mvc;
+using System.Web.Mvc.Html;
 
 namespace EHS_PORTAL.Areas.CLIP.Models
 {
@@ -22,12 +24,8 @@ namespace EHS_PORTAL.Areas.CLIP.Models
         
         public int? ValidityMonths { get; set; }
         
-        public string PointType { get; set; }
-        
-        public int? TotalPoints { get; set; }
-        
-        public int? AnnualPointDeduction { get; set; }
-        
+        public bool IsMandatory { get; set; }
+
         // Navigation properties
         public virtual ICollection<UserCompetency> UserCompetencies { get; set; }
         public virtual ICollection<UserPoint> UserPoints { get; set; }

@@ -12,6 +12,10 @@ using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using EHS_PORTAL.Areas.CLIP.Models;
 
+// Use alias in root namespace to resolve identity classes
+using ApplicationUser = EHS_PORTAL.ApplicationUser;
+using ApplicationDbContext = EHS_PORTAL.ApplicationDbContext;
+
 namespace EHS_PORTAL
 {
     public class EmailService : IIdentityMessageService

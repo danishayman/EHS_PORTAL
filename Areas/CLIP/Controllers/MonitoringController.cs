@@ -6,10 +6,9 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using EHS_PORTAL.Areas.CLIP.Models;
-using Microsoft.AspNet.Identity;
+using CLIP.Models;
 
-namespace EHS_PORTAL.Areas.CLIP.Controllers
+namespace CLIP.Controllers
 {
     [Authorize]
     public class MonitoringController : Controller
