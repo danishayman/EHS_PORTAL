@@ -1,4 +1,4 @@
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Profile.aspx.cs" Inherits="FETS.Pages.Profile.Profile" MasterPageFile="~/Services/FETS/Site.Master" %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Profile.aspx.cs" Inherits="FETS.Pages.Profile.Profile" MasterPageFile="~/Areas/FETS/Site.Master" %>
 
 <asp:Content ID="HeadContent" ContentPlaceHolderID="HeadContent" runat="server">
     <style>

@@ -1,4 +1,4 @@
-<%@ Page Title="" Language="C#" MasterPageFile="~/Services/FETS/Site.Master" AutoEventWireup="true" CodeBehind="ActivityLogs.aspx.cs" Inherits="FETS.Pages.Admin.ActivityLogs" %>
+<%@ Page Title="" Language="C#" MasterPageFile="~/Areas/FETS/Site.Master" AutoEventWireup="true" CodeBehind="ActivityLogs.aspx.cs" Inherits="FETS.Pages.Admin.ActivityLogs" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <!-- Reference to new CSS file -->
