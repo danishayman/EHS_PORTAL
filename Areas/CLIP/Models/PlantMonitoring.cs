@@ -2,7 +2,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace CLIP.Models
+namespace EHS_PORTAL.Areas.CLIP.Models
 {
     public class PlantMonitoring
     {

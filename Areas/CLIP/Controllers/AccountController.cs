@@ -12,36 +12,29 @@ using EHS_PORTAL.Areas.CLIP.Models;
 using System.Collections.Generic;
 using System.Web.Mvc.Html;
 
-// Use aliases for identity classes
-using ApplicationSignInManager = EHS_PORTAL.ApplicationSignInManager;
-using ApplicationUserManager = EHS_PORTAL.ApplicationUserManager;
-using ApplicationRoleManager = EHS_PORTAL.ApplicationRoleManager;
-using ApplicationDbContext = EHS_PORTAL.ApplicationDbContext;
-using ApplicationUser = EHS_PORTAL.ApplicationUser;
-
 namespace EHS_PORTAL.Areas.CLIP.Controllers
 {
     [Authorize]
     public class AccountController : Controller
     {
-        private ApplicationSignInManager _signInManager;
-        private ApplicationUserManager _userManager;
+        private EHS_PORTAL.ApplicationSignInManager _signInManager;
+        private EHS_PORTAL.ApplicationUserManager _userManager;
 
         public AccountController()
         {
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(EHS_PORTAL.ApplicationUserManager userManager, EHS_PORTAL.ApplicationSignInManager signInManager )
         {
             UserManager = userManager;
             SignInManager = signInManager;
         }
 
-        public ApplicationSignInManager SignInManager
+        public EHS_PORTAL.ApplicationSignInManager SignInManager
         {
             get
             {
-                return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
+                return _signInManager ?? HttpContext.GetOwinContext().Get<EHS_PORTAL.ApplicationSignInManager>();
             }
             private set 
             { 
@@ -49,11 +42,11 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
             }
         }
 
-        public ApplicationUserManager UserManager
+        public EHS_PORTAL.ApplicationUserManager UserManager
         {
             get
             {
-                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<EHS_PORTAL.ApplicationUserManager>();
             }
             private set
             {
@@ -156,7 +149,7 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
         public ActionResult Register()
         {
             // Create a list with the available roles (Admin and User)
-            var roleManager = HttpContext.GetOwinContext().Get<ApplicationRoleManager>();
+            var roleManager = HttpContext.GetOwinContext().Get<EHS_PORTAL.ApplicationRoleManager>();
             
             // Create roles if they don't exist
             if (!roleManager.RoleExists("Admin"))
@@ -172,7 +165,7 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
             var roles = roleManager.Roles.ToList();
 
             // Get all plants
-            var dbContext = new ApplicationDbContext();
+            var dbContext = new EHS_PORTAL.ApplicationDbContext();
             var plants = dbContext.Plants.ToList();
             
             var model = new RegisterViewModel
@@ -201,7 +194,7 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.UserName, Email = model.Email, EmpID = model.EmpID };
+                var user = new EHS_PORTAL.ApplicationUser { UserName = model.UserName, Email = model.Email, EmpID = model.EmpID };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -211,7 +204,7 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                     // Save the selected plants for this user
                     if (model.SelectedPlantIds != null && model.SelectedPlantIds.Any())
                     {
-                        var plantDbContext = new ApplicationDbContext();
+                        var plantDbContext = new EHS_PORTAL.ApplicationDbContext();
                         foreach (var plantId in model.SelectedPlantIds)
                         {
                             var userPlant = new UserPlant
@@ -238,7 +231,7 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
             }
 
             // If validation fails, get the roles list again
-            var roleManager = HttpContext.GetOwinContext().Get<ApplicationRoleManager>();
+            var roleManager = HttpContext.GetOwinContext().Get<EHS_PORTAL.ApplicationRoleManager>();
             var roles = roleManager.Roles.ToList();
             model.RolesList = roles.Select(r => new SelectListItem
             {
@@ -247,7 +240,7 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
             });
 
             // Get plants list again
-            var formDbContext = new ApplicationDbContext();
+            var formDbContext = new EHS_PORTAL.ApplicationDbContext();
             var plants = formDbContext.Plants.ToList();
             model.PlantsList = plants.Select(p => new SelectListItem
             {
@@ -454,7 +447,7 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                 {
                     return View("ExternalLoginFailure");
                 }
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new EHS_PORTAL.ApplicationUser { UserName = model.Email, Email = model.Email };
                 var result = await UserManager.CreateAsync(user);
                 if (result.Succeeded)
                 {

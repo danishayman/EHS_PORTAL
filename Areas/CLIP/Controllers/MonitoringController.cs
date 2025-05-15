@@ -6,14 +6,18 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using CLIP.Models;
+using EHS_PORTAL.Areas.CLIP.Models;
+using EHS_PORTAL;
 
-namespace CLIP.Controllers
+// Use aliases for identity classes
+using ApplicationDbContext = EHS_PORTAL.ApplicationDbContext;
+
+namespace EHS_PORTAL.Areas.CLIP.Controllers
 {
     [Authorize]
     public class MonitoringController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private EHS_PORTAL.ApplicationDbContext db = new EHS_PORTAL.ApplicationDbContext();
 
         // GET: Monitoring
         public ActionResult Index()

@@ -5,17 +5,17 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using CLIP.Models;
+using EHS_PORTAL.Areas.CLIP.Models;
 using System.Globalization;
 using System.IO;
 using Microsoft.AspNet.Identity;
 
-namespace CLIP.Controllers
+namespace EHS_PORTAL.Areas.CLIP.Controllers
 {
     [Authorize]
     public class PlantMonitoringController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private EHS_PORTAL.ApplicationDbContext db = new EHS_PORTAL.ApplicationDbContext();
 
         // GET: PlantMonitoring
         public ActionResult Index(string category = null, int? plantId = null, string status = null, string monitoringType = null, int? frequency = null)
