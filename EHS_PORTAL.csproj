@@ -508,71 +508,71 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
-    <Content Include="Services\FETS\favicon.ico" />
-    <Content Include="Services\FETS\screenshots\dashboard.png" />
-    <Content Include="Services\FETS\screenshots\dashboard2.png" />
-    <Content Include="Services\FETS\screenshots\dashboard3.png" />
-    <Content Include="Services\FETS\Uploads\Maps\01d0ca0c-9ead-4642-8e36-da9b77596719.png" />
-    <Content Include="Services\FETS\Uploads\Maps\07bdef70-07ae-404f-980e-b3b5f9121ed4.png" />
-    <Content Include="Services\FETS\Uploads\Maps\0a55f21b-5249-4d40-aec1-16042bc29383.png" />
-    <Content Include="Services\FETS\Uploads\Maps\0ea08f66-9f34-49ab-b3fa-afb7b8729795.png" />
-    <Content Include="Services\FETS\Uploads\Maps\1ecf1e25-e643-4589-a074-f5d6dd540f73.png" />
-    <Content Include="Services\FETS\Uploads\Maps\1f183eb8-d50e-4fc9-aba7-457b7e30b6ef.png" />
-    <Content Include="Services\FETS\Uploads\Maps\2cd25e90-9dd4-4a3b-95f3-0a5c3eea4f0c.png" />
-    <Content Include="Services\FETS\Uploads\Maps\3225fb0c-b0dc-4e5f-b906-f9603b94b116.png" />
-    <Content Include="Services\FETS\Uploads\Maps\37e5a6d4-cc38-4d59-a9e0-74a4e26facc5.png" />
-    <Content Include="Services\FETS\Uploads\Maps\3abdc87b-08af-48fd-901f-39ddd4a0ac0c.png" />
-    <Content Include="Services\FETS\Uploads\Maps\3eb76a9a-6ffb-4e4a-9f22-888678793bfd.jpg" />
-    <Content Include="Services\FETS\Uploads\Maps\40043aeb-cc7a-485a-8ddf-989b57dbf869.png" />
-    <Content Include="Services\FETS\Uploads\Maps\482b7eb2-0a8c-470c-9359-d56ea28ec9c0.png" />
-    <Content Include="Services\FETS\Uploads\Maps\58615717-97b3-49b3-8869-bc4e9df78ce4.png" />
-    <Content Include="Services\FETS\Uploads\Maps\643cd29e-08c1-4c53-9013-18dd419b0695.png" />
-    <Content Include="Services\FETS\Uploads\Maps\74d87cf6-3f90-4283-bbbb-ab7fab829369.png" />
-    <Content Include="Services\FETS\Uploads\Maps\821e3996-f1b0-449f-9d2e-cc73c3405262.png" />
-    <Content Include="Services\FETS\Uploads\Maps\88892736-7510-415e-85cf-28e8ce2a6590.png" />
-    <Content Include="Services\FETS\Uploads\Maps\8c689bbf-9ed9-44c4-98de-e1fd12d37d7c.png" />
-    <Content Include="Services\FETS\Uploads\Maps\b15fc469-ee3c-4354-bd63-12fe88648ad0.png" />
-    <Content Include="Services\FETS\Uploads\Maps\b6acebd2-08b5-462b-9530-e9de3c75d0c8.png" />
-    <Content Include="Services\FETS\Uploads\Maps\b8e2e677-66ab-4298-ba22-931227a7b31c.png" />
-    <Content Include="Services\FETS\Uploads\Maps\bd19d0bc-6b9a-49fb-a2f7-a2e67fd58e3c.png" />
-    <Content Include="Services\FETS\Uploads\Maps\d6ed33cc-d0a0-4c16-8289-af20b7a96373.png" />
-    <Content Include="Services\FETS\Uploads\Maps\fed0d318-0eed-4df1-ac22-5985a58a020d.png" />
-    <Content Include="Services\FETS\Uploads\Maps\p1-lvl1.png" />
-    <Content Include="Services\FETS\Uploads\Maps\p1-lvl2.png" />
-    <Content Include="Services\FETS\Uploads\Maps\p1-lvl3.png" />
-    <Content Include="Services\FETS\Uploads\Maps\p21-lvl 1.png" />
-    <Content Include="Services\FETS\Uploads\Maps\p21-lvl2.png" />
-    <Content Include="Services\FETS\Uploads\Maps\p3-lvl1.png" />
-    <Content Include="Services\FETS\Uploads\Maps\p3-lvl2.png" />
-    <Content Include="Services\FETS\Uploads\Maps\p3-lvl3.png" />
-    <Content Include="Services\FETS\Uploads\Maps\p5-lvl1.png" />
-    <Content Include="Services\FETS\Uploads\Maps\p5-lvl2.png" />
-    <Content Include="Services\FETS\Uploads\Maps\p5-lvl3.png" />
-    <Content Include="Services\FETS\Uploads\misc\3rdwarning.jpg" />
-    <Content Include="Services\FETS\Uploads\misc\felist.png" />
-    <Content Include="Services\FETS\Uploads\misc\front-gate.jpg" />
-    <Content Include="Services\FETS\Uploads\misc\image-1.png" />
-    <Content Include="Services\FETS\Uploads\misc\image-2.png" />
-    <Content Include="Services\FETS\Uploads\misc\login.png" />
-    <Content Include="Services\FETS\Uploads\misc\logo.jpeg" />
-    <Content Include="Services\FETS\Uploads\misc\mapupload.png" />
-    <Content Include="Services\FETS\Uploads\misc\publicdashboard1.jpg" />
-    <Content Include="Services\FETS\Uploads\misc\publicdashboard2.jpg" />
-    <Content Include="Services\FETS\Uploads\misc\publicdashboard3.jpg" />
-    <Content Include="Services\FETS\Uploads\misc\viewmap.png" />
-    <Content Include="Services\FETS\Uploads\misc\warning.png" />
+    <Content Include="Areas\FETS\favicon.ico" />
+    <Content Include="Areas\FETS\screenshots\dashboard.png" />
+    <Content Include="Areas\FETS\screenshots\dashboard2.png" />
+    <Content Include="Areas\FETS\screenshots\dashboard3.png" />
+    <Content Include="Areas\FETS\Uploads\Maps\01d0ca0c-9ead-4642-8e36-da9b77596719.png" />
+    <Content Include="Areas\FETS\Uploads\Maps\07bdef70-07ae-404f-980e-b3b5f9121ed4.png" />
+    <Content Include="Areas\FETS\Uploads\Maps\0a55f21b-5249-4d40-aec1-16042bc29383.png" />
+    <Content Include="Areas\FETS\Uploads\Maps\0ea08f66-9f34-49ab-b3fa-afb7b8729795.png" />
+    <Content Include="Areas\FETS\Uploads\Maps\1ecf1e25-e643-4589-a074-f5d6dd540f73.png" />
+    <Content Include="Areas\FETS\Uploads\Maps\1f183eb8-d50e-4fc9-aba7-457b7e30b6ef.png" />
+    <Content Include="Areas\FETS\Uploads\Maps\2cd25e90-9dd4-4a3b-95f3-0a5c3eea4f0c.png" />
+    <Content Include="Areas\FETS\Uploads\Maps\3225fb0c-b0dc-4e5f-b906-f9603b94b116.png" />
+    <Content Include="Areas\FETS\Uploads\Maps\37e5a6d4-cc38-4d59-a9e0-74a4e26facc5.png" />
+    <Content Include="Areas\FETS\Uploads\Maps\3abdc87b-08af-48fd-901f-39ddd4a0ac0c.png" />
+    <Content Include="Areas\FETS\Uploads\Maps\3eb76a9a-6ffb-4e4a-9f22-888678793bfd.jpg" />
+    <Content Include="Areas\FETS\Uploads\Maps\40043aeb-cc7a-485a-8ddf-989b57dbf869.png" />
+    <Content Include="Areas\FETS\Uploads\Maps\482b7eb2-0a8c-470c-9359-d56ea28ec9c0.png" />
+    <Content Include="Areas\FETS\Uploads\Maps\58615717-97b3-49b3-8869-bc4e9df78ce4.png" />
+    <Content Include="Areas\FETS\Uploads\Maps\643cd29e-08c1-4c53-9013-18dd419b0695.png" />
+    <Content Include="Areas\FETS\Uploads\Maps\74d87cf6-3f90-4283-bbbb-ab7fab829369.png" />
+    <Content Include="Areas\FETS\Uploads\Maps\821e3996-f1b0-449f-9d2e-cc73c3405262.png" />
+    <Content Include="Areas\FETS\Uploads\Maps\88892736-7510-415e-85cf-28e8ce2a6590.png" />
+    <Content Include="Areas\FETS\Uploads\Maps\8c689bbf-9ed9-44c4-98de-e1fd12d37d7c.png" />
+    <Content Include="Areas\FETS\Uploads\Maps\b15fc469-ee3c-4354-bd63-12fe88648ad0.png" />
+    <Content Include="Areas\FETS\Uploads\Maps\b6acebd2-08b5-462b-9530-e9de3c75d0c8.png" />
+    <Content Include="Areas\FETS\Uploads\Maps\b8e2e677-66ab-4298-ba22-931227a7b31c.png" />
+    <Content Include="Areas\FETS\Uploads\Maps\bd19d0bc-6b9a-49fb-a2f7-a2e67fd58e3c.png" />
+    <Content Include="Areas\FETS\Uploads\Maps\d6ed33cc-d0a0-4c16-8289-af20b7a96373.png" />
+    <Content Include="Areas\FETS\Uploads\Maps\fed0d318-0eed-4df1-ac22-5985a58a020d.png" />
+    <Content Include="Areas\FETS\Uploads\Maps\p1-lvl1.png" />
+    <Content Include="Areas\FETS\Uploads\Maps\p1-lvl2.png" />
+    <Content Include="Areas\FETS\Uploads\Maps\p1-lvl3.png" />
+    <Content Include="Areas\FETS\Uploads\Maps\p21-lvl 1.png" />
+    <Content Include="Areas\FETS\Uploads\Maps\p21-lvl2.png" />
+    <Content Include="Areas\FETS\Uploads\Maps\p3-lvl1.png" />
+    <Content Include="Areas\FETS\Uploads\Maps\p3-lvl2.png" />
+    <Content Include="Areas\FETS\Uploads\Maps\p3-lvl3.png" />
+    <Content Include="Areas\FETS\Uploads\Maps\p5-lvl1.png" />
+    <Content Include="Areas\FETS\Uploads\Maps\p5-lvl2.png" />
+    <Content Include="Areas\FETS\Uploads\Maps\p5-lvl3.png" />
+    <Content Include="Areas\FETS\Uploads\misc\3rdwarning.jpg" />
+    <Content Include="Areas\FETS\Uploads\misc\felist.png" />
+    <Content Include="Areas\FETS\Uploads\misc\front-gate.jpg" />
+    <Content Include="Areas\FETS\Uploads\misc\image-1.png" />
+    <Content Include="Areas\FETS\Uploads\misc\image-2.png" />
+    <Content Include="Areas\FETS\Uploads\misc\login.png" />
+    <Content Include="Areas\FETS\Uploads\misc\logo.jpeg" />
+    <Content Include="Areas\FETS\Uploads\misc\mapupload.png" />
+    <Content Include="Areas\FETS\Uploads\misc\publicdashboard1.jpg" />
+    <Content Include="Areas\FETS\Uploads\misc\publicdashboard2.jpg" />
+    <Content Include="Areas\FETS\Uploads\misc\publicdashboard3.jpg" />
+    <Content Include="Areas\FETS\Uploads\misc\viewmap.png" />
+    <Content Include="Areas\FETS\Uploads\misc\warning.png" />
     <Content Include="Services\PPE\index.html" />
     <Content Include="Services\PTW\index.html" />
     <Content Include="Services\Training\index.html" />
     <Content Include="Web.config" />
     <!-- FETS Project Files -->
-    <Content Include="Services\FETS\Site.Master" />
-    <Content Include="Services\FETS\Assets\**\*.*" />
-    <Content Include="Services\FETS\Pages\**\*.aspx" />
-    <Content Include="Services\FETS\Pages\**\*.ascx" />
-    <Content Include="Services\FETS\EmailTemplates\**\*.*" />
-    <Content Include="Services\FETS\Scripts\**\*.js" />
-    <Content Include="Services\FETS\DATABASE\**\*.sql" />
+    <Content Include="Areas\FETS\Site.Master" />
+    <Content Include="Areas\FETS\Assets\**\*.*" />
+    <Content Include="Areas\FETS\Pages\**\*.aspx" />
+    <Content Include="Areas\FETS\Pages\**\*.ascx" />
+    <Content Include="Areas\FETS\EmailTemplates\**\*.*" />
+    <Content Include="Areas\FETS\Scripts\**\*.js" />
+    <Content Include="Areas\FETS\DATABASE\**\*.sql" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -644,50 +644,51 @@
     <Compile Include="Areas\CLIP\Models\UserCompetency.cs" />
     <Compile Include="Areas\CLIP\Models\UserPlant.cs" />
     <Compile Include="Areas\CLIP\Models\UserPoint.cs" />
+    <Compile Include="Areas\FETS\FETSAreaRegistration.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Services\FETS\Properties\AssemblyInfo.cs" />
+    <Compile Include="Areas\FETS\Properties\AssemblyInfo.cs" />
     <!-- FETS Project Compile Files -->
-    <Compile Include="Services\FETS\Site.Master.cs">
+    <Compile Include="Areas\FETS\Site.Master.cs">
       <DependentUpon>Site.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Services\FETS\Site.Master.designer.cs">
+    <Compile Include="Areas\FETS\Site.Master.designer.cs">
       <DependentUpon>Site.Master</DependentUpon>
     </Compile>
-    <Compile Include="Services\FETS\Pages\Admin\ActivityLogs.aspx.cs">
+    <Compile Include="Areas\FETS\Pages\Admin\ActivityLogs.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Services\FETS\Pages\Dashboard\Dashboard.aspx.cs">
+    <Compile Include="Areas\FETS\Pages\Dashboard\Dashboard.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Services\FETS\Pages\DataEntry\DataEntry.aspx.cs">
+    <Compile Include="Areas\FETS\Pages\DataEntry\DataEntry.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Services\FETS\Pages\Login\Login.aspx.cs">
+    <Compile Include="Areas\FETS\Pages\Login\Login.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Services\FETS\Pages\MapLayout\MapLayout.aspx.cs">
+    <Compile Include="Areas\FETS\Pages\MapLayout\MapLayout.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Services\FETS\Pages\MapLayout\ViewMap.aspx.cs">
+    <Compile Include="Areas\FETS\Pages\MapLayout\ViewMap.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Services\FETS\Pages\Profile\Profile.aspx.cs">
+    <Compile Include="Areas\FETS\Pages\Profile\Profile.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Services\FETS\Pages\PublicDashboard\PublicDashboard.aspx.cs">
+    <Compile Include="Areas\FETS\Pages\PublicDashboard\PublicDashboard.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Services\FETS\Pages\ViewSection\ViewSection.aspx.cs">
+    <Compile Include="Areas\FETS\Pages\ViewSection\ViewSection.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Services\FETS\Pages\**\*.aspx.designer.cs" />
-    <Compile Include="Services\FETS\Pages\**\*.ascx.cs" />
-    <Compile Include="Services\FETS\Pages\**\*.ascx.designer.cs" />
-    <Compile Include="Services\FETS\App_Code\**\*.cs" />
-    <Compile Include="Services\FETS\Models\**\*.cs" />
+    <Compile Include="Areas\FETS\Pages\**\*.aspx.designer.cs" />
+    <Compile Include="Areas\FETS\Pages\**\*.ascx.cs" />
+    <Compile Include="Areas\FETS\Pages\**\*.ascx.designer.cs" />
+    <Compile Include="Areas\FETS\App_Code\**\*.cs" />
+    <Compile Include="Areas\FETS\Models\**\*.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -940,13 +941,13 @@
     <Content Include="Areas\CLIP\Views\_ViewStart.cshtml" />
     <Content Include="Scripts\jquery-3.7.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.7.1.min.map" />
-    <None Include="Services\FETS\Properties\PublishProfiles\FolderProfile.pubxml" />
-    <None Include="Services\FETS\Properties\PublishProfiles\FolderProfile1.pubxml" />
-    <None Include="Services\FETS\Properties\PublishProfiles\FolderProfile2.pubxml" />
-    <None Include="Services\FETS\Properties\PublishProfiles\FolderProfile3.pubxml" />
-    <None Include="Services\FETS\Properties\PublishProfiles\FolderProfile4.pubxml" />
-    <None Include="Services\FETS\Properties\PublishProfiles\FolderProfile5.pubxml" />
-    <None Include="Services\FETS\Properties\PublishProfiles\FolderProfile6.pubxml" />
+    <None Include="Areas\FETS\Properties\PublishProfiles\FolderProfile.pubxml" />
+    <None Include="Areas\FETS\Properties\PublishProfiles\FolderProfile1.pubxml" />
+    <None Include="Areas\FETS\Properties\PublishProfiles\FolderProfile2.pubxml" />
+    <None Include="Areas\FETS\Properties\PublishProfiles\FolderProfile3.pubxml" />
+    <None Include="Areas\FETS\Properties\PublishProfiles\FolderProfile4.pubxml" />
+    <None Include="Areas\FETS\Properties\PublishProfiles\FolderProfile5.pubxml" />
+    <None Include="Areas\FETS\Properties\PublishProfiles\FolderProfile6.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

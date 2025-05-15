@@ -15,7 +15,7 @@ namespace FETS.Pages.Login
             // This prevents authenticated users from accessing the login page again
             if (User.Identity.IsAuthenticated)
             {
-                Response.Redirect("~/Services/FETS/Pages/Dashboard/Dashboard.aspx");
+                Response.Redirect("~/FETS/Dashboard");
             }
         }
 
@@ -90,7 +90,7 @@ namespace FETS.Pages.Login
                     System.Diagnostics.Debug.WriteLine(string.Format("Error logging login activity: {0}", ex.Message));
                 }
 
-                Response.Redirect("~/Services/FETS/Pages/Dashboard/Dashboard.aspx");
+                Response.Redirect("~/FETS/Dashboard");
             }
             else
             {
