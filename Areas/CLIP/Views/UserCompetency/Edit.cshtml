@@ -55,7 +55,7 @@
                             <small class="text-muted">Leave blank if not yet completed.</small>
                         </div>
 
-                        @if (Model.CompetencyModule.CompetencyType != "Environment")
+                        if (Model.CompetencyModule.CompetencyType != "Environment")
                         {
                             <div class="mb-3" id="expiryDateSection">
                                 <label for="ExpiryDate" class="form-label">Expiry Date</label>

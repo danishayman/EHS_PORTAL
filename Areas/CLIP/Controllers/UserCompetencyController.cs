@@ -110,12 +110,9 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
             // Prepare status dropdown items with new options
             ViewBag.Statuses = new List<string> 
             {
-                "Requested",
-                "Course attended",
-                "Examination passed",
-                "FTR Submitted",
-                "Interview",
-                "Completed"
+                "Active",
+                "Pending",
+                "Expired"
             };
             
             return View(userCompetency);
@@ -182,12 +179,9 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
             // If we got this far, something failed; reload form
             ViewBag.Statuses = new List<string> 
             {
-                "Requested",
-                "Course attended",
-                "Examination passed",
-                "FTR Submitted",
-                "Interview",
-                "Completed"
+                "Active",
+                "Pending",
+                "Expired"
             };
             
             return View(model);
