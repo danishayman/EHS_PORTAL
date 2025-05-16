@@ -16,12 +16,13 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
         public ActionResult Index()
         {
             var db = new ApplicationDbContext();
-            var userCompetencies = db.UserCompetencies
-                .Include(uc => uc.User)
-                .Include(uc => uc.CompetencyModule)
+            
+            // Get all competency modules with their associated user competencies
+            var competencyModules = db.CompetencyModules
+                .Include(cm => cm.UserCompetencies.Select(uc => uc.User))
                 .ToList();
             
-            return View(userCompetencies);
+            return View(competencyModules);
         }
 
         // GET: UserCompetency/Assign
@@ -39,7 +40,7 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
         // POST: UserCompetency/Assign
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Assign(UserCompetency model)
+        public ActionResult Assign(UserCompetency model, string[] Building)
         {
             if (ModelState.IsValid)
             {
@@ -110,13 +111,23 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                 "Completed"
             };
             
+            // Set up the selected buildings if any
+            if (!string.IsNullOrEmpty(userCompetency.Building))
+            {
+                ViewBag.SelectedBuildings = userCompetency.Building.Split(',');
+            }
+            else
+            {
+                ViewBag.SelectedBuildings = new string[] { };
+            }
+            
             return View(userCompetency);
         }
 
         // POST: UserCompetency/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(UserCompetency model)
+        public ActionResult Edit(UserCompetency model, string[] Building)
         {
             if (ModelState.IsValid)
             {
@@ -134,6 +145,16 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                 userCompetency.CompletionDate = model.CompletionDate;
                 userCompetency.ExpiryDate = model.ExpiryDate;
                 userCompetency.Remarks = model.Remarks;
+                
+                // Process selected buildings
+                if (Building != null && Building.Length > 0)
+                {
+                    userCompetency.Building = string.Join(",", Building);
+                }
+                else
+                {
+                    userCompetency.Building = null;
+                }
                 
                 // If status is changed to "Completed" and no completion date is set, set it to today
                 if (model.Status == "Completed" && !userCompetency.CompletionDate.HasValue)
@@ -157,6 +178,16 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                 "Interview",
                 "Completed"
             };
+            
+            // Set up the selected buildings if any
+            if (Building != null && Building.Length > 0)
+            {
+                ViewBag.SelectedBuildings = Building;
+            }
+            else
+            {
+                ViewBag.SelectedBuildings = new string[] { };
+            }
             
             return View(model);
         }
