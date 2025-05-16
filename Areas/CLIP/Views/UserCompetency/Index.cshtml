@@ -29,6 +29,8 @@
     @{
         var userCount = item.UserCompetencies.Count();
         var ActiveCount = item.UserCompetencies.Count(uc => uc.Status == "Active");
+        var PendingCount = item.UserCompetencies.Count(uc => uc.Status == "Pending");
+        var ExpiredCount = item.UserCompetencies.Count(uc => uc.ExpiryDate.HasValue && uc.ExpiryDate.Value < DateTime.Today);
         var moduleId = $"module-{item.Id}";
         
         var typeIcon = "fas fa-book";
@@ -62,7 +64,18 @@
                         }
                     </div>
                     <div class="d-flex gap-2">
-                        <span class="badge bg-success rounded-pill">@ActiveCount Active</span>
+                        @if(ActiveCount > 0)
+                        {
+                            <span class="badge bg-success rounded-pill">@ActiveCount Active</span>
+                        }
+                        @if(PendingCount > 0)
+                        {
+                            <span class="badge bg-secondary rounded-pill">@PendingCount Pending</span>
+                        }
+                        @if(ExpiredCount > 0)
+                        {
+                            <span class="badge bg-danger rounded-pill">@ExpiredCount Expired</span>
+                        }
                     </div>
                 </div>
             </button>
@@ -244,7 +257,7 @@
                     <div class="col-md-3">
                         <label for="statusFilter" class="form-label small text-muted">Filter by</label>
                         <select id="statusFilter" class="form-select">
-                            <option value="">All Modules</option>
+                            <option value="">-- Select --</option>
                             <option value="with-users">With Assigned Users</option>
                             <option value="no-users">No Assigned Users</option>
                         </select>
@@ -252,14 +265,20 @@
                     <div class="col-md-3">
                         <label for="buildingFilter" class="form-label small text-muted">Building</label>
                         <select id="buildingFilter" class="form-select">
-                            <option value="">All Buildings</option>
+                            <option value="">-- Select --</option>
                             @foreach (var building in buildingsList)
                             {
                                 <option value="@building">@building</option>
                             }
                         </select>
                     </div>
-
+                </div>
+                <div class="row mt-3">
+                    <div class="col-12 text-end">
+                        <button id="clearFilters" class="btn btn-outline-secondary btn-sm">
+                            <i class="fas fa-times me-1"></i>Clear Filters
+                        </button>
+                    </div>
                 </div>
             </div>
             
@@ -341,8 +360,14 @@
             $("#buildingFilter").on("change", function () {
                 filterModules();
             });
-
-
+            
+            // Clear filters button
+            $("#clearFilters").on("click", function() {
+                $("#searchInput").val("");
+                $("#statusFilter").val("");
+                $("#buildingFilter").val("");
+                filterModules();
+            });
 
             function filterModules() {
                 var searchValue = $("#searchInput").val().toLowerCase();
@@ -413,8 +438,6 @@
                 }
             }
 
-
-            
             // Initialize filters on page load
             filterModules();
         });
