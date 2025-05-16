@@ -24,14 +24,14 @@
             {
                 <div class="navbar-brand d-flex align-items-center">
                     <img src="~/Images/logo.png" alt="CLIP Logo" height="30" class="me-2" />
-                    @Html.ActionLink("CLIP", "Index", "Home", new { area = "" }, new { @class = "text-decoration-none text-white" })
+                    @Html.ActionLink("CLIP", "Index", "Home", new { area = "CLIP" }, new { @class = "text-decoration-none text-white" })
                 </div>
             }
             else
             {
                 <div class="navbar-brand d-flex align-items-center">
                     <img src="~/Images/logo.png" alt="CLIP Logo" height="30" class="me-2" />
-                    @Html.ActionLink("CLIP", "Welcome", "Home", new { area = "" }, new { @class = "text-decoration-none text-white" })
+                    @Html.ActionLink("CLIP", "Welcome", "Home", new { area = "CLIP" }, new { @class = "text-decoration-none text-white" })
                 </div>
             }
             <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Toggle navigation" aria-controls="navbarSupportedContent"
@@ -47,10 +47,10 @@
                             Monitoring
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="monitoringDropdown">
-                            <li>@Html.ActionLink("Monitoring Dashboard", "Index", "PlantMonitoring", new { area = "" }, new { @class = "dropdown-item" })</li>
-                            <li>@Html.ActionLink("Schedule View", "Schedule", "PlantMonitoring", new { area = "" }, new { @class = "dropdown-item" })</li>
+                            <li>@Html.ActionLink("Monitoring Dashboard", "Index", "PlantMonitoring", new { area = "CLIP" }, new { @class = "dropdown-item" })</li>
+                            <li>@Html.ActionLink("Schedule View", "Schedule", "PlantMonitoring", new { area = "CLIP" }, new { @class = "dropdown-item" })</li>
                             <li><hr class="dropdown-divider"></li>
-                            <li>@Html.ActionLink("Manage Monitoring Types", "Index", "Monitoring", new { area = "" }, new { @class = "dropdown-item" })</li>
+                            <li>@Html.ActionLink("Manage Monitoring Types", "Index", "Monitoring", new { area = "CLIP" }, new { @class = "dropdown-item" })</li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
@@ -58,13 +58,13 @@
                             Competency
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="competencyDropdown">
-                            <li>@Html.ActionLink("Competency Modules", "Index", "Competency", new { area = "" }, new { @class = "dropdown-item" })</li>
-                            <li>@Html.ActionLink("User Competencies", "Index", "UserCompetency", new { area = "" }, new { @class = "dropdown-item" })</li>
+                            <li>@Html.ActionLink("Competency Modules", "Index", "Competency", new { area = "CLIP" }, new { @class = "dropdown-item" })</li>
+                            <li>@Html.ActionLink("User Competencies", "Index", "UserCompetency", new { area = "CLIP" }, new { @class = "dropdown-item" })</li>
                             <li><hr class="dropdown-divider"></li>
-                            <li>@Html.ActionLink("My Competencies", "MyCompetencies", "UserCompetency", new { area = "" }, new { @class = "dropdown-item" })</li>
+                            <li>@Html.ActionLink("My Competencies", "MyCompetencies", "UserCompetency", new { area = "CLIP" }, new { @class = "dropdown-item" })</li>
                         </ul>
                     </li>
-                    <li>@Html.ActionLink("Certificate of Fitness", "Index", "CertificateOfFitness", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li>@Html.ActionLink("Certificate of Fitness", "Index", "CertificateOfFitness", new { area = "CLIP" }, new { @class = "nav-link" })</li>
                 </ul>
                 }
                 <div class="ms-auto">
