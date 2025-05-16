@@ -63,19 +63,10 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                 
                 // Status is now set from the form dropdown
                 // model.Status = "Not Started";
-                
-                // Calculate expiry date if completion date is provided
-                if (model.CompletionDate.HasValue)
+                // Process selected buildings
+                if (Building != null && Building.Length > 0)
                 {
-                    // Get validity months from the competency module
-                    var competencyModule = db.CompetencyModules.Find(model.CompetencyModuleId);
-                    if (competencyModule != null)
-                    {
-                        if (competencyModule.ValidityMonths.HasValue)
-                        {
-                            model.ExpiryDate = model.CompletionDate.Value.AddMonths(competencyModule.ValidityMonths.Value);
-                        }
-                    }
+                    model.Building = string.Join(",", Building);
                 }
                 
                 db.UserCompetencies.Add(model);
@@ -141,22 +132,13 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                 // Update properties
                 userCompetency.Status = model.Status;
                 userCompetency.CompletionDate = model.CompletionDate;
+                userCompetency.ExpiryDate = model.ExpiryDate;
                 userCompetency.Remarks = model.Remarks;
                 
                 // If status is changed to "Completed" and no completion date is set, set it to today
                 if (model.Status == "Completed" && !userCompetency.CompletionDate.HasValue)
                 {
                     userCompetency.CompletionDate = DateTime.Today;
-                    
-                    // Calculate expiry date based on the competency module's validity
-                    var competencyModule = db.CompetencyModules.Find(userCompetency.CompetencyModuleId);
-                    if (competencyModule != null)
-                    {
-                        if (competencyModule.ValidityMonths.HasValue)
-                        {
-                            userCompetency.ExpiryDate = userCompetency.CompletionDate.Value.AddMonths(competencyModule.ValidityMonths.Value);
-                        }
-                    }
                 }
                 
                 db.SaveChanges();

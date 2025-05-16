@@ -205,9 +205,7 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                 // Update the competency properties
                 competency.ModuleName = model.ModuleName;
                 competency.Description = model.Description;
-                competency.ValidityMonths = model.ValidityMonths;
-                competency.IsMandatory = model.IsMandatory;
-                
+                competency.AnnualPointDeduction = model.AnnualPointDeduction;
                 db.SaveChanges();
                 
                 TempData["SuccessMessage"] = "Competency module updated successfully.";

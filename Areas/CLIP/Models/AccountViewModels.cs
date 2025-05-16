@@ -74,6 +74,12 @@ namespace EHS_PORTAL.Areas.CLIP.Models
         [Display(Name = "Employee ID")]
         public string EmpID { get; set; }
 
+        [Display(Name = "CEP Points")]
+        public int? CEP_Points { get; set; }
+
+        [Display(Name = "CPD Points")]
+        public int? CPD_Points { get; set; }
+
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]

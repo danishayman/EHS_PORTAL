@@ -45,8 +45,7 @@
                         <tr>
                             <th>Module Name</th>
                             <th>Description</th>
-                            <th>Validity (Months)</th>
-                            <th>Mandatory</th>
+                            <th>Competency Type</th>
                             @if (User.IsInRole("Admin"))
                             {
                                 <th>Actions</th>
@@ -59,17 +58,7 @@
                             <tr>
                                 <td>@module.ModuleName</td>
                                 <td>@(string.IsNullOrEmpty(module.Description) ? "-" : module.Description)</td>
-                                <td>@(module.ValidityMonths.HasValue ? module.ValidityMonths.ToString() : "No validity")</td>
-                                <td>
-                                    @if (module.IsMandatory)
-                                    {
-                                        <span class="badge bg-primary">Yes</span>
-                                    }
-                                    else
-                                    {
-                                        <span class="badge bg-secondary">No</span>
-                                    }
-                                </td>
+                                <td>@(string.IsNullOrEmpty(module.CompetencyType) ? "-" : module.CompetencyType)</td>
                                 @if (User.IsInRole("Admin"))
                                 {
                                     <td>

@@ -17,6 +17,8 @@ namespace EHS_PORTAL.Areas.CLIP.Models
         }
 
         public string EmpID { get; set; }
+        public int? CEP_Points { get; set; }
+        public int? CPD_Points { get; set; }
 
         // Navigation properties
         public virtual ICollection<UserPlant> UserPlants { get; set; }

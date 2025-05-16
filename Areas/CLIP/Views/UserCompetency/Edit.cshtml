@@ -56,6 +56,13 @@
                         </div>
 
                         <div class="mb-3">
+                            <label for="ExpiryDate" class="form-label">Expiry Date</label>
+                            <input type="date" class="form-control" id="ExpiryDate" name="ExpiryDate" 
+                                   value="@(Model.ExpiryDate.HasValue ? Model.ExpiryDate.Value.ToString("yyyy-MM-dd") : "")">
+                            <small class="text-muted">Enter the certification expiry date manually.</small>
+                        </div>
+
+                        <div class="mb-3">
                             <label for="Remarks" class="form-label">Remarks</label>
                             <textarea class="form-control" id="Remarks" name="Remarks" rows="3">@Model.Remarks</textarea>
                         </div>
@@ -224,7 +231,7 @@
                         <div class="alert alert-info">
                             <i class="fas fa-info-circle me-2"></i>
                             <small>
-                                When status is set to "Certified", the expiry date will be automatically calculated based on the competency module's validity period.
+                                When status is set to "Certified", you should provide a completion date and manually enter an expiry date.
                             </small>
                         </div>
 

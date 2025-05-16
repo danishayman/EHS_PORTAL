@@ -29,25 +29,25 @@
                             @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
                         </div>
                         
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                @Html.LabelFor(m => m.ValidityMonths, "Validity Period (Months)", new { @class = "form-label" })
-                                <div class="d-flex align-items-center mb-2">
-                                    <div class="form-check me-3">
-                                        <input type="checkbox" id="noValidityPeriod" class="form-check-input" />
-                                        <label class="form-check-label" for="noValidityPeriod">No validity period</label>
-                                    </div>
-                                </div>
-                                @Html.TextBoxFor(m => m.ValidityMonths, new { @class = "form-control", type = "number", min = "1", placeholder = "Enter validity period" })
-                                @Html.ValidationMessageFor(m => m.ValidityMonths, "", new { @class = "text-danger" })
-                            </div>
-                            
-                            <div class="col-md-6">
-                                <div class="form-check mt-4">
-                                    @Html.CheckBoxFor(m => m.IsMandatory, new { @class = "form-check-input" })
-                                    @Html.LabelFor(m => m.IsMandatory, "Is this module mandatory?", new { @class = "form-check-label" })
-                                </div>
-                            </div>
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.CompetencyType, "Competency Type", new { @class = "form-label" })
+                            @Html.DropDownListFor(m => m.CompetencyType, 
+                                new List<SelectListItem> { 
+                                    new SelectListItem { Text = "Continuing Professional Development (CPD)", Value = "CPD" },
+                                    new SelectListItem { Text = "Continuing Education Program (CEP)", Value = "CEP" },
+                                    new SelectListItem { Text = "General Certification", Value = "General" },
+                                    new SelectListItem { Text = "Environment", Value = "Environment" },
+                                    new SelectListItem { Text = "Safety", Value = "Safety" },
+                                    new SelectListItem { Text = "Others", Value = "Others" }
+                                },
+                                "Select competency type", new { @class = "form-control", id = "competencyType" })
+                            @Html.ValidationMessageFor(m => m.CompetencyType, "", new { @class = "text-danger" })
+                        </div>
+                        
+                        <div class="mb-3" id="annualPointDeductionSection" style="display: @(Model.CompetencyType == "Safety" ? "block" : "none");">
+                            @Html.LabelFor(m => m.AnnualPointDeduction, "Points required per year", new { @class = "form-label" })
+                            @Html.TextBoxFor(m => m.AnnualPointDeduction, new { @class = "form-control", type = "number", min = "0", placeholder = "Enter required points per year" })
+                            @Html.ValidationMessageFor(m => m.AnnualPointDeduction, "", new { @class = "text-danger" })
                         </div>
                         
                         <div class="mt-4 d-flex justify-content-between">
@@ -71,19 +71,25 @@
     
     <script>
         $(document).ready(function() {
-            $('#noValidityPeriod').change(function() {
-                if($(this).is(':checked')) {
-                    $('#ValidityMonths').val('').prop('disabled', true);
+            // Function to toggle Annual Point Deduction section visibility
+            function toggleAnnualPointDeduction() {
+                var competencyType = $('#competencyType').val();
+                if (competencyType === 'Safety') {
+                    $('#annualPointDeductionSection').show();
+                    // Make the field required when visible
+                    $('#AnnualPointDeduction').attr('required', 'required');
                 } else {
-                    $('#ValidityMonths').prop('disabled', false);
+                    $('#annualPointDeductionSection').hide();
+                    // Remove required attribute when hidden and clear value
+                    $('#AnnualPointDeduction').removeAttr('required').val('');
                 }
-            });
+            }         
+
+            // Initial check on page load
+            toggleAnnualPointDeduction();
             
-            // Set initial state if the model has no validity months
-            if (!$('#ValidityMonths').val()) {
-                $('#noValidityPeriod').prop('checked', true);
-                $('#ValidityMonths').prop('disabled', true);
-            }
+            // Check whenever the dropdown changes
+            $('#competencyType').change(toggleAnnualPointDeduction);
         });
     </script>
 } 

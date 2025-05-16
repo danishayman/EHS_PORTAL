@@ -111,9 +111,9 @@
                                     <div class="d-flex flex-column">
                                         <div class="d-flex align-items-center">
                                             <strong class="fs-5 text-dark me-2">@module.ModuleName</strong>
-                                            @if (module.ValidityMonths.HasValue)
+                                            @if (!string.IsNullOrEmpty(module.CompetencyType))
                                             {
-                                                <span class="badge bg-info text-dark rounded-pill">@(Math.Floor((double)module.ValidityMonths.Value / 12)) Years Validity</span>
+                                                <span class="badge bg-info text-dark rounded-pill">@module.CompetencyType</span>
                                             }
                                         </div>
                                         @if (!string.IsNullOrEmpty(module.Description))

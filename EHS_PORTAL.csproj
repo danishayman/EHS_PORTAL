@@ -643,7 +643,6 @@
     <Compile Include="Areas\CLIP\Models\PlantMonitoring.cs" />
     <Compile Include="Areas\CLIP\Models\UserCompetency.cs" />
     <Compile Include="Areas\CLIP\Models\UserPlant.cs" />
-    <Compile Include="Areas\CLIP\Models\UserPoint.cs" />
     <Compile Include="Areas\FETS\FETSAreaRegistration.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -957,7 +956,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Areas\CLIP\Views\Dashboard\" />
-    <Folder Include="Areas\CLIP\Views\UserPoints\" />
     <Folder Include="Uploads\Maps\" />
   </ItemGroup>
   <ItemGroup>
