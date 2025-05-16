@@ -102,7 +102,6 @@
                     <thead class="table-light">
                         <tr>
                             <th>Competency Module</th>
-                            <th>Description</th>
                             <th>Status</th>
                             <th>Completion Date</th>
                             <th>Expiry Date</th>
@@ -114,9 +113,8 @@
                         {
                             <tr data-module="@item.CompetencyModule.ModuleName" data-status="@item.Status">
                                 <td>
-                                    <div>@item.CompetencyModule.ModuleName</div>
+                                    <div class="fw-bold fs-5">@item.CompetencyModule.ModuleName</div>
                                 </td>
-                                <td>@(string.IsNullOrEmpty(item.CompetencyModule.Description) ? "-" : item.CompetencyModule.Description)</td>
                                 <td>
                                     @switch (item.Status)
                                     {
@@ -186,7 +184,6 @@
                         <thead class="table-light">
                             <tr>
                                 <th>Competency Module</th>
-                                <th>Description</th>
                                 <th>Status</th>
                                 <th>Completion Date</th>
                                 <th>Expiry Date</th>
@@ -198,9 +195,8 @@
                             {
                                 <tr>
                                     <td>
-                                        <div>@item.CompetencyModule.ModuleName</div>
+                                        <div class="fw-bold fs-5">@item.CompetencyModule.ModuleName</div>
                                     </td>
-                                    <td>@(string.IsNullOrEmpty(item.CompetencyModule.Description) ? "-" : item.CompetencyModule.Description)</td>
                                     <td>
                                         <span class="badge bg-danger">Expired</span>
                                     </td>
