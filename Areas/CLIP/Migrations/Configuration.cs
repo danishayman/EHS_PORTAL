@@ -1,18 +1,19 @@
-﻿namespace CLIP.Migrations
+﻿namespace EHS_PORTAL.Areas.CLIP.Migrations
 {
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
+    using EHS_PORTAL.Areas.CLIP.Models;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<EHS_PORTAL.Areas.CLIP.Models.ApplicationDbContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<ApplicationDbContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(EHS_PORTAL.Areas.CLIP.Models.ApplicationDbContext context)
+        protected override void Seed(ApplicationDbContext context)
         {
             //  This method will be called after migrating to the latest version.
 

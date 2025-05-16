@@ -133,8 +133,6 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                     competency.ModuleName = model.ModuleName;
                     competency.Description = model.Description;
                     competency.CompetencyType = model.CompetencyType;
-                    competency.AnnualPointDeduction = model.AnnualPointDeduction;
-                    
                     db.SaveChanges();
                     
                     TempData["SuccessMessage"] = "Competency module updated successfully.";

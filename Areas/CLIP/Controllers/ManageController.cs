@@ -13,24 +13,24 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
     [Authorize]
     public class ManageController : Controller
     {
-        private ApplicationSignInManager _signInManager;
-        private ApplicationUserManager _userManager;
+        private EHS_PORTAL.ApplicationSignInManager _signInManager;
+        private EHS_PORTAL.ApplicationUserManager _userManager;
 
         public ManageController()
         {
         }
 
-        public ManageController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
+        public ManageController(EHS_PORTAL.ApplicationUserManager userManager, EHS_PORTAL.ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
         }
 
-        public ApplicationSignInManager SignInManager
+        public EHS_PORTAL.ApplicationSignInManager SignInManager
         {
             get
             {
-                return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
+                return _signInManager ?? HttpContext.GetOwinContext().Get<EHS_PORTAL.ApplicationSignInManager>();
             }
             private set 
             { 
@@ -38,11 +38,11 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
             }
         }
 
-        public ApplicationUserManager UserManager
+        public EHS_PORTAL.ApplicationUserManager UserManager
         {
             get
             {
-                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<EHS_PORTAL.ApplicationUserManager>();
             }
             private set
             {

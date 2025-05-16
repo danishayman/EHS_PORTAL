@@ -27,7 +27,6 @@
                             @Html.TextAreaFor(m => m.Description, new { @class = "form-control", placeholder = "Enter module description", rows = 3 })
                             @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
                         </div>
-                        
                         <div class="mb-3">
                             @Html.LabelFor(m => m.CompetencyType, "Competency Type", new { @class = "form-label" })
                             @Html.DropDownListFor(m => m.CompetencyType, 
@@ -86,6 +85,7 @@
             
             // Check whenever the dropdown changes
             $('#competencyType').change(toggleAnnualPointDeduction);
+
         });
     </script>
 } 

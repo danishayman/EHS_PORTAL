@@ -53,6 +53,7 @@ namespace EHS_PORTAL.Areas.CLIP.Models
         public DbSet<CertificateOfFitness> CertificateOfFitness { get; set; }
         public DbSet<Monitoring> Monitorings { get; set; }
         public DbSet<PlantMonitoring> PlantMonitorings { get; set; }
+        public DbSet<MonitoringDocument> MonitoringDocuments { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -122,6 +123,14 @@ namespace EHS_PORTAL.Areas.CLIP.Models
             // Configure PlantMonitoring table name
             modelBuilder.Entity<PlantMonitoring>()
                 .ToTable("PlantMonitoring");
+                
+            // Configure MonitoringDocument relationships
+            modelBuilder.Entity<MonitoringDocument>()
+                .ToTable("MonitoringDocument")
+                .HasRequired(md => md.PlantMonitoring)
+                .WithMany()
+                .HasForeignKey(md => md.PlantMonitoringId)
+                .WillCascadeOnDelete(false);
         }
     }
 }

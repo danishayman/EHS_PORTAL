@@ -16,19 +16,12 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
         public ActionResult Index()
         {
             var db = new ApplicationDbContext();
-            
-            // Get all competency modules
-            var competencyModules = db.CompetencyModules
-                .Include(cm => cm.UserCompetencies.Select(uc => uc.User))
+            var userCompetencies = db.UserCompetencies
+                .Include(uc => uc.User)
+                .Include(uc => uc.CompetencyModule)
                 .ToList();
             
-            return View(competencyModules);
-        }
-
-        // Legacy action - redirects to main view
-        public ActionResult UserView()
-        {
-            return RedirectToAction("Index");
+            return View(userCompetencies);
         }
 
         // GET: UserCompetency/Assign
@@ -46,7 +39,7 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
         // POST: UserCompetency/Assign
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Assign(UserCompetency model, string[] Building)
+        public ActionResult Assign(UserCompetency model)
         {
             if (ModelState.IsValid)
             {
@@ -70,7 +63,6 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                 
                 // Status is now set from the form dropdown
                 // model.Status = "Not Started";
-                
                 // Process selected buildings
                 if (Building != null && Building.Length > 0)
                 {
@@ -110,19 +102,13 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
             // Prepare status dropdown items with new options
             ViewBag.Statuses = new List<string> 
             {
-                "Pending",
-                "Certified"
+                "Requested",
+                "Course attended",
+                "Examination passed",
+                "FTR Submitted",
+                "Interview",
+                "Completed"
             };
-            
-            // Set up the selected buildings if any
-            if (!string.IsNullOrEmpty(userCompetency.Building))
-            {
-                ViewBag.SelectedBuildings = userCompetency.Building.Split(',');
-            }
-            else
-            {
-                ViewBag.SelectedBuildings = new string[] { };
-            }
             
             return View(userCompetency);
         }
@@ -130,7 +116,7 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
         // POST: UserCompetency/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(UserCompetency model, string[] Building)
+        public ActionResult Edit(UserCompetency model)
         {
             if (ModelState.IsValid)
             {
@@ -149,18 +135,8 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                 userCompetency.ExpiryDate = model.ExpiryDate;
                 userCompetency.Remarks = model.Remarks;
                 
-                // Process selected buildings
-                if (Building != null && Building.Length > 0)
-                {
-                    userCompetency.Building = string.Join(",", Building);
-                }
-                else
-                {
-                    userCompetency.Building = null;
-                }
-                
-                // If status is changed to "Certified" and no completion date is set, set it to today
-                if (model.Status == "Certified" && !userCompetency.CompletionDate.HasValue)
+                // If status is changed to "Completed" and no completion date is set, set it to today
+                if (model.Status == "Completed" && !userCompetency.CompletionDate.HasValue)
                 {
                     userCompetency.CompletionDate = DateTime.Today;
                 }
@@ -171,25 +147,16 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                 return RedirectToAction("Index");
             }
             
-            // If we got this far, something failed; reload validation
-            var context = new ApplicationDbContext();
-            
-            // Prepare status dropdown items with new options
+            // If we got this far, something failed; reload form
             ViewBag.Statuses = new List<string> 
             {
-                "Pending",
-                "Certified"
+                "Requested",
+                "Course attended",
+                "Examination passed",
+                "FTR Submitted",
+                "Interview",
+                "Completed"
             };
-            
-            // Set up the selected buildings if any
-            if (Building != null && Building.Length > 0)
-            {
-                ViewBag.SelectedBuildings = Building;
-            }
-            else
-            {
-                ViewBag.SelectedBuildings = new string[] { };
-            }
             
             return View(model);
         }

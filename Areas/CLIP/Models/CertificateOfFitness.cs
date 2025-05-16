@@ -51,6 +51,7 @@ namespace EHS_PORTAL.Areas.CLIP.Models
         [Description("Machine current location/owner")]
         public string ResidentInfo { get; set; }
 
+        [ForeignKey("PlantId")]
         public virtual Plant Plant { get; set; }
     }
 } 
