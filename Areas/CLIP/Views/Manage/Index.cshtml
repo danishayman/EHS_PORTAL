@@ -249,20 +249,31 @@
                                             <label class="form-label fw-bold">Select Plants to Assign</label>
                                             <div class="plant-selector border rounded p-3 bg-light">
                                                 <div class="row g-3">
-                                                    @for (int i = 0; i < Model.PlantsList.Count(); i++)
+                                                    @if (Model.PlantsList != null && Model.PlantsList.Any())
                                                     {
-                                                        var plant = Model.PlantsList.ElementAt(i);
-                                                        <div class="col-md-4">
-                                                            <div class="form-check custom-control">
-                                                                <input type="checkbox"
-                                                                       id="plant_@plant.Value"
-                                                                       name="SelectedPlantIds"
-                                                                       value="@plant.Value"
-                                                                       @(plant.Selected ? "checked" : "")
-                                                                       class="form-check-input" />
-                                                                <label class="form-check-label" for="plant_@plant.Value">
-                                                                    <i class="fas fa-building me-2 text-success"></i>@plant.Text
-                                                                </label>
+                                                        for (int i = 0; i < Model.PlantsList.Count(); i++)
+                                                        {
+                                                            var plant = Model.PlantsList.ElementAt(i);
+                                                            <div class="col-md-4">
+                                                                <div class="form-check custom-control">
+                                                                    <input type="checkbox"
+                                                                        id="plant_@plant.Value"
+                                                                        name="SelectedPlantIds"
+                                                                        value="@plant.Value"
+                                                                        @(plant.Selected ? "checked" : "")
+                                                                        class="form-check-input" />
+                                                                    <label class="form-check-label" for="plant_@plant.Value">
+                                                                        <i class="fas fa-building me-2 text-success"></i>@plant.Text
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="col-12">
+                                                            <div class="alert alert-info mb-0">
+                                                                <i class="fas fa-info-circle me-2"></i>No plants available to assign.
                                                             </div>
                                                         </div>
                                                     }
@@ -310,7 +321,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                }
+                        }
                             </div>
                         </div>
                     </div>
@@ -338,9 +349,9 @@
                                             <i class="fas fa-exchange-alt me-2"></i>Change your password
                                             <span class="security-button-hover"></span>
                                         </a>
-                                    }
-                                    else
-                                    {
+                    }
+                    else
+                    {
                                         <a href="@Url.Action("SetPassword")" class="btn btn-warning d-inline-flex align-items-center">
                                             <i class="fas fa-plus-circle me-2"></i>Create password
                                             <span class="security-button-hover"></span>
@@ -354,7 +365,7 @@
                                 <div class="security-action">
                                     <a href="@Url.Action("ManageLogins")" class="btn btn-outline-warning d-inline-flex align-items-center">
                                         <i class="fas fa-cog me-2"></i>Manage External Logins
-                                        <span class="badge bg-warning text-dark ms-2 login-counter">@Model.Logins.Count</span>
+                                        <span class="badge bg-warning text-dark ms-2 login-counter">@(Model.Logins != null ? Model.Logins.Count : 0)</span>
                                         <span class="security-button-hover"></span>
                                     </a>
                                 </div>
@@ -365,7 +376,7 @@
                 
                 <!-- Competencies (if any) -->
                 @if (Model.UserCompetencies != null && Model.UserCompetencies.Any())
-                {
+                        {
                     <div class="card shadow-sm mb-4 border-0 card-expandable">
                         <div class="card-header bg-success bg-gradient text-white d-flex justify-content-between align-items-center">
                             <h4 class="mb-0"><i class="fas fa-certificate me-2"></i>Your Competencies</h4>

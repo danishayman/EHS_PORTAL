@@ -131,7 +131,7 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
         // POST: /Manage/Index
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Index(IndexViewModel model)
+        public async Task<ActionResult> Index(IndexViewModel model, string section)
         {
             if (!ModelState.IsValid)
             {
@@ -146,50 +146,74 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                 return HttpNotFound();
             }
             
-            // Update basic profile information
-            user.UserName = model.UserName;
-            user.Email = model.Email;
-            user.EmpID = model.EmpID;
-            user.PhoneNumber = model.PhoneNumber;
-            
-            // CEP and CPD points are only editable by admins, not by the user themselves
-            if (User.IsInRole("Admin"))
+            // Handle different form sections
+            switch (section)
             {
-                user.CEP_Points = model.CEP_Points;
-                user.CPD_Points = model.CPD_Points;
+                case "basic":
+                    // Update basic profile information
+                    user.UserName = model.UserName;
+                    user.Email = model.Email;
+                    user.EmpID = model.EmpID;
+                    user.PhoneNumber = model.PhoneNumber;
+                    break;
+                
+                case "points":
+                    // CEP and CPD points are only editable by admins
+                    if (User.IsInRole("Admin"))
+                    {
+                        user.CEP_Points = model.CEP_Points;
+                        user.CPD_Points = model.CPD_Points;
+                    }
+                    break;
+                
+                case "plants":
+                    // Update user plants (only if admin)
+                    if (User.IsInRole("Admin") && model.SelectedPlantIds != null)
+                    {
+                        var db = new ApplicationDbContext();
+                        
+                        // Remove existing plant assignments
+                        var existingPlants = db.UserPlants.Where(up => up.UserId == userId).ToList();
+                        foreach (var plant in existingPlants)
+                        {
+                            db.UserPlants.Remove(plant);
+                        }
+                        
+                        // Add new plant assignments
+                        foreach (var plantId in model.SelectedPlantIds)
+                        {
+                            db.UserPlants.Add(new UserPlant
+                            {
+                                UserId = userId,
+                                PlantId = plantId
+                            });
+                        }
+                        
+                        await db.SaveChangesAsync();
+                    }
+                    break;
+                
+                default:
+                    // If no section specified, update all fields
+                    user.UserName = model.UserName;
+                    user.Email = model.Email;
+                    user.EmpID = model.EmpID;
+                    user.PhoneNumber = model.PhoneNumber;
+                    
+                    if (User.IsInRole("Admin"))
+                    {
+                        user.CEP_Points = model.CEP_Points;
+                        user.CPD_Points = model.CPD_Points;
+                    }
+                    break;
             }
             
-            // Update the user
+            // Update the user in the database
             var result = await UserManager.UpdateAsync(user);
             if (!result.Succeeded)
             {
                 AddErrors(result);
                 return View(model);
-            }
-            
-            // Update user plants (only if admin)
-            if (User.IsInRole("Admin") && model.SelectedPlantIds != null)
-            {
-                var db = new ApplicationDbContext();
-                
-                // Remove existing plant assignments
-                var existingPlants = db.UserPlants.Where(up => up.UserId == userId).ToList();
-                foreach (var plant in existingPlants)
-                {
-                    db.UserPlants.Remove(plant);
-                }
-                
-                // Add new plant assignments
-                foreach (var plantId in model.SelectedPlantIds)
-                {
-                    db.UserPlants.Add(new UserPlant
-                    {
-                        UserId = userId,
-                        PlantId = plantId
-                    });
-                }
-                
-                await db.SaveChangesAsync();
             }
             
             return RedirectToAction("Index", new { Message = ManageMessageId.ProfileUpdateSuccess });
