@@ -55,12 +55,15 @@
                             <small class="text-muted">Leave blank if not yet completed.</small>
                         </div>
 
-                        <div class="mb-3">
-                            <label for="ExpiryDate" class="form-label">Expiry Date</label>
-                            <input type="date" class="form-control" id="ExpiryDate" name="ExpiryDate" 
-                                   value="@(Model.ExpiryDate.HasValue ? Model.ExpiryDate.Value.ToString("yyyy-MM-dd") : "")">
-                            <small class="text-muted">Enter the certification expiry date manually.</small>
-                        </div>
+                        @if (Model.CompetencyModule.CompetencyType != "Environment")
+                        {
+                            <div class="mb-3" id="expiryDateSection">
+                                <label for="ExpiryDate" class="form-label">Expiry Date</label>
+                                <input type="date" class="form-control" id="ExpiryDate" name="ExpiryDate" 
+                                       value="@(Model.ExpiryDate.HasValue ? Model.ExpiryDate.Value.ToString("yyyy-MM-dd") : "")">
+                                <small class="text-muted">Enter the certification expiry date manually.</small>
+                            </div>
+                        }
 
                         <div class="mb-3">
                             <label for="Remarks" class="form-label">Remarks</label>
@@ -231,7 +234,14 @@
                         <div class="alert alert-info">
                             <i class="fas fa-info-circle me-2"></i>
                             <small>
-                                When status is set to "Certified", you should provide a completion date and manually enter an expiry date.
+                                @if (Model.CompetencyModule.CompetencyType != "Environment")
+                                {
+                                    <span>When status is set to "Certified", you should provide a completion date and manually enter an expiry date.</span>
+                                }
+                                else
+                                {
+                                    <span>When status is set to "Certified", you should provide a completion date. No expiry date is required for Environment type competencies.</span>
+                                }
                             </small>
                         </div>
 

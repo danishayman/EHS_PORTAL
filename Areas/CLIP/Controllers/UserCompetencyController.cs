@@ -68,8 +68,13 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                     return View(model);
                 }
                 
-                // Status is now set from the form dropdown
-                // model.Status = "Not Started";
+                // Get the competency module type
+                var competencyModule = db.CompetencyModules.Find(model.CompetencyModuleId);
+                if (competencyModule != null && competencyModule.CompetencyType == "Environment")
+                {
+                    // For Environment type, no expiry date is needed
+                    model.ExpiryDate = null;
+                }
                 
                 // Process selected buildings
                 if (Building != null && Building.Length > 0)
@@ -146,7 +151,20 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                 // Update properties
                 userCompetency.Status = model.Status;
                 userCompetency.CompletionDate = model.CompletionDate;
-                userCompetency.ExpiryDate = model.ExpiryDate;
+                
+                // Get the competency module type
+                var competencyModule = db.CompetencyModules.Find(userCompetency.CompetencyModuleId);
+                if (competencyModule != null && competencyModule.CompetencyType == "Environment")
+                {
+                    // For Environment type, no expiry date is needed
+                    userCompetency.ExpiryDate = null;
+                }
+                else
+                {
+                    // For other types (Safety), use the expiry date from the form
+                    userCompetency.ExpiryDate = model.ExpiryDate;
+                }
+                
                 userCompetency.Remarks = model.Remarks;
                 
                 // Process selected buildings
