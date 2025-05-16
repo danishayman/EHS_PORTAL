@@ -10,6 +10,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using EHS_PORTAL.Areas.CLIP.Models;
 using System.Collections.Generic;
+using System.Web.Mvc.Html;
 
 namespace EHS_PORTAL.Areas.CLIP.Controllers
 {
@@ -23,7 +24,7 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
         {
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
@@ -164,7 +165,7 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
             var roles = roleManager.Roles.ToList();
 
             // Get all plants
-            var dbContext = new ApplicationDbContext();
+            var dbContext = new Areas.CLIP.Models.ApplicationDbContext();
             var plants = dbContext.Plants.ToList();
             
             var model = new RegisterViewModel
@@ -203,7 +204,7 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                     // Save the selected plants for this user
                     if (model.SelectedPlantIds != null && model.SelectedPlantIds.Any())
                     {
-                        var plantDbContext = new ApplicationDbContext();
+                        var plantDbContext = new Areas.CLIP.Models.ApplicationDbContext();
                         foreach (var plantId in model.SelectedPlantIds)
                         {
                             var userPlant = new UserPlant
@@ -239,7 +240,7 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
             });
 
             // Get plants list again
-            var formDbContext = new ApplicationDbContext();
+            var formDbContext = new Areas.CLIP.Models.ApplicationDbContext();
             var plants = formDbContext.Plants.ToList();
             model.PlantsList = plants.Select(p => new SelectListItem
             {
@@ -471,7 +472,7 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Welcome", "Home");
+            return RedirectToAction("Index", "Home");
         }
 
         //

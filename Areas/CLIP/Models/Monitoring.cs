@@ -13,6 +13,7 @@ namespace EHS_PORTAL.Areas.CLIP.Models
         }
 
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int MonitoringID { get; set; }
 
         [Required]

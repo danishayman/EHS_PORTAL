@@ -87,7 +87,7 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Home", new { area = "CLIP" });
             }
             
             // Get plant machine counts for the public dashboard
@@ -99,7 +99,7 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
         [Authorize]
         public ActionResult Competency()
         {
-            return RedirectToAction("Index", "Competency");
+            return RedirectToAction("Index", "Competency", new { area = "CLIP" });
         }
 
         [Authorize]
@@ -137,7 +137,7 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                 db.CompetencyModules.Add(model);
                 db.SaveChanges();
                 
-                return RedirectToAction("Competency");
+                return RedirectToAction("Competency", new { area = "CLIP" });
             }
             
             return View(model);
@@ -168,7 +168,7 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                 }
             }
             
-            return RedirectToAction("Competency");
+            return RedirectToAction("Competency", new { area = "CLIP" });
         }
 
         [Authorize]
@@ -180,7 +180,7 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
             if (competency == null)
             {
                 TempData["ErrorMessage"] = "Competency module not found.";
-                return RedirectToAction("Competency");
+                return RedirectToAction("Competency", new { area = "CLIP" });
             }
             
             return View(competency);
@@ -199,21 +199,19 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                 if (competency == null)
                 {
                     TempData["ErrorMessage"] = "Competency module not found.";
-                    return RedirectToAction("Competency");
+                    return RedirectToAction("Competency", new { area = "CLIP" });
                 }
                 
                 // Update the competency properties
                 competency.ModuleName = model.ModuleName;
                 competency.Description = model.Description;
                 competency.ValidityMonths = model.ValidityMonths;
-                competency.PointType = model.PointType;
-                competency.TotalPoints = model.TotalPoints;
-                competency.AnnualPointDeduction = model.AnnualPointDeduction;
+                competency.IsMandatory = model.IsMandatory;
                 
                 db.SaveChanges();
                 
                 TempData["SuccessMessage"] = "Competency module updated successfully.";
-                return RedirectToAction("Competency");
+                return RedirectToAction("Competency", new { area = "CLIP" });
             }
             
             return View(model);

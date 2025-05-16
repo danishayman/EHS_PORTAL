@@ -13,11 +13,11 @@ namespace EHS_PORTAL.Areas.CLIP.Models
         [Required]
         public int PlantId { get; set; }
         
-        // Navigation properties - using convention-based approach
-        // Entity Framework will recognize UserId -> User relationship automatically
+        // Navigation properties
+        [ForeignKey("UserId")]
         public virtual ApplicationUser User { get; set; }
         
-        // Entity Framework will recognize PlantId -> Plant relationship automatically
+        [ForeignKey("PlantId")]
         public virtual Plant Plant { get; set; }
     }
 } 

@@ -115,9 +115,7 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                     competency.ModuleName = model.ModuleName;
                     competency.Description = model.Description;
                     competency.ValidityMonths = model.ValidityMonths;
-                    competency.PointType = model.PointType;
-                    competency.TotalPoints = model.TotalPoints;
-                    competency.AnnualPointDeduction = model.AnnualPointDeduction;
+                    competency.IsMandatory = model.IsMandatory;
                     
                     db.SaveChanges();
                     
