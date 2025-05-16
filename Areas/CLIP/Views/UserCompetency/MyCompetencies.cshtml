@@ -32,22 +32,19 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="d-flex flex-column align-items-center">
-                                    <div class="display-4 text-success">@Model.Count(uc => uc.Status == "Completed" || uc.Status == "Active")</div>
-                                    <span>Completed</span>
+                                    <div class="display-4 text-success">@Model.Count(uc => uc.Status == "Active")</div>
+                                    <span>Active</span>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="d-flex flex-column align-items-center">
-                                    <div class="display-4 text-info">@Model.Count(uc => 
-                                        uc.Status == "Active" || 
-                                        uc.Status == "Pending" || 
-                                        uc.Status == "Expired")</div>
-                                    <span>In Progress</span>
+                                    <div class="display-4 text-info">@Model.Count(uc => uc.Status == "Pending")</div>
+                                    <span>Pending</span>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="d-flex flex-column align-items-center">
-                                    <div class="display-4 text-danger">@Model.Count(uc => uc.Status == "Expired" || (uc.ExpiryDate.HasValue && uc.ExpiryDate.Value < DateTime.Today))</div>
+                                    <div class="display-4 text-danger">@Model.Count(uc => uc.Status == "Expired")</div>
                                     <span>Expired</span>
                                 </div>
                             </div>
@@ -81,7 +78,7 @@
                         </tr>
                     </thead>
                     <tbody id="competencyTableBody">
-                        @foreach (var item in Model.Where(c => c.Status != "Expired" && !(c.ExpiryDate.HasValue && c.ExpiryDate.Value < DateTime.Today)))
+                        @foreach (var item in Model.Where(c => c.Status != "Expired"))
                         {
                             <tr data-module="@item.CompetencyModule.ModuleName" data-status="@item.Status">
                                 <td>
@@ -146,7 +143,7 @@
         </div>
 
         @* Check for expired competencies *@
-        if (Model.Any(c => c.Status == "Expired" || (c.ExpiryDate.HasValue && c.ExpiryDate.Value < DateTime.Today)))
+        if (Model.Any(c => c.Status == "Expired"))
         {
             <div class="card shadow-sm">
                 <div class="card-header bg-light">
@@ -165,7 +162,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var item in Model.Where(c => c.Status == "Expired" || (c.ExpiryDate.HasValue && c.ExpiryDate.Value < DateTime.Today)))
+                            @foreach (var item in Model.Where(c => c.Status == "Expired"))
                             {
                                 <tr>
                                     <td>
