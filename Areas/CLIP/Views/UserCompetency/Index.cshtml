@@ -90,7 +90,7 @@
                         <label for="sortOrder" class="form-label small text-muted">Sort by</label>
                         <select id="sortOrder" class="form-select">
                             <option value="name">Module Name</option>
-                            <option value="certified">Certified Count</option>
+                            <option value="Active">Active Count</option>
                             <option value="expiry">Expiry Date</option>
                         </select>
                     </div>
@@ -101,7 +101,7 @@
                 @foreach (var module in Model)
                 {
                     var userCount = module.UserCompetencies.Count();
-                    var certifiedCount = module.UserCompetencies.Count(uc => uc.Status == "Certified");
+                    var ActiveCount = module.UserCompetencies.Count(uc => uc.Status == "Active");
                     var moduleId = $"module-{module.Id}";
                     
                     <div class="accordion-item border-0 border-bottom" data-module="@module.ModuleName" data-users="@userCount">
@@ -122,7 +122,7 @@
                                         }
                                     </div>
                                     <div class="d-flex gap-2">
-                                        <span class="badge bg-success rounded-pill">@certifiedCount Certified</span>
+                                        <span class="badge bg-success rounded-pill">@ActiveCount Active</span>
                                     </div>
                                 </div>
                             </button>
@@ -161,8 +161,8 @@
                                                                 case "Pending":
                                                                     <span class="badge bg-secondary">Pending</span>
                                                                     break;
-                                                                case "Certified":
-                                                                    <span class="badge bg-success">Certified</span>
+                                                                case "Active":
+                                                                    <span class="badge bg-success">Active</span>
                                                                     break;
                                                                 default:
                                                                     <span class="badge bg-secondary">@userCompetency.Status</span>
@@ -347,10 +347,10 @@
                         var keyB = $(b).data("module").toLowerCase();
                         return keyA > keyB ? 1 : keyA < keyB ? -1 : 0;
                     } 
-                    else if (sortBy === "certified") {
+                    else if (sortBy === "Active") {
                         var keyA = $(a).find(".badge.bg-success").text().split(" ")[0];
                         var keyB = $(b).find(".badge.bg-success").text().split(" ")[0];
-                        return parseInt(keyB) - parseInt(keyA); // Sort by certified count descending
+                        return parseInt(keyB) - parseInt(keyA); // Sort by Active count descending
                     }
                     else if (sortBy === "expiry") {
                         // Find earliest expiry date in each module

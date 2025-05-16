@@ -16,12 +16,13 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
         public ActionResult Index()
         {
             var db = new ApplicationDbContext();
-            var userCompetencies = db.UserCompetencies
-                .Include(uc => uc.User)
-                .Include(uc => uc.CompetencyModule)
+            
+            // Get all competency modules with associated user competencies
+            var competencyModules = db.CompetencyModules
+                .Include(cm => cm.UserCompetencies.Select(uc => uc.User))
                 .ToList();
             
-            return View(userCompetencies);
+            return View(competencyModules);
         }
 
         // GET: UserCompetency/Assign
@@ -166,8 +167,8 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                     userCompetency.Building = null;
                 }
                 
-                // If status is changed to "Certified" and no completion date is set, set it to today
-                if (model.Status == "Certified" && !userCompetency.CompletionDate.HasValue)
+                // If status is changed to "Active" and no completion date is set, set it to today
+                if (model.Status == "Active" && !userCompetency.CompletionDate.HasValue)
                 {
                     userCompetency.CompletionDate = DateTime.Today;
                 }

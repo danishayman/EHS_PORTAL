@@ -32,7 +32,7 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="d-flex flex-column align-items-center">
-                                    <div class="display-4 text-success">@Model.Count(uc => uc.Status == "Completed")</div>
+                                    <div class="display-4 text-success">@Model.Count(uc => uc.Status == "Completed" || uc.Status == "Active")</div>
                                     <span>Completed</span>
                                 </div>
                             </div>
@@ -49,7 +49,7 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="d-flex flex-column align-items-center">
-                                    <div class="display-4 text-danger">@Model.Count(uc => uc.Status == "Expired")</div>
+                                    <div class="display-4 text-danger">@Model.Count(uc => uc.Status == "Expired" || (uc.ExpiryDate.HasValue && uc.ExpiryDate.Value < DateTime.Today))</div>
                                     <span>Expired</span>
                                 </div>
                             </div>
@@ -83,7 +83,7 @@
                         </tr>
                     </thead>
                     <tbody id="competencyTableBody">
-                        @foreach (var item in Model.Where(c => c.Status != "Expired"))
+                        @foreach (var item in Model.Where(c => c.Status != "Expired" && !(c.ExpiryDate.HasValue && c.ExpiryDate.Value < DateTime.Today)))
                         {
                             <tr data-module="@item.CompetencyModule.ModuleName" data-status="@item.Status">
                                 <td>
@@ -110,6 +110,9 @@
                                             break;
                                         case "Completed":
                                             <span class="badge bg-success">Completed</span>
+                                            break;
+                                        case "Active":
+                                            <span class="badge bg-success">Active</span>
                                             break;
                                     }
                                 </td>
@@ -157,7 +160,7 @@
         </div>
 
         @* Check for expired competencies *@
-        if (Model.Any(c => c.Status == "Expired"))
+        if (Model.Any(c => c.Status == "Expired" || (c.ExpiryDate.HasValue && c.ExpiryDate.Value < DateTime.Today)))
         {
             <div class="card shadow-sm">
                 <div class="card-header bg-light">
@@ -169,18 +172,23 @@
                             <tr>
                                 <th>Competency Module</th>
                                 <th>Description</th>
+                                <th>Status</th>
                                 <th>Completion Date</th>
                                 <th>Expiry Date</th>
+                                <th>Buildings</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var item in Model.Where(c => c.Status == "Expired"))
+                            @foreach (var item in Model.Where(c => c.Status == "Expired" || (c.ExpiryDate.HasValue && c.ExpiryDate.Value < DateTime.Today)))
                             {
                                 <tr>
                                     <td>
                                         <div>@item.CompetencyModule.ModuleName</div>
                                     </td>
                                     <td>@(string.IsNullOrEmpty(item.CompetencyModule.Description) ? "-" : item.CompetencyModule.Description)</td>
+                                    <td>
+                                        <span class="badge bg-danger">Expired</span>
+                                    </td>
                                     <td>@(item.CompletionDate.HasValue ? item.CompletionDate.Value.ToShortDateString() : "-")</td>
                                     <td>
                                         @if (item.ExpiryDate.HasValue)
@@ -190,6 +198,20 @@
                                         else
                                         {
                                             <span class="text-danger">-</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(item.Building))
+                                        {
+                                            var buildings = item.Building.Split(',');
+                                            foreach (var building in buildings)
+                                            {
+                                                <span class="badge bg-info me-1">@building</span>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">-</span>
                                         }
                                     </td>
                                 </tr>

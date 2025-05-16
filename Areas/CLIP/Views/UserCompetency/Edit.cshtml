@@ -236,11 +236,11 @@
                             <small>
                                 @if (Model.CompetencyModule.CompetencyType != "Environment")
                                 {
-                                    <span>When status is set to "Certified", you should provide a completion date and manually enter an expiry date.</span>
+                                    <span>When status is set to "Active", you should provide a completion date and manually enter an expiry date.</span>
                                 }
                                 else
                                 {
-                                    <span>When status is set to "Certified", you should provide a completion date. No expiry date is required for Environment type competencies.</span>
+                                    <span>When status is set to "Active", you should provide a completion date. No expiry date is required for Environment type competencies.</span>
                                 }
                             </small>
                         </div>
@@ -276,9 +276,9 @@
                     })
             })()
 
-            // Handle completion date auto-setting when status changes to Certified
+            // Handle completion date auto-setting when status changes to Active
             $('#Status').on('change', function() {
-                if ($(this).val() === 'Certified' && $('#CompletionDate').val() === '') {
+                if ($(this).val() === 'Active' && $('#CompletionDate').val() === '') {
                     var today = new Date();
                     var dd = String(today.getDate()).padStart(2, '0');
                     var mm = String(today.getMonth() + 1).padStart(2, '0');
