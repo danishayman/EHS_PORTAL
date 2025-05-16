@@ -31,6 +31,15 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Add(CompetencyModule model)
         {
+            // Only validate AnnualPointDeduction when CompetencyType is Safety
+            if (model.CompetencyType != "Safety")
+            {
+                // Remove validation errors for AnnualPointDeduction
+                ModelState.Remove("AnnualPointDeduction");
+                // Reset to null since it's not needed for non-Safety types
+                model.AnnualPointDeduction = null;
+            }
+            
             if (ModelState.IsValid)
             {
                 var db = new ApplicationDbContext();
@@ -88,6 +97,15 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(CompetencyModule model)
         {
+            // Only validate AnnualPointDeduction when CompetencyType is Safety
+            if (model.CompetencyType != "Safety")
+            {
+                // Remove validation errors for AnnualPointDeduction
+                ModelState.Remove("AnnualPointDeduction");
+                // Reset to null since it's not needed for non-Safety types
+                model.AnnualPointDeduction = null;
+            }
+            
             if (ModelState.IsValid)
             {
                 var db = new ApplicationDbContext();

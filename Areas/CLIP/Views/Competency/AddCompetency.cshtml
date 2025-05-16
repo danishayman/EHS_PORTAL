@@ -36,13 +36,13 @@
                                     new SelectListItem { Text = "Safety", Value = "Safety" },
                                     new SelectListItem { Text = "Others", Value = "Others" }
                                 },
-                                "Select competency type", new { @class = "form-control" })
+                                "Select competency type", new { @class = "form-control", id = "competencyType" })
                             @Html.ValidationMessageFor(m => m.CompetencyType, "", new { @class = "text-danger" })
                         </div>
                         
-                        <div class="mb-3">
-                            @Html.LabelFor(m => m.AnnualPointDeduction, "Annual Point Deduction", new { @class = "form-label" })
-                            @Html.TextBoxFor(m => m.AnnualPointDeduction, new { @class = "form-control", type = "number", min = "0", placeholder = "Enter deduction points" })
+                        <div class="mb-3" id="annualPointDeductionSection" style="display: none;">
+                            @Html.LabelFor(m => m.AnnualPointDeduction, "Points required per year", new { @class = "form-label" })
+                            @Html.TextBoxFor(m => m.AnnualPointDeduction, new { @class = "form-control", type = "number", min = "0", placeholder = "Enter required points per year" })
                             @Html.ValidationMessageFor(m => m.AnnualPointDeduction, "", new { @class = "text-danger" })
                         </div>
                         
@@ -64,4 +64,28 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    
+    <script>
+        $(document).ready(function() {
+            // Function to toggle Annual Point Deduction section visibility
+            function toggleAnnualPointDeduction() {
+                var competencyType = $('#competencyType').val();
+                if (competencyType === 'Safety') {
+                    $('#annualPointDeductionSection').show();
+                    // Make the field required when visible
+                    $('#AnnualPointDeduction').attr('required', 'required');
+                } else {
+                    $('#annualPointDeductionSection').hide();
+                    // Remove required attribute when hidden and clear value
+                    $('#AnnualPointDeduction').removeAttr('required').val('');
+                }
+            }
+            
+            // Initial check on page load
+            toggleAnnualPointDeduction();
+            
+            // Check whenever the dropdown changes
+            $('#competencyType').change(toggleAnnualPointDeduction);
+        });
+    </script>
 } 
