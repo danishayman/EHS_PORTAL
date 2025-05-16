@@ -82,14 +82,15 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
         {
             var db = new ApplicationDbContext();
             var competency = db.CompetencyModules.Find(id);
-            
+
             if (competency == null)
             {
                 TempData["ErrorMessage"] = "Competency module not found.";
                 return RedirectToAction("Index");
             }
+
+            return View("EditCompetency", competency);  
             
-            return View("EditCompetency", competency);
         }
 
         [HttpPost]
