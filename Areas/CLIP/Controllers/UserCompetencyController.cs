@@ -69,10 +69,11 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                     model.ExpiryDate = null;
                 }
                 
-                // Process selected buildings
-                if (Building != null && Building.Length > 0)
+                // Process selected buildings from form collection
+                var selectedBuildings = Request.Form.GetValues("Building");
+                if (selectedBuildings != null && selectedBuildings.Length > 0)
                 {
-                    model.Building = string.Join(",", Building);
+                    model.Building = string.Join(",", selectedBuildings);
                 }
                 
                 db.UserCompetencies.Add(model);
@@ -154,10 +155,11 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                 
                 userCompetency.Remarks = model.Remarks;
                 
-                // Process selected buildings
-                if (Building != null && Building.Length > 0)
+                // Process selected buildings from form collection
+                var selectedBuildings = Request.Form.GetValues("Building");
+                if (selectedBuildings != null && selectedBuildings.Length > 0)
                 {
-                    userCompetency.Building = string.Join(",", Building);
+                    userCompetency.Building = string.Join(",", selectedBuildings);
                 }
                 else
                 {

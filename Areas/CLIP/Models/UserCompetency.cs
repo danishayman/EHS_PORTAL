@@ -26,6 +26,8 @@ namespace EHS_PORTAL.Areas.CLIP.Models
         
         public string Remarks { get; set; }
 
+        public string Building { get; set; }
+
         // Navigation properties
         [ForeignKey("UserId")]
         public virtual ApplicationUser User { get; set; }
