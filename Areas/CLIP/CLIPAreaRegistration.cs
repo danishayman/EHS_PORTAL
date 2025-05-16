@@ -6,7 +6,10 @@ namespace EHS_PORTAL.Areas.CLIP
     {
         public override string AreaName 
         {
-            get { return "CLIP"; }
+            get 
+            {
+                return "CLIP";
+            }
         }
 
         public override void RegisterArea(AreaRegistrationContext context) 
@@ -14,7 +17,7 @@ namespace EHS_PORTAL.Areas.CLIP
             context.MapRoute(
                 "CLIP_default",
                 "CLIP/{controller}/{action}/{id}",
-                new { action = "Index", id = UrlParameter.Optional }
+                new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
         }
     }

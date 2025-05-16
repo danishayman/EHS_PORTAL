@@ -1,8 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-// Remove conflicting namespaces
-// using System.ComponentModel.DataAnnotations.Schema;
-// using SchemaAttr = System.ComponentModel.DataAnnotations.Schema;
-// using System.Data.Entity.ModelConfiguration.Conventions;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EHS_PORTAL.Areas.CLIP.Models
 {
@@ -16,8 +13,8 @@ namespace EHS_PORTAL.Areas.CLIP.Models
         
         public int PlantId { get; set; }
         
-        // Navigation property - using naming convention instead of attribute
-        // Entity Framework will recognize the naming convention PlantId -> Plant
+        // Navigation property
+        [ForeignKey("PlantId")]
         public virtual Plant Plant { get; set; }
     }
 } 

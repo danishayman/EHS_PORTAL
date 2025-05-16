@@ -98,7 +98,11 @@ namespace EHS_PORTAL
 
         public override Task<ClaimsIdentity> CreateUserIdentityAsync(ApplicationUser user)
         {
-            return user.GenerateUserIdentityAsync((ApplicationUserManager)UserManager);
+            // Since ApplicationUser already inherits from Areas.CLIP.Models.ApplicationUser,
+            // we can directly cast it
+            var areaUser = (Areas.CLIP.Models.ApplicationUser)user;
+            var userManager = (UserManager<Areas.CLIP.Models.ApplicationUser>)UserManager;
+            return areaUser.GenerateUserIdentityAsync(userManager);
         }
 
         public static ApplicationSignInManager Create(IdentityFactoryOptions<ApplicationSignInManager> options, IOwinContext context)

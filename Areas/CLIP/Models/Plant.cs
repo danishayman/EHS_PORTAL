@@ -8,7 +8,6 @@ namespace EHS_PORTAL.Areas.CLIP.Models
         public Plant()
         {
             UserPlants = new HashSet<UserPlant>();
-            PlantMonitorings = new HashSet<PlantMonitoring>();
         }
 
         public int Id { get; set; }
@@ -17,8 +16,7 @@ namespace EHS_PORTAL.Areas.CLIP.Models
         [StringLength(100)]
         public string PlantName { get; set; }
         
-        // Navigation properties
+        // Navigation property
         public virtual ICollection<UserPlant> UserPlants { get; set; }
-        public virtual ICollection<PlantMonitoring> PlantMonitorings { get; set; }
     }
 } 
