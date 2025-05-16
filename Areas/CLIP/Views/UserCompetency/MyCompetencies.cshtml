@@ -1,6 +1,9 @@
 @model IEnumerable<EHS_PORTAL.Areas.CLIP.Models.UserCompetency>
 @{
     ViewBag.Title = "My Competencies";
+    
+    // Get the current user from the first competency record
+    var currentUser = Model.FirstOrDefault()?.User;
 }
 
 <div class="container py-4">
@@ -16,6 +19,35 @@
     }
     else
     {
+        if (currentUser != null)
+        {
+            <div class="row mb-4">
+                <div class="col-md-12">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-light">
+                            <h5 class="mb-0">Professional Development Points</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row text-center">
+                                <div class="col-md-6">
+                                    <div class="d-flex flex-column align-items-center">
+                                        <div class="display-2 text-primary fw-bold">@(currentUser.CEP_Points ?? 0)</div>
+                                        <span class="fs-5">CEP Points</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="d-flex flex-column align-items-center">
+                                        <div class="display-2 text-primary fw-bold">@(currentUser.CPD_Points ?? 0)</div>
+                                        <span class="fs-5">CPD Points</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
         <div class="row mb-4">
             <div class="col-md-12">
                 <div class="card shadow-sm">
@@ -48,7 +80,7 @@
                                     <span>Expired</span>
                                 </div>
                             </div>
-                        </div>
+                                                </div>
                     </div>
                 </div>
             </div>
