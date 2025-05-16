@@ -16,7 +16,6 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
         public ActionResult Index()
         {
             var db = new ApplicationDbContext();
-            
             // Get all competency modules with associated user competencies
             var competencyModules = db.CompetencyModules
                 .Include(cm => cm.UserCompetencies.Select(uc => uc.User))
@@ -40,7 +39,7 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
         // POST: UserCompetency/Assign
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Assign(UserCompetency model)
+        public ActionResult Assign(UserCompetency model, string[] Building)
         {
             if (ModelState.IsValid)
             {
@@ -115,13 +114,23 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                 "Expired"
             };
             
+            // Set up the selected buildings if any
+            if (!string.IsNullOrEmpty(userCompetency.Building))
+            {
+                ViewBag.SelectedBuildings = userCompetency.Building.Split(',');
+            }
+            else
+            {
+                ViewBag.SelectedBuildings = new string[] { };
+            }
+            
             return View(userCompetency);
         }
 
         // POST: UserCompetency/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(UserCompetency model)
+        public ActionResult Edit(UserCompetency model, string[] Building)
         {
             if (ModelState.IsValid)
             {
@@ -183,6 +192,16 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                 "Pending",
                 "Expired"
             };
+            
+            // Set up the selected buildings if any
+            if (Building != null && Building.Length > 0)
+            {
+                ViewBag.SelectedBuildings = Building;
+            }
+            else
+            {
+                ViewBag.SelectedBuildings = new string[] { };
+            }
             
             return View(model);
         }

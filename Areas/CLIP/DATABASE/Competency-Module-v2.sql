@@ -10,3 +10,7 @@ ADD CompetencyType NVARCHAR(100);
 ALTER TABLE AspNetUsers
 ADD CEP_Points INT,
     CPD_Points INT;
+
+
+ALTER TABLE UserCompetencies
+ADD Building NVARCHAR(100);
