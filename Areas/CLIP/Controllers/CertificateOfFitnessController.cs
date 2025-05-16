@@ -43,7 +43,7 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
         }
 
         // GET: CertificateOfFitness
-        public ActionResult Index(string searchString, string sortOrder, int? plantFilter)
+        public ActionResult Index(string searchString, string sortOrder, string plantFilter)
         {
             ViewBag.CurrentSearch = searchString;
             ViewBag.CurrentSort = sortOrder;
@@ -58,9 +58,34 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
             var certificates = db.CertificateOfFitness.Include(c => c.Plant);
             
             // Apply plant filter
-            if (plantFilter.HasValue)
+            if (!string.IsNullOrEmpty(plantFilter))
             {
-                certificates = certificates.Where(c => c.PlantId == plantFilter);
+                switch (plantFilter)
+                {
+                    case "135":
+                        certificates = certificates.Where(c => c.Plant.PlantName == "Plant 1" || 
+                                                             c.Plant.PlantName == "Plant 3" || 
+                                                             c.Plant.PlantName == "Plant 5");
+                        break;
+                    case "21":
+                        certificates = certificates.Where(c => c.Plant.PlantName == "Plant 21");
+                        break;
+                    case "13,55":
+                        certificates = certificates.Where(c => c.Plant.PlantName == "Plant 13" || 
+                                                             c.Plant.PlantName == "Plant 55");
+                        break;
+                    case "34":
+                        certificates = certificates.Where(c => c.Plant.PlantName == "Plant 34");
+                        break;
+                    default:
+                        // Try to parse as normal plant ID if it doesn't match any of the special filters
+                        int plantId;
+                        if (int.TryParse(plantFilter, out plantId))
+                        {
+                            certificates = certificates.Where(c => c.PlantId == plantId);
+                        }
+                        break;
+                }
             }
             
             // Apply search filter (search by registration number or machine name)

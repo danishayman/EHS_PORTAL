@@ -51,6 +51,14 @@
             </div>
             <div class="table-responsive">
                 <table class="table table-hover mb-0">
+                    <colgroup>
+                        <col style="width: 25%">
+                        <col style="width: @(User.IsInRole("Admin") ? "55%" : "75%")">
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <col style="width: 20%">
+                        }
+                    </colgroup>
                     <thead class="table-light">
                         <tr>
                             <th>Module Name</th>
@@ -108,6 +116,14 @@
             </div>
             <div class="table-responsive">
                 <table class="table table-hover mb-0">
+                    <colgroup>
+                        <col style="width: 25%">
+                        <col style="width: @(User.IsInRole("Admin") ? "55%" : "75%")">
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <col style="width: 20%">
+                        }
+                    </colgroup>
                     <thead class="table-light">
                         <tr>
                             <th>Module Name</th>
@@ -165,6 +181,14 @@
             </div>
             <div class="table-responsive">
                 <table class="table table-hover mb-0">
+                    <colgroup>
+                        <col style="width: 25%">
+                        <col style="width: @(User.IsInRole("Admin") ? "55%" : "75%")">
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <col style="width: 20%">
+                        }
+                    </colgroup>
                     <thead class="table-light">
                         <tr>
                             <th>Module Name</th>

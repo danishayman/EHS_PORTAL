@@ -254,30 +254,15 @@
                             <input type="text" id="searchInput" class="form-control border-start-0" placeholder="Search by module or description...">
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <label for="statusFilter" class="form-label small text-muted">Filter by</label>
-                        <select id="statusFilter" class="form-select">
-                            <option value="">-- Select --</option>
-                            <option value="with-users">With Assigned Users</option>
-                            <option value="no-users">No Assigned Users</option>
-                        </select>
-                    </div>
-                    <div class="col-md-3">
+                    <div class="col-md-6">
                         <label for="buildingFilter" class="form-label small text-muted">Building</label>
                         <select id="buildingFilter" class="form-select">
-                            <option value="">-- Select --</option>
+                            <option value="">-- All Buildings --</option>
                             @foreach (var building in buildingsList)
                             {
                                 <option value="@building">@building</option>
                             }
                         </select>
-                    </div>
-                </div>
-                <div class="row mt-3">
-                    <div class="col-12 text-end">
-                        <button id="clearFilters" class="btn btn-outline-secondary btn-sm">
-                            <i class="fas fa-times me-1"></i>Clear Filters
-                        </button>
                     </div>
                 </div>
             </div>
@@ -350,29 +335,28 @@
             $("#searchInput").on("keyup", function () {
                 filterModules();
             });
-
-            // Status filtering
-            $("#statusFilter").on("change", function () {
-                filterModules();
-            });
             
             // Building filtering
             $("#buildingFilter").on("change", function () {
                 filterModules();
             });
             
-            // Clear filters button
-            $("#clearFilters").on("click", function() {
-                $("#searchInput").val("");
-                $("#statusFilter").val("");
-                $("#buildingFilter").val("");
-                filterModules();
+            // Force reapply filter when clicking on building dropdown
+            $("#buildingFilter").on("click", function() {
+                setTimeout(filterModules, 0);
             });
 
             function filterModules() {
                 var searchValue = $("#searchInput").val().toLowerCase();
-                var statusFilter = $("#statusFilter").val();
                 var buildingFilter = $("#buildingFilter").val();
+                
+                // Show all items if both filters are empty
+                if (searchValue === "" && buildingFilter === "") {
+                    $(".competency-item").show();
+                    $(".category-section").show();
+                    $("#no-results-message").remove();
+                    return;
+                }
 
                 // First hide all items
                 $(".competency-item").hide();
@@ -382,19 +366,9 @@
                     var $item = $(this);
                     var moduleName = $item.data("module").toLowerCase();
                     var moduleDesc = $item.find(".text-muted").text().toLowerCase();
-                    var userCount = parseInt($item.data("users"));
-                    var hasBuilding = false;
                     
                     // Check text match
-                    var textMatch = moduleName.indexOf(searchValue) > -1 || moduleDesc.indexOf(searchValue) > -1;
-                    
-                    // Check status match
-                    var statusMatch = true;
-                    if (statusFilter === "with-users" && userCount === 0) {
-                        statusMatch = false;
-                    } else if (statusFilter === "no-users" && userCount > 0) {
-                        statusMatch = false;
-                    }
+                    var textMatch = searchValue === "" || moduleName.indexOf(searchValue) > -1 || moduleDesc.indexOf(searchValue) > -1;
                     
                     // Check building match
                     var buildingMatch = true;
@@ -409,7 +383,7 @@
                     }
                     
                     // Show if all conditions match
-                    if (textMatch && statusMatch && buildingMatch) {
+                    if (textMatch && buildingMatch) {
                         $item.show();
                     }
                 });
@@ -430,7 +404,7 @@
                 if ($(".competency-item:visible").length === 0) {
                     if ($("#no-results-message").length === 0) {
                         $(".card").append(
-                            '<div id="no-results-message" class="alert alert-info m-3">No modules match your filter criteria.</div>'
+                            '<div id="no-results-message" class="alert alert-info m-3">No modules match your search criteria.</div>'
                         );
                     }
                 } else {
