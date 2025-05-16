@@ -478,7 +478,7 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Login", "Account", new { area = "CLIP" });
         }
 
         //

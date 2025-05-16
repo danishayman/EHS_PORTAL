@@ -1,6 +1,9 @@
 @model IEnumerable<EHS_PORTAL.Areas.CLIP.Models.UserCompetency>
 @{
     ViewBag.Title = "My Competencies";
+    
+    // Get the current user from the first competency record
+    var currentUser = Model.FirstOrDefault()?.User;
 }
 
 <div class="container py-4">
@@ -16,6 +19,35 @@
     }
     else
     {
+        if (currentUser != null)
+        {
+            <div class="row mb-4">
+                <div class="col-md-12">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-light">
+                            <h5 class="mb-0">Professional Development Points</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row text-center">
+                                <div class="col-md-6">
+                                    <div class="d-flex flex-column align-items-center">
+                                        <div class="display-2 text-primary fw-bold">@(currentUser.CEP_Points ?? 0)</div>
+                                        <span class="fs-5">CEP Points</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="d-flex flex-column align-items-center">
+                                        <div class="display-2 text-primary fw-bold">@(currentUser.CPD_Points ?? 0)</div>
+                                        <span class="fs-5">CPD Points</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
         <div class="row mb-4">
             <div class="col-md-12">
                 <div class="card shadow-sm">
@@ -32,19 +64,14 @@
                             </div>
                             <div class="col-md-3">
                                 <div class="d-flex flex-column align-items-center">
-                                    <div class="display-4 text-success">@Model.Count(uc => uc.Status == "Completed")</div>
-                                    <span>Completed</span>
+                                    <div class="display-4 text-success">@Model.Count(uc => uc.Status == "Active")</div>
+                                    <span>Active</span>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="d-flex flex-column align-items-center">
-                                    <div class="display-4 text-info">@Model.Count(uc => 
-                                        uc.Status == "Requested" || 
-                                        uc.Status == "Course attended" || 
-                                        uc.Status == "Examination passed" || 
-                                        uc.Status == "FTR Submitted" || 
-                                        uc.Status == "Interview")</div>
-                                    <span>In Progress</span>
+                                    <div class="display-4 text-info">@Model.Count(uc => uc.Status == "Pending")</div>
+                                    <span>Pending</span>
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -53,7 +80,7 @@
                                     <span>Expired</span>
                                 </div>
                             </div>
-                        </div>
+                                                </div>
                     </div>
                 </div>
             </div>
@@ -75,7 +102,6 @@
                     <thead class="table-light">
                         <tr>
                             <th>Competency Module</th>
-                            <th>Description</th>
                             <th>Status</th>
                             <th>Completion Date</th>
                             <th>Expiry Date</th>
@@ -87,29 +113,19 @@
                         {
                             <tr data-module="@item.CompetencyModule.ModuleName" data-status="@item.Status">
                                 <td>
-                                    <div>@item.CompetencyModule.ModuleName</div>
+                                    <div class="fw-bold fs-5">@item.CompetencyModule.ModuleName</div>
                                 </td>
-                                <td>@(string.IsNullOrEmpty(item.CompetencyModule.Description) ? "-" : item.CompetencyModule.Description)</td>
                                 <td>
                                     @switch (item.Status)
                                     {
-                                        case "Requested":
-                                            <span class="badge bg-secondary">Requested</span>
+                                        case "Expired":
+                                            <span class="badge bg-secondary">Expired</span>
                                             break;
-                                        case "Course attended":
-                                            <span class="badge bg-info">Course attended</span>
+                                        case "Pending":
+                                            <span class="badge bg-info">Pending</span>
                                             break;
-                                        case "Examination passed":
-                                            <span class="badge bg-success">Examination passed</span>
-                                            break;
-                                        case "FTR Submitted":
-                                            <span class="badge bg-success">FTR Submitted</span>
-                                            break;
-                                        case "Interview":
-                                            <span class="badge bg-success">Interview</span>
-                                            break;
-                                        case "Completed":
-                                            <span class="badge bg-success">Completed</span>
+                                        case "Active":
+                                            <span class="badge bg-success">Active</span>
                                             break;
                                     }
                                 </td>
@@ -141,7 +157,7 @@
                                         var buildings = item.Building.Split(',');
                                         foreach (var building in buildings)
                                         {
-                                            <span class="badge bg-info me-1">@building</span>
+                                            <span class="badge bg-info text-dark me-1">@building</span>
                                         }
                                     }
                                     else
@@ -168,9 +184,10 @@
                         <thead class="table-light">
                             <tr>
                                 <th>Competency Module</th>
-                                <th>Description</th>
+                                <th>Status</th>
                                 <th>Completion Date</th>
                                 <th>Expiry Date</th>
+                                <th>Buildings</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -178,9 +195,11 @@
                             {
                                 <tr>
                                     <td>
-                                        <div>@item.CompetencyModule.ModuleName</div>
+                                        <div class="fw-bold fs-5">@item.CompetencyModule.ModuleName</div>
                                     </td>
-                                    <td>@(string.IsNullOrEmpty(item.CompetencyModule.Description) ? "-" : item.CompetencyModule.Description)</td>
+                                    <td>
+                                        <span class="badge bg-danger">Expired</span>
+                                    </td>
                                     <td>@(item.CompletionDate.HasValue ? item.CompletionDate.Value.ToShortDateString() : "-")</td>
                                     <td>
                                         @if (item.ExpiryDate.HasValue)
@@ -190,6 +209,20 @@
                                         else
                                         {
                                             <span class="text-danger">-</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(item.Building))
+                                        {
+                                            var buildings = item.Building.Split(',');
+                                            foreach (var building in buildings)
+                                            {
+                                                <span class="badge bg-info text-dark me-1">@building</span>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">-</span>
                                         }
                                     </td>
                                 </tr>

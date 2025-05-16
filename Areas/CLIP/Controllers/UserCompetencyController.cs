@@ -16,8 +16,7 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
         public ActionResult Index()
         {
             var db = new ApplicationDbContext();
-            
-            // Get all competency modules with their associated user competencies
+            // Get all competency modules with associated user competencies
             var competencyModules = db.CompetencyModules
                 .Include(cm => cm.UserCompetencies.Select(uc => uc.User))
                 .ToList();
@@ -62,12 +61,19 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                     return View(model);
                 }
                 
-                // Status is now set from the form dropdown
-                // model.Status = "Not Started";
-                // Process selected buildings
-                if (Building != null && Building.Length > 0)
+                // Get the competency module type
+                var competencyModule = db.CompetencyModules.Find(model.CompetencyModuleId);
+                if (competencyModule != null && competencyModule.CompetencyType == "Environment")
                 {
-                    model.Building = string.Join(",", Building);
+                    // For Environment type, no expiry date is needed
+                    model.ExpiryDate = null;
+                }
+                
+                // Process selected buildings from form collection
+                var selectedBuildings = Request.Form.GetValues("Building");
+                if (selectedBuildings != null && selectedBuildings.Length > 0)
+                {
+                    model.Building = string.Join(",", selectedBuildings);
                 }
                 
                 db.UserCompetencies.Add(model);
@@ -103,12 +109,9 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
             // Prepare status dropdown items with new options
             ViewBag.Statuses = new List<string> 
             {
-                "Requested",
-                "Course attended",
-                "Examination passed",
-                "FTR Submitted",
-                "Interview",
-                "Completed"
+                "Active",
+                "Pending",
+                "Expired"
             };
             
             // Set up the selected buildings if any
@@ -143,21 +146,35 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                 // Update properties
                 userCompetency.Status = model.Status;
                 userCompetency.CompletionDate = model.CompletionDate;
-                userCompetency.ExpiryDate = model.ExpiryDate;
+                
+                // Get the competency module type
+                var competencyModule = db.CompetencyModules.Find(userCompetency.CompetencyModuleId);
+                if (competencyModule != null && competencyModule.CompetencyType == "Environment")
+                {
+                    // For Environment type, no expiry date is needed
+                    userCompetency.ExpiryDate = null;
+                }
+                else
+                {
+                    // For other types (Safety), use the expiry date from the form
+                    userCompetency.ExpiryDate = model.ExpiryDate;
+                }
+                
                 userCompetency.Remarks = model.Remarks;
                 
-                // Process selected buildings
-                if (Building != null && Building.Length > 0)
+                // Process selected buildings from form collection
+                var selectedBuildings = Request.Form.GetValues("Building");
+                if (selectedBuildings != null && selectedBuildings.Length > 0)
                 {
-                    userCompetency.Building = string.Join(",", Building);
+                    userCompetency.Building = string.Join(",", selectedBuildings);
                 }
                 else
                 {
                     userCompetency.Building = null;
                 }
                 
-                // If status is changed to "Completed" and no completion date is set, set it to today
-                if (model.Status == "Completed" && !userCompetency.CompletionDate.HasValue)
+                // If status is changed to "Active" and no completion date is set, set it to today
+                if (model.Status == "Active" && !userCompetency.CompletionDate.HasValue)
                 {
                     userCompetency.CompletionDate = DateTime.Today;
                 }
@@ -171,12 +188,9 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
             // If we got this far, something failed; reload form
             ViewBag.Statuses = new List<string> 
             {
-                "Requested",
-                "Course attended",
-                "Examination passed",
-                "FTR Submitted",
-                "Interview",
-                "Completed"
+                "Active",
+                "Pending",
+                "Expired"
             };
             
             // Set up the selected buildings if any

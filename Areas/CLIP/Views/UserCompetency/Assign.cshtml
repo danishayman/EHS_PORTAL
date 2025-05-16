@@ -42,7 +42,7 @@
                                 <option value="">Select a competency module</option>
                                 @foreach (var module in ViewBag.CompetencyModules)
                                 {
-                                    <option value="@module.Id">@module.ModuleName</option>
+                                    <option value="@module.Id" data-type="@module.CompetencyType">@module.ModuleName</option>
                                 }
                             </select>
                             <div class="invalid-feedback">
@@ -54,7 +54,7 @@
                             <label for="Status" class="form-label">Status</label>
                             <select id="Status" name="Status" class="form-select" required>
                                 <option value="Pending">Pending</option>
-                                <option value="Certified" selected>Certified</option>
+                                <option value="Active" selected>Active</option>
                             </select>
                             <div class="invalid-feedback">
                                 Please select a status.
@@ -67,7 +67,7 @@
                             <small class="text-muted">Leave blank if not yet completed.</small>
                         </div>
 
-                        <div class="mb-3">
+                        <div class="mb-3" id="expiryDateSection">
                             <label for="ExpiryDate" class="form-label">Expiry Date</label>
                             <input type="date" class="form-control" id="ExpiryDate" name="ExpiryDate">
                             <small class="text-muted">Enter the certification expiry date manually.</small>
@@ -181,6 +181,25 @@
                     $('#buildingOverall').prop('disabled', false);
                 }
             });
+            
+            // Handle competency module selection - show/hide expiry date based on type
+            $('#CompetencyModuleId').on('change', function() {
+                const selectedOption = $(this).find('option:selected');
+                const competencyType = selectedOption.attr('data-type');
+                
+                if (competencyType === 'Environment') {
+                    // Hide expiry date field for Environment type
+                    $('#expiryDateSection').hide();
+                    // Clear the expiry date value
+                    $('#ExpiryDate').val('');
+                } else {
+                    // Show expiry date field for other types (Safety)
+                    $('#expiryDateSection').show();
+                }
+            });
+            
+            // Initialize the expiry date visibility based on the initially selected module
+            $('#CompetencyModuleId').trigger('change');
         });
     </script>
 } 

@@ -56,6 +56,28 @@
             </div>
         </div>
         <div class="col-md-8">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0">Professional Development Points</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row text-center">
+                        <div class="col-md-6">
+                            <div class="d-flex flex-column align-items-center">
+                                <div class="display-4 text-primary">@(ViewBag.CEPPoints ?? 0)</div>
+                                <span>CEP Points</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex flex-column align-items-center">
+                                <div class="display-4 text-primary">@(ViewBag.CPDPoints ?? 0)</div>
+                                <span>CPD Points</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
             <div class="card shadow-sm">
                 <div class="card-header bg-light">
                     <h5 class="mb-0">Competency Summary</h5>
@@ -77,11 +99,9 @@
                         <div class="col-md-3">
                             <div class="d-flex flex-column align-items-center">
                                 <div class="display-4 text-info">@Model.Count(uc => 
-                                    uc.Status == "Requested" || 
-                                    uc.Status == "Course attended" || 
-                                    uc.Status == "Examination passed" || 
-                                    uc.Status == "FTR Submitted" || 
-                                    uc.Status == "Interview")</div>
+                                    uc.Status == "Active" || 
+                                    uc.Status == "Pending" || 
+                                    uc.Status == "Expired")</div>
                                 <span>In Progress</span>
                             </div>
                         </div>
@@ -142,23 +162,17 @@
                                 <td>
                                     @switch (item.Status)
                                     {
-                                        case "Requested":
-                                            <span class="badge bg-secondary">Requested</span>
+                                        case "Active":
+                                            <span class="badge bg-success">Active</span>
                                             break;
-                                        case "Course attended":
-                                            <span class="badge bg-info">Course attended</span>
+                                        case "Pending":
+                                            <span class="badge bg-info">Pending</span>
                                             break;
-                                        case "Examination passed":
-                                            <span class="badge bg-success">Examination passed</span>
+                                        case "Expired":
+                                            <span class="badge bg-danger">Expired</span>
                                             break;
-                                        case "FTR Submitted":
-                                            <span class="badge bg-success">FTR Submitted</span>
-                                            break;
-                                        case "Interview":
-                                            <span class="badge bg-success">Interview</span>
-                                            break;
-                                        case "Completed":
-                                            <span class="badge bg-success">Completed</span>
+                                        default:
+                                            <span class="badge bg-secondary">@item.Status</span>
                                             break;
                                     }
                                 </td>
@@ -191,7 +205,7 @@
                                         var buildings = item.Building.Split(',');
                                         foreach (var building in buildings)
                                         {
-                                            <span class="badge bg-info me-1">@building</span>
+                                            <span class="badge bg-info text-black me-1">@building</span>
                                         }
                                     }
                                     else

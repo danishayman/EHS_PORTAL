@@ -18,6 +18,192 @@
         }
     }
     var buildingsList = allBuildings.OrderBy(b => b).ToList();
+    
+    // Group the modules by competency type
+    var environmentModules = Model.Where(m => m.CompetencyType == "Environment").ToList();
+    var safetyModules = Model.Where(m => m.CompetencyType == "Safety").ToList();
+    var otherModules = Model.Where(m => m.CompetencyType != "Environment" && m.CompetencyType != "Safety" || string.IsNullOrEmpty(m.CompetencyType)).ToList();
+    
+    // Helper function to render a module
+    Func<EHS_PORTAL.Areas.CLIP.Models.CompetencyModule, IHtmlString> RenderModule = @<text>
+    @{
+        var userCount = item.UserCompetencies.Count();
+        var ActiveCount = item.UserCompetencies.Count(uc => uc.Status == "Active");
+        var PendingCount = item.UserCompetencies.Count(uc => uc.Status == "Pending");
+        var ExpiredCount = item.UserCompetencies.Count(uc => uc.ExpiryDate.HasValue && uc.ExpiryDate.Value < DateTime.Today);
+        var moduleId = $"module-{item.Id}";
+        
+        var typeIcon = "fas fa-book";
+        var typeBadgeClass = "bg-info";
+        
+        if (item.CompetencyType == "Environment")
+        {
+            typeIcon = "fas fa-certificate text-success";
+            typeBadgeClass = "bg-success";
+        }
+        else if (item.CompetencyType == "Safety")
+        {
+            typeIcon = "fas fa-shield-alt text-warning";
+            typeBadgeClass = "bg-warning text-dark";
+        }
+    }
+    <div class="accordion-item border-0 border-bottom competency-item" 
+         data-module="@item.ModuleName" 
+         data-users="@userCount" 
+         data-type="@(string.IsNullOrEmpty(item.CompetencyType) ? "Other" : item.CompetencyType)">
+        <h2 class="accordion-header" id="heading-@moduleId">
+            <button class="accordion-button collapsed py-3" type="button" data-bs-toggle="collapse" data-bs-target="#@moduleId" aria-expanded="false" aria-controls="@moduleId">
+                <div class="d-flex justify-content-between align-items-center w-100 me-3">
+                    <div class="d-flex flex-column">
+                        <div class="d-flex align-items-center">
+                            <strong class="fs-5 text-dark me-2">@item.ModuleName</strong>
+                        </div>
+                        @if (!string.IsNullOrEmpty(item.Description))
+                        {
+                            <span class="text-muted small">@item.Description</span>
+                        }
+                    </div>
+                    <div class="d-flex gap-2">
+                        @if(ActiveCount > 0)
+                        {
+                            <span class="badge bg-success rounded-pill">@ActiveCount Active</span>
+                        }
+                        @if(PendingCount > 0)
+                        {
+                            <span class="badge bg-secondary rounded-pill">@PendingCount Pending</span>
+                        }
+                        @if(ExpiredCount > 0)
+                        {
+                            <span class="badge bg-danger rounded-pill">@ExpiredCount Expired</span>
+                        }
+                    </div>
+                </div>
+            </button>
+        </h2>
+        <div id="@moduleId" class="accordion-collapse collapse" aria-labelledby="heading-@moduleId">
+            <div class="accordion-body p-0">
+                @if (item.UserCompetencies.Any())
+                {
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="ps-3">User</th>
+                                    <th>Status</th>
+                                    <th>Completion Date</th>
+                                    <th>Expiry Date</th>
+                                    <th>Buildings</th>
+                                    @if (User.IsInRole("Admin"))
+                                    {
+                                        <th class="text-end pe-3">Actions</th>
+                                    }
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var userCompetency in item.UserCompetencies.OrderBy(uc => uc.User.UserName))
+                                {
+                                    <tr>
+                                        <td class="ps-3">
+                                            <a href="@Url.Action("UserCompetencies", "UserCompetency", new { userId = userCompetency.UserId })" class="fw-medium text-decoration-none">
+                                                @userCompetency.User.UserName
+                                            </a>
+                                        </td>
+                                        <td>
+                                            @switch (userCompetency.Status)
+                                            {
+                                                case "Pending":
+                                                    <span class="badge bg-secondary">Pending</span>
+                                                    break;
+                                                case "Active":
+                                                    <span class="badge bg-success">Active</span>
+                                                    break;
+                                                default:
+                                                    <span class="badge bg-secondary">@userCompetency.Status</span>
+                                                    break;
+                                            }
+                                        </td>
+                                        <td>@(userCompetency.CompletionDate.HasValue ? userCompetency.CompletionDate.Value.ToShortDateString() : "-")</td>
+                                        <td>
+                                            @if (userCompetency.ExpiryDate.HasValue)
+                                            {
+                                                if (userCompetency.ExpiryDate.Value < DateTime.Today)
+                                                {
+                                                    <span class="badge bg-danger">@userCompetency.ExpiryDate.Value.ToShortDateString()</span>
+                                                }
+                                                else if (userCompetency.ExpiryDate.Value < DateTime.Today.AddMonths(1))
+                                                {
+                                                    <span class="badge bg-warning text-dark">@userCompetency.ExpiryDate.Value.ToShortDateString()</span>
+                                                }
+                                                else
+                                                {
+                                                    @userCompetency.ExpiryDate.Value.ToShortDateString()
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <span>-</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            @if (!string.IsNullOrEmpty(userCompetency.Building))
+                                            {
+                                                var buildings = userCompetency.Building.Split(',');
+                                                foreach (var building in buildings)
+                                                {
+                                                    <span class="badge bg-info text-dark rounded-pill me-1">@building.Trim()</span>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <span class="text-muted">-</span>
+                                            }
+                                        </td>
+                                        @if (User.IsInRole("Admin"))
+                                        {
+                                            <td class="text-end pe-3">
+                                                <div class="btn-group">
+                                                    <a href="@Url.Action("Edit", "UserCompetency", new { id = userCompetency.Id })" class="btn btn-sm btn-outline-primary">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+                                                    @using (Html.BeginForm("Delete", "UserCompetency", new { id = userCompetency.Id }, FormMethod.Post, new { style = "display:inline;" }))
+                                                    {
+                                                        @Html.AntiForgeryToken()
+                                                        <button type="submit" class="btn btn-sm btn-outline-danger" 
+                                                                onclick="return confirm('Are you sure you want to remove this competency assignment? This action cannot be undone.');">
+                                                            <i class="fas fa-trash"></i>
+                                                        </button>
+                                                    }
+                                                </div>
+                                            </td>
+                                        }
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-light m-3">
+                        <p class="mb-0">No users have been assigned to this competency module yet.</p>
+                    </div>
+                }
+                
+                @if (User.IsInRole("Admin"))
+                {
+                    <div class="p-3 bg-light border-top">
+                        <a href="@Url.Action("Assign", "UserCompetency")" class="btn btn-sm btn-primary">
+                            <i class="fas fa-plus me-1"></i>Assign to User
+                        </a>
+                        <a href="@Url.Action("Edit", "Competency", new { id = item.Id })" class="btn btn-sm btn-outline-secondary ms-2">
+                            <i class="fas fa-edit me-1"></i>Edit Module
+                        </a>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</text>;
 }
 
 <div class="container py-4">
@@ -57,9 +243,9 @@
     {
         <div class="card shadow-sm mb-4">
             <div class="card-header bg-light p-3">
-                <h5 class="card-title mb-3">Filter & Sort</h5>
+                <h5 class="card-title mb-3">Filter</h5>
                 <div class="row g-3">
-                    <div class="col-md-5">
+                    <div class="col-md-6">
                         <label for="searchInput" class="form-label small text-muted">Search</label>
                         <div class="input-group">
                             <span class="input-group-text bg-white text-muted">
@@ -71,187 +257,87 @@
                     <div class="col-md-3">
                         <label for="statusFilter" class="form-label small text-muted">Filter by</label>
                         <select id="statusFilter" class="form-select">
-                            <option value="">All Modules</option>
+                            <option value="">-- Select --</option>
                             <option value="with-users">With Assigned Users</option>
                             <option value="no-users">No Assigned Users</option>
                         </select>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <label for="buildingFilter" class="form-label small text-muted">Building</label>
                         <select id="buildingFilter" class="form-select">
-                            <option value="">All Buildings</option>
+                            <option value="">-- Select --</option>
                             @foreach (var building in buildingsList)
                             {
                                 <option value="@building">@building</option>
                             }
                         </select>
                     </div>
-                    <div class="col-md-2">
-                        <label for="sortOrder" class="form-label small text-muted">Sort by</label>
-                        <select id="sortOrder" class="form-select">
-                            <option value="name">Module Name</option>
-                            <option value="certified">Certified Count</option>
-                            <option value="expiry">Expiry Date</option>
-                        </select>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-12 text-end">
+                        <button id="clearFilters" class="btn btn-outline-secondary btn-sm">
+                            <i class="fas fa-times me-1"></i>Clear Filters
+                        </button>
                     </div>
                 </div>
             </div>
             
-            <div class="accordion" id="competencyAccordion">
-                @foreach (var module in Model)
-                {
-                    var userCount = module.UserCompetencies.Count();
-                    var certifiedCount = module.UserCompetencies.Count(uc => uc.Status == "Certified");
-                    var moduleId = $"module-{module.Id}";
-                    
-                    <div class="accordion-item border-0 border-bottom" data-module="@module.ModuleName" data-users="@userCount">
-                        <h2 class="accordion-header" id="heading-@moduleId">
-                            <button class="accordion-button collapsed py-3" type="button" data-bs-toggle="collapse" data-bs-target="#@moduleId" aria-expanded="false" aria-controls="@moduleId">
-                                <div class="d-flex justify-content-between align-items-center w-100 me-3">
-                                    <div class="d-flex flex-column">
-                                        <div class="d-flex align-items-center">
-                                            <strong class="fs-5 text-dark me-2">@module.ModuleName</strong>
-                                            @if (!string.IsNullOrEmpty(module.CompetencyType))
-                                            {
-                                                <span class="badge bg-info text-dark rounded-pill">@module.CompetencyType</span>
-                                            }
-                                        </div>
-                                        @if (!string.IsNullOrEmpty(module.Description))
-                                        {
-                                            <span class="text-muted small">@module.Description</span>
-                                        }
-                                    </div>
-                                    <div class="d-flex gap-2">
-                                        <span class="badge bg-success rounded-pill">@certifiedCount Certified</span>
-                                    </div>
-                                </div>
-                            </button>
-                        </h2>
-                        <div id="@moduleId" class="accordion-collapse collapse" aria-labelledby="heading-@moduleId" data-bs-parent="#competencyAccordion">
-                            <div class="accordion-body p-0">
-                                @if (module.UserCompetencies.Any())
-                                {
-                                    <div class="table-responsive">
-                                        <table class="table table-hover mb-0">
-                                            <thead class="table-light">
-                                                <tr>
-                                                    <th class="ps-3">User</th>
-                                                    <th>Status</th>
-                                                    <th>Completion Date</th>
-                                                    <th>Expiry Date</th>
-                                                    <th>Buildings</th>
-                                                    @if (User.IsInRole("Admin"))
-                                                    {
-                                                        <th class="text-end pe-3">Actions</th>
-                                                    }
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach (var userCompetency in module.UserCompetencies.OrderBy(uc => uc.User.UserName))
-                                                {
-                                                    <tr>
-                                                        <td class="ps-3">
-                                                            <a href="@Url.Action("UserCompetencies", "UserCompetency", new { userId = userCompetency.UserId })" class="fw-medium text-decoration-none">
-                                                                @userCompetency.User.UserName
-                                                            </a>
-                                                        </td>
-                                                        <td>
-                                                            @switch (userCompetency.Status)
-                                                            {
-                                                                case "Pending":
-                                                                    <span class="badge bg-secondary">Pending</span>
-                                                                    break;
-                                                                case "Certified":
-                                                                    <span class="badge bg-success">Certified</span>
-                                                                    break;
-                                                                default:
-                                                                    <span class="badge bg-secondary">@userCompetency.Status</span>
-                                                                    break;
-                                                            }
-                                                        </td>
-                                                        <td>@(userCompetency.CompletionDate.HasValue ? userCompetency.CompletionDate.Value.ToShortDateString() : "-")</td>
-                                                        <td>
-                                                            @if (userCompetency.ExpiryDate.HasValue)
-                                                            {
-                                                                if (userCompetency.ExpiryDate.Value < DateTime.Today)
-                                                                {
-                                                                    <span class="badge bg-danger">@userCompetency.ExpiryDate.Value.ToShortDateString()</span>
-                                                                }
-                                                                else if (userCompetency.ExpiryDate.Value < DateTime.Today.AddMonths(1))
-                                                                {
-                                                                    <span class="badge bg-warning text-dark">@userCompetency.ExpiryDate.Value.ToShortDateString()</span>
-                                                                }
-                                                                else
-                                                                {
-                                                                    @userCompetency.ExpiryDate.Value.ToShortDateString()
-                                                                }
-                                                            }
-                                                            else
-                                                            {
-                                                                <span>-</span>
-                                                            }
-                                                        </td>
-                                                        <td>
-                                                            @if (!string.IsNullOrEmpty(userCompetency.Building))
-                                                            {
-                                                                var buildings = userCompetency.Building.Split(',');
-                                                                foreach (var building in buildings)
-                                                                {
-                                                                    <span class="badge bg-info text-dark rounded-pill me-1">@building.Trim()</span>
-                                                                }
-                                                            }
-                                                            else
-                                                            {
-                                                                <span class="text-muted">-</span>
-                                                            }
-                                                        </td>
-                                                        @if (User.IsInRole("Admin"))
-                                                        {
-                                                            <td class="text-end pe-3">
-                                                                <div class="btn-group">
-                                                                    <a href="@Url.Action("Edit", "UserCompetency", new { id = userCompetency.Id })" class="btn btn-sm btn-outline-primary">
-                                                                        <i class="fas fa-edit"></i>
-                                                                    </a>
-                                                                    @using (Html.BeginForm("Delete", "UserCompetency", new { id = userCompetency.Id }, FormMethod.Post, new { style = "display:inline;" }))
-                                                                    {
-                                                                        @Html.AntiForgeryToken()
-                                                                        <button type="submit" class="btn btn-sm btn-outline-danger" 
-                                                                                onclick="return confirm('Are you sure you want to remove this competency assignment? This action cannot be undone.');">
-                                                                            <i class="fas fa-trash"></i>
-                                                                        </button>
-                                                                    }
-                                                                </div>
-                                                            </td>
-                                                        }
-                                                    </tr>
-                                                }
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                }
-                                else
-                                {
-                                    <div class="alert alert-light m-3">
-                                        <p class="mb-0">No users have been assigned to this competency module yet.</p>
-                                    </div>
-                                }
-                                
-                                @if (User.IsInRole("Admin"))
-                                {
-                                    <div class="p-3 bg-light border-top">
-                                        <a href="@Url.Action("Assign", "UserCompetency")" class="btn btn-sm btn-primary">
-                                            <i class="fas fa-plus me-1"></i>Assign to User
-                                        </a>
-                                        <a href="@Url.Action("Edit", "Competency", new { id = module.Id })" class="btn btn-sm btn-outline-secondary ms-2">
-                                            <i class="fas fa-edit me-1"></i>Edit Module
-                                        </a>
-                                    </div>
-                                }
-                            </div>
-                        </div>
+            <!-- Environment Section -->
+            @if (environmentModules.Any())
+            {
+                <div class="category-section" id="environment-section">
+                    <div class="category-header bg-success bg-opacity-10 p-3 border-top border-bottom">
+                        <h3 class="mb-0 d-flex align-items-center">
+                            <i class="fas fa-leaf text-success me-2"></i> Environment Competencies
+                        </h3>
                     </div>
-                }
-            </div>
+                    
+                    <div class="accordion" id="environmentAccordion">
+                        @foreach (var module in environmentModules)
+                        {
+                            @RenderModule(module)
+                        }
+                    </div>
+                </div>
+            }
+            
+            <!-- Safety Section -->
+            @if (safetyModules.Any())
+            {
+                <div class="category-section" id="safety-section">
+                    <div class="category-header bg-warning bg-opacity-10 p-3 border-top border-bottom">
+                        <h3 class="mb-0 d-flex align-items-center">
+                            <i class="fas fa-hard-hat text-warning me-2"></i> Safety Competencies
+                        </h3>
+                    </div>
+                    
+                    <div class="accordion" id="safetyAccordion">
+                        @foreach (var module in safetyModules)
+                        {
+                            @RenderModule(module)
+                        }
+                    </div>
+                </div>
+            }
+            
+            <!-- Others Section -->
+            @if (otherModules.Any())
+            {
+                <div class="category-section" id="others-section">
+                    <div class="category-header bg-info bg-opacity-10 p-3 border-top border-bottom">
+                        <h3 class="mb-0 d-flex align-items-center">
+                            <i class="fas fa-clipboard-list text-info me-2"></i> Other Competencies
+                        </h3>
+                    </div>
+                    
+                    <div class="accordion" id="othersAccordion">
+                        @foreach (var module in otherModules)
+                        {
+                            @RenderModule(module)
+                        }
+                    </div>
+                </div>
+            }
         </div>
     }
 </div>
@@ -274,10 +360,13 @@
             $("#buildingFilter").on("change", function () {
                 filterModules();
             });
-
-            // Sorting
-            $("#sortOrder").on("change", function () {
-                sortModules();
+            
+            // Clear filters button
+            $("#clearFilters").on("click", function() {
+                $("#searchInput").val("");
+                $("#statusFilter").val("");
+                $("#buildingFilter").val("");
+                filterModules();
             });
 
             function filterModules() {
@@ -286,10 +375,10 @@
                 var buildingFilter = $("#buildingFilter").val();
 
                 // First hide all items
-                $(".accordion-item").hide();
+                $(".competency-item").hide();
                 
                 // Then show matching items
-                $(".accordion-item").each(function () {
+                $(".competency-item").each(function () {
                     var $item = $(this);
                     var moduleName = $item.data("module").toLowerCase();
                     var moduleDesc = $item.find(".text-muted").text().toLowerCase();
@@ -325,10 +414,22 @@
                     }
                 });
                 
+                // Check if any items are visible in each section and show/hide accordingly
+                $(".category-section").each(function() {
+                    var $section = $(this);
+                    var visibleItems = $section.find(".competency-item:visible").length;
+                    
+                    if (visibleItems === 0) {
+                        $section.hide();
+                    } else {
+                        $section.show();
+                    }
+                });
+                
                 // Show a message if no results
-                if ($(".accordion-item:visible").length === 0) {
+                if ($(".competency-item:visible").length === 0) {
                     if ($("#no-results-message").length === 0) {
-                        $("#competencyAccordion").append(
+                        $(".card").append(
                             '<div id="no-results-message" class="alert alert-info m-3">No modules match your filter criteria.</div>'
                         );
                     }
@@ -337,51 +438,6 @@
                 }
             }
 
-            function sortModules() {
-                var sortBy = $("#sortOrder").val();
-                var items = $(".accordion-item").toArray();
-                
-                items.sort(function(a, b) {
-                    if (sortBy === "name") {
-                        var keyA = $(a).data("module").toLowerCase();
-                        var keyB = $(b).data("module").toLowerCase();
-                        return keyA > keyB ? 1 : keyA < keyB ? -1 : 0;
-                    } 
-                    else if (sortBy === "certified") {
-                        var keyA = $(a).find(".badge.bg-success").text().split(" ")[0];
-                        var keyB = $(b).find(".badge.bg-success").text().split(" ")[0];
-                        return parseInt(keyB) - parseInt(keyA); // Sort by certified count descending
-                    }
-                    else if (sortBy === "expiry") {
-                        // Find earliest expiry date in each module
-                        function getEarliestExpiry(item) {
-                            var earliestDate = null;
-                            $(item).find('tr').each(function() {
-                                var expiryText = $(this).find('td:nth-child(4)').text().trim();
-                                if (expiryText !== '-') {
-                                    var dateParts = expiryText.split('/');
-                                    if (dateParts.length === 3) {
-                                        var dateObj = new Date(dateParts[2], dateParts[1]-1, dateParts[0]);
-                                        if (!earliestDate || dateObj < earliestDate) {
-                                            earliestDate = dateObj;
-                                        }
-                                    }
-                                }
-                            });
-                            return earliestDate || new Date(9999, 11, 31); // Far future date if no expiry
-                        }
-                        
-                        var dateA = getEarliestExpiry(a);
-                        var dateB = getEarliestExpiry(b);
-                        return dateA - dateB; // Sort by earliest expiry first
-                    }
-                });
-                
-                $.each(items, function(index, item) {
-                    $("#competencyAccordion").append(item);
-                });
-            }
-            
             // Initialize filters on page load
             filterModules();
         });
