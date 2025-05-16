@@ -6,7 +6,7 @@ using System.Web.Mvc;
 using System.Data.Entity.Infrastructure;
 using EHS_PORTAL.Areas.CLIP.Models;
 
-namespace CLIP.Controllers
+namespace EHS_PORTAL.Areas.CLIP.Controllers
 {
     public class CompetencyController : Controller
     {

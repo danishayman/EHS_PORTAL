@@ -15,7 +15,7 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
     [Authorize]
     public class PlantMonitoringController : Controller
     {
-        private EHS_PORTAL.ApplicationDbContext db = new EHS_PORTAL.ApplicationDbContext();
+        private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: PlantMonitoring
         public ActionResult Index(string category = null, int? plantId = null, string status = null, string monitoringType = null, int? frequency = null)

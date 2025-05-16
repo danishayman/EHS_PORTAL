@@ -33,18 +33,18 @@ namespace EHS_PORTAL
     }
 
     // Configure the application user manager used in this application. UserManager is defined in ASP.NET Identity and is used by the application.
-    public class ApplicationUserManager : UserManager<EHS_PORTAL.ApplicationUser>
+    public class ApplicationUserManager : UserManager<ApplicationUser>
     {
-        public ApplicationUserManager(IUserStore<EHS_PORTAL.ApplicationUser> store)
+        public ApplicationUserManager(IUserStore<ApplicationUser> store)
             : base(store)
         {
         }
 
         public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context) 
         {
-            var manager = new ApplicationUserManager(new UserStore<EHS_PORTAL.ApplicationUser>(context.Get<EHS_PORTAL.ApplicationDbContext>()));
+            var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(context.Get<ApplicationDbContext>()));
             // Configure validation logic for usernames
-            manager.UserValidator = new UserValidator<EHS_PORTAL.ApplicationUser>(manager)
+            manager.UserValidator = new UserValidator<ApplicationUser>(manager)
             {
                 AllowOnlyAlphanumericUserNames = false,
                 RequireUniqueEmail = true
@@ -67,11 +67,11 @@ namespace EHS_PORTAL
 
             // Register two factor authentication providers. This application uses Phone and Emails as a step of receiving a code for verifying the user
             // You can write your own provider and plug it in here.
-            manager.RegisterTwoFactorProvider("Phone Code", new PhoneNumberTokenProvider<EHS_PORTAL.ApplicationUser>
+            manager.RegisterTwoFactorProvider("Phone Code", new PhoneNumberTokenProvider<ApplicationUser>
             {
                 MessageFormat = "Your security code is {0}"
             });
-            manager.RegisterTwoFactorProvider("Email Code", new EmailTokenProvider<EHS_PORTAL.ApplicationUser>
+            manager.RegisterTwoFactorProvider("Email Code", new EmailTokenProvider<ApplicationUser>
             {
                 Subject = "Security Code",
                 BodyFormat = "Your security code is {0}"
@@ -82,25 +82,25 @@ namespace EHS_PORTAL
             if (dataProtectionProvider != null)
             {
                 manager.UserTokenProvider = 
-                    new DataProtectorTokenProvider<EHS_PORTAL.ApplicationUser>(dataProtectionProvider.Create("ASP.NET Identity"));
+                    new DataProtectorTokenProvider<ApplicationUser>(dataProtectionProvider.Create("ASP.NET Identity"));
             }
             return manager;
         }
     }
 
     // Configure the application sign-in manager which is used in this application.
-    public class ApplicationSignInManager : SignInManager<EHS_PORTAL.ApplicationUser, string>
+    public class ApplicationSignInManager : SignInManager<ApplicationUser, string>
     {
         public ApplicationSignInManager(ApplicationUserManager userManager, IAuthenticationManager authenticationManager)
             : base(userManager, authenticationManager)
         {
         }
 
-        public override Task<ClaimsIdentity> CreateUserIdentityAsync(EHS_PORTAL.ApplicationUser user)
+        public override Task<ClaimsIdentity> CreateUserIdentityAsync(ApplicationUser user)
         {
-            // Convert to area user type first, then call GenerateUserIdentityAsync,
-            // and convert the UserManager to the expected type
-            var areaUser = user.ToAreaUser();
+            // Since ApplicationUser already inherits from Areas.CLIP.Models.ApplicationUser,
+            // we can directly cast it
+            var areaUser = (Areas.CLIP.Models.ApplicationUser)user;
             var userManager = (UserManager<Areas.CLIP.Models.ApplicationUser>)UserManager;
             return areaUser.GenerateUserIdentityAsync(userManager);
         }
@@ -121,7 +121,7 @@ namespace EHS_PORTAL
 
         public static ApplicationRoleManager Create(IdentityFactoryOptions<ApplicationRoleManager> options, IOwinContext context)
         {
-            return new ApplicationRoleManager(new RoleStore<IdentityRole>(context.Get<EHS_PORTAL.ApplicationDbContext>()));
+            return new ApplicationRoleManager(new RoleStore<IdentityRole>(context.Get<ApplicationDbContext>()));
         }
     }
 }

@@ -7,7 +7,7 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using EHS_PORTAL.Areas.CLIP.Models;
 
-namespace CLIP.Controllers
+namespace EHS_PORTAL.Areas.CLIP.Controllers
 {
     [Authorize]
     public class UserCompetencyController : Controller

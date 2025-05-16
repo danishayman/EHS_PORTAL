@@ -7,17 +7,14 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using EHS_PORTAL.Areas.CLIP.Models;
-using EHS_PORTAL;
 
-// Use aliases for identity classes
-using ApplicationDbContext = EHS_PORTAL.ApplicationDbContext;
 
 namespace EHS_PORTAL.Areas.CLIP.Controllers
 {
     [Authorize]
     public class MonitoringController : Controller
     {
-        private EHS_PORTAL.ApplicationDbContext db = new EHS_PORTAL.ApplicationDbContext();
+        private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Monitoring
         public ActionResult Index()

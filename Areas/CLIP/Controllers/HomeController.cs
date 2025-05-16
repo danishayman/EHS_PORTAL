@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using EHS_PORTAL.Areas.CLIP.Models;
 
-namespace CLIP.Controllers
+namespace EHS_PORTAL.Areas.CLIP.Controllers
 {
     public class HomeController : Controller
     {
