@@ -17,7 +17,7 @@
                         @Html.ValidationSummary(true, "", new { @class = "text-danger mb-3" })
                         
                         <div class="mb-3">
-                            @Html.LabelFor(m => m.ModuleName, new { @class = "form-label" })
+                            @Html.LabelFor(m => m.ModuleName, "Module Name", new { @class = "form-label" })
                             @Html.TextBoxFor(m => m.ModuleName, new { @class = "form-control", placeholder = "Enter module name" })
                             @Html.ValidationMessageFor(m => m.ModuleName, "", new { @class = "text-danger" })
                         </div>
@@ -29,43 +29,21 @@
                         </div>
                         
                         <div class="mb-3">
-                            @Html.LabelFor(m => m.ValidityMonths, "Validity Period (Years)", new { @class = "form-label" })
-                            <div class="d-flex align-items-center mb-2">
-                                <div class="form-check me-3">
-                                    <input type="checkbox" id="noValidityPeriod" class="form-check-input" />
-                                    <label class="form-check-label" for="noValidityPeriod">No validity period</label>
-                                </div>
-                            </div>
-                            <div class="input-group">
-                                @Html.TextBoxFor(m => m.ValidityMonths, new { @class = "form-control", type = "number", min = "1", step = "1", placeholder = "Enter validity period" })
-                                <span class="input-group-text">years</span>
-                            </div>
-                            @Html.ValidationMessageFor(m => m.ValidityMonths, "", new { @class = "text-danger" })
+                            @Html.LabelFor(m => m.CompetencyType, "Competency Type", new { @class = "form-label" })
+                            @Html.DropDownListFor(m => m.CompetencyType, 
+                                new List<SelectListItem> { 
+                                    new SelectListItem { Text = "Environment", Value = "Environment" },
+                                    new SelectListItem { Text = "Safety", Value = "Safety" },
+                                    new SelectListItem { Text = "Others", Value = "Others" }
+                                },
+                                "Select competency type", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.CompetencyType, "", new { @class = "text-danger" })
                         </div>
                         
-                        <div class="row mb-3">
-                            <div class="col-md-4">
-                                @Html.LabelFor(m => m.PointType, "Point Type", new { @class = "form-label" })
-                                @Html.DropDownListFor(m => m.PointType, 
-                                    new List<SelectListItem> { 
-                                        new SelectListItem { Text = "Continuing Professional Development (CPD)", Value = "CPD" },
-                                        new SelectListItem { Text = "Continuing Education Program (CEP)", Value = "CEP" }
-                                    },
-                                    "Select point type", new { @class = "form-control" })
-                                @Html.ValidationMessageFor(m => m.PointType, "", new { @class = "text-danger" })
-                            </div>
-                            
-                            <div class="col-md-4">
-                                @Html.LabelFor(m => m.TotalPoints, "Total Points", new { @class = "form-label" })
-                                @Html.TextBoxFor(m => m.TotalPoints, new { @class = "form-control", type = "number", min = "0", placeholder = "Enter total points" })
-                                @Html.ValidationMessageFor(m => m.TotalPoints, "", new { @class = "text-danger" })
-                            </div>
-                            
-                            <div class="col-md-4">
-                                @Html.LabelFor(m => m.AnnualPointDeduction, "Annual Point Deduction", new { @class = "form-label" })
-                                @Html.TextBoxFor(m => m.AnnualPointDeduction, new { @class = "form-control", type = "number", min = "0", placeholder = "Enter deduction points" })
-                                @Html.ValidationMessageFor(m => m.AnnualPointDeduction, "", new { @class = "text-danger" })
-                            </div>
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.AnnualPointDeduction, "Annual Point Deduction", new { @class = "form-label" })
+                            @Html.TextBoxFor(m => m.AnnualPointDeduction, new { @class = "form-control", type = "number", min = "0", placeholder = "Enter deduction points" })
+                            @Html.ValidationMessageFor(m => m.AnnualPointDeduction, "", new { @class = "text-danger" })
                         </div>
                         
                         <div class="mt-4 d-flex justify-content-between">
@@ -86,46 +64,4 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-    
-    <script>
-        $(document).ready(function() {
-            // Convert validity months to years for display
-            var validityMonths = $('#ValidityMonths').val();
-            if (validityMonths) {
-                $('#ValidityMonths').val(Math.floor(validityMonths / 12));
-            }
-            
-            $('#noValidityPeriod').change(function() {
-                if($(this).is(':checked')) {
-                    $('#ValidityMonths').val('').prop('disabled', true);
-                } else {
-                    $('#ValidityMonths').prop('disabled', false);
-                }
-            });
-            
-            // Set initial state if the model has no validity months
-            if (!$('#ValidityMonths').val()) {
-                $('#noValidityPeriod').prop('checked', true);
-                $('#ValidityMonths').prop('disabled', true);
-            }
-            
-            // Prevent enter key from submitting the form
-            $('#ValidityMonths').keydown(function(event) {
-                if (event.keyCode === 13) { // Enter key
-                    event.preventDefault();
-                    return false;
-                }
-            });
-            
-            // Only convert years to months when the Save button is clicked
-            $('button[type="submit"]').click(function() {
-                if (!$('#noValidityPeriod').is(':checked')) {
-                    var years = parseInt($('#ValidityMonths').val());
-                    if (!isNaN(years)) {
-                        $('#ValidityMonths').val(years * 12);
-                    }
-                }
-            });
-        });
-    </script>
 } 

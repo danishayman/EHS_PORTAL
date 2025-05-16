@@ -32,6 +32,18 @@
                     </div>
                     
                     <div class="mb-3">
+                        @Html.LabelFor(m => m.CEP_Points, new { @class = "form-label" })
+                        @Html.TextBoxFor(m => m.CEP_Points, new { @class = "form-control", type = "number", placeholder = "Enter CEP Points" })
+                        @Html.ValidationMessageFor(m => m.CEP_Points, "", new { @class = "text-danger" })
+                    </div>
+                    
+                    <div class="mb-3">
+                        @Html.LabelFor(m => m.CPD_Points, new { @class = "form-label" })
+                        @Html.TextBoxFor(m => m.CPD_Points, new { @class = "form-control", type = "number", placeholder = "Enter CPD Points" })
+                        @Html.ValidationMessageFor(m => m.CPD_Points, "", new { @class = "text-danger" })
+                    </div>
+                    
+                    <div class="mb-3">
                         @Html.LabelFor(m => m.Password, new { @class = "form-label" })
                         @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Create a password" })
                     </div>

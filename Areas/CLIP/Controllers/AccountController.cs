@@ -193,7 +193,13 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.UserName, Email = model.Email, EmpID = model.EmpID };
+                var user = new ApplicationUser { 
+                    UserName = model.UserName, 
+                    Email = model.Email, 
+                    EmpID = model.EmpID,
+                    CEP_Points = model.CEP_Points,
+                    CPD_Points = model.CPD_Points
+                };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
