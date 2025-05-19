@@ -33,8 +33,8 @@
             <div class="col">
                 <div class="card border-0 shadow-sm">
                     <div class="card-body d-flex justify-content-between align-items-center">
-                        <div class="d-flex align-items-center">
-                            <div class="search-wrapper position-relative me-3">
+                        <div class="d-flex align-items-center flex-wrap">
+                            <div class="search-wrapper position-relative me-3 mb-2 mb-md-0">
                                 <input type="text" id="userSearch" class="form-control" placeholder="Search users...">
                                 <i class="fas fa-search position-absolute top-50 end-0 translate-middle-y me-2 text-muted"></i>
                             </div>
@@ -136,10 +136,10 @@
                                         <th>Username</th>
                                         <th>Email</th>
                                         <th>Employee ID</th>
-                                        <th>CEP Points</th>
-                                        <th>CPD Points</th>
+                                        <th class="text-center">CEP Points</th>
+                                        <th class="text-center">CPD Points</th>
                                         <th>Phone Number</th>
-                                        <th>Actions</th>
+                                        <th class="text-end">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -149,18 +149,22 @@
                                             <td>
                                                 <div class="d-flex align-items-center">
                                                     <div class="avatar-circle me-2">
-                                                        @user.UserName.Substring(0, 1).ToUpper()
+                                                        @(string.IsNullOrEmpty(user.UserName) ? "?" : user.UserName.Substring(0, 1).ToUpper())
                                                     </div>
-                                                    @user.UserName
+                                                    <span class="text-truncate" style="max-width: 150px;">@user.UserName</span>
                                                 </div>
                                             </td>
-                                            <td>@user.Email</td>
-                                            <td>@user.EmpID</td>
-                                            <td><span class="badge bg-success rounded-pill">@(user.CEP_Points ?? 0)</span></td>
-                                            <td><span class="badge bg-info rounded-pill">@(user.CPD_Points ?? 0)</span></td>
+                                            <td>
+                                                <span class="text-truncate d-inline-block" style="max-width: 200px;">
+                                                    @(string.IsNullOrEmpty(user.Email) ? "No email" : user.Email)
+                                                </span>
+                                            </td>
+                                            <td>@(string.IsNullOrEmpty(user.EmpID) ? "Not set" : user.EmpID)</td>
+                                            <td class="text-center"><span class="badge bg-success rounded-pill">@(user.CEP_Points ?? 0)</span></td>
+                                            <td class="text-center"><span class="badge bg-info rounded-pill">@(user.CPD_Points ?? 0)</span></td>
                                             <td>@(string.IsNullOrEmpty(user.PhoneNumber) ? "Not set" : user.PhoneNumber)</td>
                                             <td>
-                                                <div class="action-buttons">
+                                                <div class="action-buttons text-end">
                                                     <a href="@Url.Action("UserDetails", new { id = user.Id })" class="btn btn-sm btn-outline-info action-btn" data-bs-toggle="tooltip" title="View Details">
                                                         <i class="fas fa-info-circle"></i>
                                                     </a>
@@ -170,10 +174,9 @@
                                                     <a href="@Url.Action("ResetUserPassword", new { id = user.Id })" class="btn btn-sm btn-outline-warning action-btn" data-bs-toggle="tooltip" title="Reset Password">
                                                         <i class="fas fa-key"></i>
                                                     </a>
-                                                    <button type="button" class="btn btn-sm btn-outline-danger action-btn delete-user-btn" 
-                                                            data-user-id="@user.Id" data-user-name="@user.UserName">
+                                                    <a href="@Url.Action("DeleteUser", new { id = user.Id, area = "CLIP" })" class="btn btn-sm btn-outline-danger action-btn" data-bs-toggle="tooltip" title="Delete User">
                                                         <i class="fas fa-trash"></i>
-                                                    </button>
+                                                    </a>
                                                 </div>
                                             </td>
                                         </tr>
@@ -194,16 +197,16 @@
                         <h5 class="mb-0"><i class="fas fa-th-large me-2 text-primary"></i>User Cards</h5>
                     </div>
                     <div class="card-body">
-                        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4" id="userCards">
+                        <div class="row g-3" id="userCards">
                             @foreach (var user in Model)
                             {
-                                <div class="col user-card-col" data-user-id="@user.Id" data-user-name="@user.UserName" data-user-email="@user.Email">
+                                <div class="col-12 col-md-6 col-lg-4 col-xl-3 user-card-col" data-user-id="@user.Id" data-user-name="@user.UserName" data-user-email="@user.Email">
                                     <div class="card h-100 user-card">
                                         <div class="card-header text-center bg-light py-3 position-relative">
                                             <div class="avatar-circle-lg mx-auto mb-2">
-                                                @user.UserName.Substring(0, 1).ToUpper()
+                                                @(string.IsNullOrEmpty(user.UserName) ? "?" : user.UserName.Substring(0, 1).ToUpper())
                                             </div>
-                                            <h5 class="card-title mb-0">@user.UserName</h5>
+                                            <h5 class="card-title mb-0 text-truncate">@user.UserName</h5>
                                             <span class="position-absolute top-0 end-0 p-2">
                                                 <div class="dropdown">
                                                     <button class="btn btn-sm btn-light rounded-circle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -227,10 +230,9 @@
                                                         </li>
                                                         <li><hr class="dropdown-divider"></li>
                                                         <li>
-                                                            <button class="dropdown-item text-danger delete-user-btn" 
-                                                                    data-user-id="@user.Id" data-user-name="@user.UserName">
+                                                            <a class="dropdown-item text-danger" href="@Url.Action("DeleteUser", new { id = user.Id, area = "CLIP" })">
                                                                 <i class="fas fa-trash me-2"></i>Delete User
-                                                            </button>
+                                                            </a>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -240,7 +242,7 @@
                                             <div class="mb-3">
                                                 <div class="d-flex align-items-center mb-2">
                                                     <i class="fas fa-envelope text-muted me-2"></i>
-                                                    <span class="text-truncate">@user.Email</span>
+                                                    <span class="text-truncate">@(string.IsNullOrEmpty(user.Email) ? "No email" : user.Email)</span>
                                                 </div>
                                                 <div class="d-flex align-items-center mb-2">
                                                     <i class="fas fa-id-badge text-muted me-2"></i>
@@ -266,13 +268,19 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="card-footer bg-white d-flex justify-content-between p-2">
-                                            <a href="@Url.Action("UserDetails", new { id = user.Id })" class="btn btn-sm btn-light flex-grow-1 me-1">
-                                                <i class="fas fa-info-circle me-1"></i>Details
-                                            </a>
-                                            <a href="@Url.Action("EditUser", new { id = user.Id })" class="btn btn-sm btn-primary flex-grow-1">
-                                                <i class="fas fa-edit me-1"></i>Edit
-                                            </a>
+                                        <div class="card-footer bg-white d-grid gap-2 p-2">
+                                            <div class="row g-2">
+                                                <div class="col-6">
+                                                    <a href="@Url.Action("UserDetails", new { id = user.Id })" class="btn btn-sm btn-light w-100">
+                                                        <i class="fas fa-info-circle me-1"></i>Details
+                                                    </a>
+                                                </div>
+                                                <div class="col-6">
+                                                    <a href="@Url.Action("EditUser", new { id = user.Id })" class="btn btn-sm btn-primary w-100">
+                                                        <i class="fas fa-edit me-1"></i>Edit
+                                                    </a>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -301,15 +309,27 @@
                         <p class="mb-0">Are you sure you want to delete user <strong id="deleteUserName"></strong>?</p>
                         <p class="text-danger mb-0">This action cannot be undone.</p>
                     </div>
+                    
+                    <div class="form-check mt-3">
+                        <input class="form-check-input" type="checkbox" id="confirmDeleteCheck">
+                        <label class="form-check-label" for="confirmDeleteCheck">
+                            I understand this action is permanent and cannot be undone.
+                        </label>
+                    </div>
+                    
+                    <div class="alert alert-danger mt-3 d-none" id="deleteErrorAlert">
+                        <i class="fas fa-exclamation-circle me-2"></i>
+                        <span id="deleteErrorMessage">An error occurred while deleting the user.</span>
+                    </div>
                 </div>
                 <div class="modal-footer bg-light">
-                    <form action="@Url.Action("DeleteUser", "Manage")" method="post" id="deleteUserForm">
+                    <form action="@Url.Action("DeleteUser", "Manage", new { area = "CLIP" })" method="post" id="deleteUserForm">
                         @Html.AntiForgeryToken()
                         <input type="hidden" id="deleteUserId" name="id" value="" />
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                             <i class="fas fa-times me-1"></i>Cancel
                         </button>
-                        <button type="submit" class="btn btn-danger">
+                        <button type="submit" class="btn btn-danger" id="confirmDeleteButton" disabled>
                             <i class="fas fa-trash me-1"></i>Delete User
                         </button>
                     </form>
@@ -322,6 +342,24 @@
 @section Scripts {
     <script>
         $(document).ready(function() {
+            // Show appropriate view on page load
+            function setInitialView() {
+                var viewType = localStorage.getItem('userViewMode') || 'table';
+                
+                // Update active button
+                $('.view-toggle').removeClass('active');
+                $('.view-toggle[data-view="' + viewType + '"]').addClass('active');
+                
+                // Show correct view
+                $('.view-container').addClass('d-none');
+                $('#' + viewType + 'View').removeClass('d-none');
+                
+                // Apply search filtering for cards view
+                if (viewType === 'cards') {
+                    applyCardSearch($('#userSearch').val().toLowerCase());
+                }
+            }
+            
             // Initialize DataTable
             var table = $('#usersTable').DataTable({
                 "dom": "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
@@ -342,50 +380,68 @@
                     { "targets": 6, "orderable": false }
                 ],
                 "autoWidth": false,
-                "responsive": true
+                "responsive": true,
+                "drawCallback": function() {
+                    // Reinitialize tooltips after table redraw
+                    initTooltips();
+                }
             });
             
-            // Initialize tooltips
-            var tooltipElements = document.querySelectorAll('[data-bs-toggle="tooltip"]');
-            if (tooltipElements.length > 0) {
-                var tooltipList = Array.from(tooltipElements).map(function(el) {
-                    return new bootstrap.Tooltip(el);
+            // Function to initialize tooltips
+            function initTooltips() {
+                var tooltipElements = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+                // Destroy existing tooltips first
+                Array.from(tooltipElements).forEach(function(el) {
+                    var tooltip = bootstrap.Tooltip.getInstance(el);
+                    if (tooltip) {
+                        tooltip.dispose();
+                    }
                 });
+                
+                // Create new tooltips
+                if (tooltipElements.length > 0) {
+                    Array.from(tooltipElements).forEach(function(el) {
+                        new bootstrap.Tooltip(el);
+                    });
+                }
             }
+            
+            // Initialize tooltips on page load
+            initTooltips();
             
             // Toggle view between table and cards
             $('.view-toggle').on('click', function() {
+                var viewType = $(this).data('view');
+                
+                // Update active button
                 $('.view-toggle').removeClass('active');
                 $(this).addClass('active');
                 
-                var viewType = $(this).data('view');
+                // Show the selected view and hide the other
                 $('.view-container').addClass('d-none');
                 $('#' + viewType + 'View').removeClass('d-none');
                 
-                // Animate the view change
-                $('#' + viewType + 'View').css('opacity', 0).animate({
-                    opacity: 1
-                }, 300);
+                // Save preference to localStorage
+                localStorage.setItem('userViewMode', viewType);
+                
+                // Apply search if switching to cards
+                if (viewType === 'cards') {
+                    applyCardSearch($('#userSearch').val().toLowerCase());
+                }
             });
             
-            // Search functionality
-            $('#userSearch').on('keyup', function() {
-                var searchText = $(this).val().toLowerCase();
-                
-                // Filter table view through DataTable
-                table.search(searchText).draw();
-                
-                // Filter card view manually
+            // Function to filter cards by search text
+            function applyCardSearch(searchText) {
                 if (searchText.length > 0) {
                     $('.user-card-col').each(function() {
                         var $this = $(this);
-                        var userData = [
-                            $this.data('user-name'),
-                            $this.data('user-email'),
-                            $this.find('.card-body').text()
-                        ].join(' ').toLowerCase();
+                        var userName = $this.data('user-name').toString().toLowerCase();
+                        var userEmail = $this.data('user-email').toString().toLowerCase();
+                        var cardText = $this.find('.card-body').text().toLowerCase();
                         
-                        if (userData.includes(searchText)) {
+                        if (userName.includes(searchText) || 
+                            userEmail.includes(searchText) || 
+                            cardText.includes(searchText)) {
                             $this.show();
                         } else {
                             $this.hide();
@@ -394,7 +450,21 @@
                 } else {
                     $('.user-card-col').show();
                 }
+            }
+            
+            // Unified search functionality
+            $('#userSearch').on('keyup', function() {
+                var searchText = $(this).val().toLowerCase();
+                
+                // Filter table view through DataTable
+                table.search(searchText).draw();
+                
+                // Filter card view using our function
+                applyCardSearch(searchText);
             });
+            
+            // Cache the delete modal instance
+            var deleteModal = new bootstrap.Modal(document.getElementById('deleteUserModal'));
             
             // Delete user modal setup
             $(document).on('click', '.delete-user-btn', function(e) {
@@ -404,17 +474,112 @@
                 var userId = $(this).data('user-id');
                 var userName = $(this).data('user-name');
                 
+                // Log values to console for debugging
+                console.log("Delete clicked for user:", userId, userName);
+                
                 $('#deleteUserId').val(userId);
                 $('#deleteUserName').text(userName);
                 
-                var deleteModal = new bootstrap.Modal(document.getElementById('deleteUserModal'));
+                // Reset modal state
+                $('#confirmDeleteCheck').prop('checked', false);
+                $('#confirmDeleteButton').prop('disabled', true);
+                $('#deleteErrorAlert').addClass('d-none');
+                
+                // Ensure the modal exists
+                if (!deleteModal) {
+                    deleteModal = new bootstrap.Modal(document.getElementById('deleteUserModal'));
+                }
+                
                 deleteModal.show();
+            });
+            
+            // Handle checkbox for delete confirmation
+            $('#confirmDeleteCheck').on('change', function() {
+                $('#confirmDeleteButton').prop('disabled', !$(this).is(':checked'));
+            });
+            
+            // Handle delete form submission
+            $('#deleteUserForm').on('submit', function(e) {
+                e.preventDefault();
+                
+                if (!$('#confirmDeleteCheck').is(':checked')) {
+                    $('#confirmDeleteButton').prop('disabled', true);
+                    return false;
+                }
+                
+                // Disable the submit button to prevent multiple submissions
+                $('#confirmDeleteButton').prop('disabled', true).html(
+                    '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Deleting...'
+                );
+                
+                // Get the form data with the anti-forgery token
+                var formData = $(this).serialize();
+                
+                // Log the submission action
+                console.log("Submitting delete form to:", $(this).attr('action'));
+                
+                // Submit the form using AJAX to handle errors
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: 'POST',
+                    data: formData,
+                    dataType: 'json',
+                    success: function(response) {
+                        // Log the response
+                        console.log("Delete response:", response);
+                        
+                        // Check if the operation was successful
+                        if (response && response.success) {
+                            // Hide the modal
+                            deleteModal.hide();
+                            
+                            // Show a success toast or redirect
+                            window.location.reload();
+                        } else {
+                            // Handle error in success response
+                            var errorMsg = (response && response.message) ? response.message : 'Failed to delete user';
+                            $('#deleteErrorMessage').text('Error: ' + errorMsg);
+                            $('#deleteErrorAlert').removeClass('d-none');
+                            
+                            // Re-enable the button
+                            $('#confirmDeleteButton').prop('disabled', false).html(
+                                '<i class="fas fa-trash me-1"></i>Delete User'
+                            );
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        // Show error message
+                        var errorMsg = 'Failed to delete user';
+                        if (xhr.responseText) {
+                            try {
+                                var jsonResponse = JSON.parse(xhr.responseText);
+                                if (jsonResponse && jsonResponse.message) {
+                                    errorMsg = jsonResponse.message;
+                                }
+                            } catch (e) {
+                                // If parsing fails, use the response text as is
+                                errorMsg = xhr.responseText;
+                            }
+                        }
+                        
+                        $('#deleteErrorMessage').text('Error: ' + errorMsg);
+                        $('#deleteErrorAlert').removeClass('d-none');
+                        
+                        // Re-enable the button
+                        $('#confirmDeleteButton').prop('disabled', false).html(
+                            '<i class="fas fa-trash me-1"></i>Delete User'
+                        );
+                    }
+                });
+                
+                return false;
             });
             
             // Animate stats numbers
             $('.stat-value').each(function() {
                 var $this = $(this);
-                var countTo = parseInt($this.text(), 10);
+                var countTo = parseFloat($this.text());
+                var hasDecimal = $this.text().includes('.');
                 
                 $({ countNum: 0 }).animate({
                     countNum: countTo
@@ -422,10 +587,18 @@
                     duration: 1000,
                     easing: 'swing',
                     step: function() {
-                        $this.text(Math.floor(this.countNum));
+                        if (hasDecimal) {
+                            $this.text(this.countNum.toFixed(1));
+                        } else {
+                            $this.text(Math.floor(this.countNum));
+                        }
                     },
                     complete: function() {
-                        $this.text(this.countNum);
+                        if (hasDecimal) {
+                            $this.text(countTo.toFixed(1));
+                        } else {
+                            $this.text(countTo);
+                        }
                     }
                 });
             });
@@ -446,6 +619,36 @@
                 function() { $(this).addClass('row-hover'); },
                 function() { $(this).removeClass('row-hover'); }
             );
+            
+            // Handle DataTable search box to sync with our custom search
+            $('.dataTables_filter input').on('keyup', function() {
+                $('#userSearch').val($(this).val());
+                applyCardSearch($(this).val().toLowerCase());
+            });
+            
+            // Set DataTable search box width to match our custom search
+            $('.dataTables_filter input').css('min-width', '250px');
+            
+            // Hide DataTable search box and use our custom one
+            $('.dataTables_filter').hide();
+            
+            // Ensure our custom search is applied to DataTable
+            $('#userSearch').on('keyup', function() {
+                $('.dataTables_filter input').val($(this).val()).trigger('keyup');
+            });
+            
+            // Handle screen size changes
+            $(window).on('resize', function() {
+                if ($(window).width() < 768) {
+                    // If on mobile, switch to card view if not already there
+                    if (!$('.view-toggle[data-view="cards"]').hasClass('active')) {
+                        $('.view-toggle[data-view="cards"]').click();
+                    }
+                }
+            }).trigger('resize');
+            
+            // Set initial view on page load
+            setInitialView();
         });
     </script>
 }
@@ -573,6 +776,21 @@
         transform: translateY(-3px);
     }
     
+    /* Responsive adjustments for action buttons on small screens */
+     media (max-width: 768px) {
+        .action-buttons {
+            display: flex;
+            justify-content: flex-end;
+        }
+        
+        .action-btn {
+            margin: 0 1px;
+            width: 28px;
+            height: 28px;
+            font-size: 0.75rem;
+        }
+    }
+    
     /* User cards */
     .user-card {
         border: none;
@@ -585,22 +803,51 @@
         box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
     }
     
+    /* Text truncation */
+    .text-truncate {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    
     /* Search box */
     .search-wrapper {
         min-width: 250px;
+        position: relative;
+    }
+    
+     media (max-width: 576px) {
+        .search-wrapper {
+            min-width: 100%;
+            margin-bottom: 1rem;
+        }
     }
     
     /* View toggle buttons */
     .view-toggle {
         transition: all 0.3s ease;
+        position: relative;
+        z-index: 1;
     }
     
     .view-toggle:hover {
         transform: translateY(-2px);
     }
     
+    .view-toggle.active {
+        background-color: #0d6efd;
+        color: white;
+        border-color: #0d6efd;
+    }
+    
     .view-container {
-        transition: opacity 0.3s ease;
+        transition: all 0.3s ease;
+        display: none;
+    }
+    
+    .view-container:not(.d-none) {
+        display: block;
+        animation: fadeIn 0.3s ease;
     }
     
     /* Badges styling */
@@ -621,11 +868,32 @@
     .dataTable tbody tr {
         opacity: 1;
     }
+    
+    /* Better responsive tables */
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    /* Improve card display on small screens */
+     media (max-width: 576px) {
+        .user-card .card-body {
+            padding: 0.75rem;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+        }
+        
+        .stat-icon i {
+            font-size: 2.5rem !important;
+        }
+    }
 </style>
 
 <style>
     /* Keyframes need to be in their own style block for Razor */
-    @@keyframes fadeIn {
+     keyframes fadeIn {
         from {
             opacity: 0;
             transform: translateY(20px);

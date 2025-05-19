@@ -710,9 +710,7 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
             return View(user);
         }
 
-        // POST: Manage/DeleteUser/userId
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        // GET: Manage/DeleteUser/userId
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult> DeleteUser(string id)
         {
@@ -721,7 +719,9 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                 return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
             }
 
+            var db = new ApplicationDbContext();
             var user = await UserManager.FindByIdAsync(id);
+
             if (user == null)
             {
                 return HttpNotFound();
@@ -730,6 +730,65 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
             // Don't allow deletion of current user
             if (user.Id == User.Identity.GetUserId())
             {
+                TempData["ErrorMessage"] = "You cannot delete your own account.";
+                return RedirectToAction("Users");
+            }
+
+            // Get user's roles
+            var userRoles = await UserManager.GetRolesAsync(user.Id);
+            
+            // Get user's plants
+            var userPlants = db.UserPlants
+                .Where(up => up.UserId == user.Id)
+                .Include(up => up.Plant)
+                .Select(up => up.Plant)
+                .ToList();
+                
+            // Get user's competencies
+            var userCompetencies = db.UserCompetencies
+                .Where(uc => uc.UserId == user.Id)
+                .Include(uc => uc.CompetencyModule)
+                .ToList();
+                
+            ViewBag.UserRoles = userRoles;
+            ViewBag.UserPlants = userPlants;
+            ViewBag.UserCompetencies = userCompetencies;
+
+            return View(user);
+        }
+
+        // POST: Manage/DeleteUser/userId
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult> DeleteUser(string id, FormCollection form)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                if (Request.IsAjaxRequest())
+                {
+                    return Json(new { success = false, message = "User ID is required" }, JsonRequestBehavior.AllowGet);
+                }
+                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
+            }
+
+            var user = await UserManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                if (Request.IsAjaxRequest())
+                {
+                    return Json(new { success = false, message = "User not found" }, JsonRequestBehavior.AllowGet);
+                }
+                return HttpNotFound();
+            }
+
+            // Don't allow deletion of current user
+            if (user.Id == User.Identity.GetUserId())
+            {
+                if (Request.IsAjaxRequest())
+                {
+                    return Json(new { success = false, message = "You cannot delete your own account" }, JsonRequestBehavior.AllowGet);
+                }
                 TempData["ErrorMessage"] = "You cannot delete your own account.";
                 return RedirectToAction("Users");
             }
@@ -757,10 +816,19 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
             var result = await UserManager.DeleteAsync(user);
             if (result.Succeeded)
             {
+                if (Request.IsAjaxRequest())
+                {
+                    return Json(new { success = true, message = "User deleted successfully" }, JsonRequestBehavior.AllowGet);
+                }
                 TempData["SuccessMessage"] = "User deleted successfully.";
             }
             else
             {
+                var errorMessage = string.Join(", ", result.Errors);
+                if (Request.IsAjaxRequest())
+                {
+                    return Json(new { success = false, message = "Failed to delete user: " + errorMessage }, JsonRequestBehavior.AllowGet);
+                }
                 AddErrors(result);
                 TempData["ErrorMessage"] = "Failed to delete user.";
             }
