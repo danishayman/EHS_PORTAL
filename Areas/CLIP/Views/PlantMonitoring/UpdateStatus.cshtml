@@ -541,6 +541,118 @@
                 }
             });
 
+            // Date validation functions
+            function validateQuotationDates() {
+                var quoteDate = $('#quoteDate').val();
+                var quoteSubmitDate = $('#quoteSubmitDate').val();
+                var quoteCompleteDate = $('#quoteCompleteDate').val();
+
+                // Set min date for submit date
+                $('#quoteSubmitDate').attr('min', quoteDate || '');
+                
+                // Set min date for complete date
+                $('#quoteCompleteDate').attr('min', quoteSubmitDate || quoteDate || '');
+
+                // Validate submit date
+                if (quoteSubmitDate && quoteDate && new Date(quoteSubmitDate) < new Date(quoteDate)) {
+                    alert('Submit date cannot be earlier than start date');
+                    $('#quoteSubmitDate').val('');
+                }
+
+                // Validate complete date
+                if (quoteCompleteDate) {
+                    var minDate = quoteSubmitDate || quoteDate;
+                    if (minDate && new Date(quoteCompleteDate) < new Date(minDate)) {
+                        alert('Complete date cannot be earlier than submit date or start date');
+                        $('#quoteCompleteDate').val('');
+                    }
+
+                    // Auto-set EPR start date when quotation is completed
+                    if (!eprDate.val()) {
+                        eprDate.val(quoteCompleteDate);
+                        validateEprDates();
+                    }
+                }
+            }
+
+            function validateEprDates() {
+                var eprDate = $('#eprDate').val();
+                var eprSubmitDate = $('#eprSubmitDate').val();
+                var eprCompleteDate = $('#eprCompleteDate').val();
+
+                // Set min date for submit date
+                $('#eprSubmitDate').attr('min', eprDate || '');
+                
+                // Set min date for complete date
+                $('#eprCompleteDate').attr('min', eprSubmitDate || eprDate || '');
+
+                // Validate submit date
+                if (eprSubmitDate && eprDate && new Date(eprSubmitDate) < new Date(eprDate)) {
+                    alert('Submit date cannot be earlier than start date');
+                    $('#eprSubmitDate').val('');
+                }
+
+                // Validate complete date
+                if (eprCompleteDate) {
+                    var minDate = eprSubmitDate || eprDate;
+                    if (minDate && new Date(eprCompleteDate) < new Date(minDate)) {
+                        alert('Complete date cannot be earlier than submit date or start date');
+                        $('#eprCompleteDate').val('');
+                    }
+
+                    // Auto-set Work start date when EPR is completed
+                    if (!workDate.val()) {
+                        workDate.val(eprCompleteDate);
+                        validateWorkDates();
+                    }
+                }
+            }
+
+            function validateWorkDates() {
+                var workDate = $('#workDate').val();
+                var workSubmitDate = $('#workSubmitDate').val();
+                var workCompleteDate = $('#workCompleteDate').val();
+
+                // Set min date for submit date
+                $('#workSubmitDate').attr('min', workDate || '');
+                
+                // Set min date for complete date
+                $('#workCompleteDate').attr('min', workSubmitDate || workDate || '');
+
+                // Validate submit date
+                if (workSubmitDate && workDate && new Date(workSubmitDate) < new Date(workDate)) {
+                    alert('Submit date cannot be earlier than start date');
+                    $('#workSubmitDate').val('');
+                }
+
+                // Validate complete date
+                if (workCompleteDate) {
+                    var minDate = workSubmitDate || workDate;
+                    if (minDate && new Date(workCompleteDate) < new Date(minDate)) {
+                        alert('Complete date cannot be earlier than submit date or start date');
+                        $('#workCompleteDate').val('');
+                    }
+
+                    // Auto-set expiry date when work is completed
+                    if (!expDate.val()) {
+                        var oneYearLater = new Date(workCompleteDate);
+                        oneYearLater.setFullYear(oneYearLater.getFullYear() + 1);
+                        expDate.val(oneYearLater.toISOString().slice(0, 16));
+                    }
+                }
+            }
+
+            // Cache date input elements
+            var quoteDate = $('#quoteDate');
+            var eprDate = $('#eprDate');
+            var workDate = $('#workDate');
+            var expDate = $('#ExpDate');
+
+            // Attach date validation events
+            $('#quoteDate, #quoteSubmitDate, #quoteCompleteDate').on('change', validateQuotationDates);
+            $('#eprDate, #eprSubmitDate, #eprCompleteDate').on('change', validateEprDates);
+            $('#workDate, #workSubmitDate, #workCompleteDate').on('change', validateWorkDates);
+
             // Form submission validation
             $('form').on('submit', function(e) {
                 var isValid = true;
@@ -564,7 +676,7 @@
                 // Validate assignee fields
                 $(this).find('.assignee-field').each(function() {
                     if ($(this).val().trim() === '') {
-                        if ($(this).closest('.card-body').find('input[type="date"]').filter(function() { 
+                        if ($(this).closest('.card-body').find('input[type="datetime-local"]').filter(function() { 
                             return $(this).val() !== ''; 
                         }).length > 0) {
                             // Only validate if any date field in this section has a value

@@ -59,7 +59,7 @@
                         @if (Model.ExpDate.HasValue)
                         {
                             <span class="@(Model.ExpDate < DateTime.Now ? "text-danger" : (Model.ExpDate < DateTime.Now.AddDays(30) ? "text-warning" : ""))">
-                                @Model.ExpDate.Value.ToString("dd/MM/yyyy")
+                                @Model.ExpDate.Value.ToString("dd/MM/yyyy HH:mm")
                             </span>
                         }
                         else
@@ -93,17 +93,17 @@
                 <dl class="row">
                     <dt class="col-sm-6">Start Date:</dt>
                     <dd class="col-sm-6">
-                        @(Model.QuoteDate.HasValue ? Model.QuoteDate.Value.ToString("dd/MM/yyyy") : "Not started")
+                        @(Model.QuoteDate.HasValue ? Model.QuoteDate.Value.ToString("dd/MM/yyyy HH:mm") : "Not started")
                     </dd>
                     
                     <dt class="col-sm-6">Submission:</dt>
                     <dd class="col-sm-6">
-                        @(Model.QuoteSubmitDate.HasValue ? Model.QuoteSubmitDate.Value.ToString("dd/MM/yyyy") : "Not submitted")
+                        @(Model.QuoteSubmitDate.HasValue ? Model.QuoteSubmitDate.Value.ToString("dd/MM/yyyy HH:mm") : "Not submitted")
                     </dd>
                     
                     <dt class="col-sm-6">Completion:</dt>
                     <dd class="col-sm-6">
-                        @(Model.QuoteCompleteDate.HasValue ? Model.QuoteCompleteDate.Value.ToString("dd/MM/yyyy") : "Not completed")
+                        @(Model.QuoteCompleteDate.HasValue ? Model.QuoteCompleteDate.Value.ToString("dd/MM/yyyy HH:mm") : "Not completed")
                     </dd>
                     
                     <dt class="col-sm-6">Assigned To:</dt>
@@ -138,17 +138,17 @@
                 <dl class="row">
                     <dt class="col-sm-6">Start Date:</dt>
                     <dd class="col-sm-6">
-                        @(Model.EprDate.HasValue ? Model.EprDate.Value.ToString("dd/MM/yyyy") : "Not started")
+                        @(Model.EprDate.HasValue ? Model.EprDate.Value.ToString("dd/MM/yyyy HH:mm") : "Not started")
                     </dd>
                     
                     <dt class="col-sm-6">Submission:</dt>
                     <dd class="col-sm-6">
-                        @(Model.EprSubmitDate.HasValue ? Model.EprSubmitDate.Value.ToString("dd/MM/yyyy") : "Not submitted")
+                        @(Model.EprSubmitDate.HasValue ? Model.EprSubmitDate.Value.ToString("dd/MM/yyyy HH:mm") : "Not submitted")
                     </dd>
                     
                     <dt class="col-sm-6">Completion:</dt>
                     <dd class="col-sm-6">
-                        @(Model.EprCompleteDate.HasValue ? Model.EprCompleteDate.Value.ToString("dd/MM/yyyy") : "Not completed")
+                        @(Model.EprCompleteDate.HasValue ? Model.EprCompleteDate.Value.ToString("dd/MM/yyyy HH:mm") : "Not completed")
                     </dd>
                     
                     <dt class="col-sm-6">Assigned To:</dt>
@@ -183,17 +183,17 @@
                 <dl class="row">
                     <dt class="col-sm-6">Start Date:</dt>
                     <dd class="col-sm-6">
-                        @(Model.WorkDate.HasValue ? Model.WorkDate.Value.ToString("dd/MM/yyyy") : "Not started")
+                        @(Model.WorkDate.HasValue ? Model.WorkDate.Value.ToString("dd/MM/yyyy HH:mm") : "Not started")
                     </dd>
                     
                     <dt class="col-sm-6">Submission:</dt>
                     <dd class="col-sm-6">
-                        @(Model.WorkSubmitDate.HasValue ? Model.WorkSubmitDate.Value.ToString("dd/MM/yyyy") : "Not submitted")
+                        @(Model.WorkSubmitDate.HasValue ? Model.WorkSubmitDate.Value.ToString("dd/MM/yyyy HH:mm") : "Not submitted")
                     </dd>
                     
                     <dt class="col-sm-6">Completion:</dt>
                     <dd class="col-sm-6">
-                        @(Model.WorkCompleteDate.HasValue ? Model.WorkCompleteDate.Value.ToString("dd/MM/yyyy") : "Not completed")
+                        @(Model.WorkCompleteDate.HasValue ? Model.WorkCompleteDate.Value.ToString("dd/MM/yyyy HH:mm") : "Not completed")
                     </dd>
                     
                     <dt class="col-sm-6">Assigned To:</dt>
