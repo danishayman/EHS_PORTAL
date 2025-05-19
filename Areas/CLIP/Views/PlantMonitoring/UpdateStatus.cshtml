@@ -183,29 +183,20 @@
                     
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="form-group mb-3">
-                                <label class="form-label">Submit Date</label>
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="fas fa-calendar-plus"></i></span>
-                                    @Html.TextBoxFor(model => model.QuoteSubmitDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
-                                </div>
+                            <div class="form-group">
+                                <label for="quoteDate">Quotation Date</label>
+                                <input type="datetime-local" class="form-control" id="quoteDate" name="QuoteDate" 
+                                       value="@(Model.QuoteDate?.ToString("yyyy-MM-ddTHH:mm") ?? "")">
                             </div>
-                            
-                            <div class="form-group mb-3">
-                                <label class="form-label">Start Date</label>
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="fas fa-play-circle"></i></span>
-                                    @Html.TextBoxFor(model => model.QuoteDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
-                                </div>
+                            <div class="form-group">
+                                <label for="quoteSubmitDate">Submit Date</label>
+                                <input type="datetime-local" class="form-control" id="quoteSubmitDate" name="QuoteSubmitDate" 
+                                       value="@(Model.QuoteSubmitDate?.ToString("yyyy-MM-ddTHH:mm") ?? "")">
                             </div>
-                            
-                            <div class="form-group mb-3">
-                                <label class="form-label">Complete Date</label>
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="fas fa-check-circle"></i></span>
-                                    @Html.TextBoxFor(model => model.QuoteCompleteDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
-                                </div>
-                                <small class="form-text text-muted">Setting a completion date will unlock the next phase.</small>
+                            <div class="form-group">
+                                <label for="quoteCompleteDate">Complete Date</label>
+                                <input type="datetime-local" class="form-control" id="quoteCompleteDate" name="QuoteCompleteDate" 
+                                       value="@(Model.QuoteCompleteDate?.ToString("yyyy-MM-ddTHH:mm") ?? "")">
                             </div>
                         </div>
                         
@@ -285,26 +276,20 @@
                         @Html.AntiForgeryToken()
                         @Html.HiddenFor(model => model.Id)
                         
-                        <div class="form-group row mb-3">
-                            <label class="col-sm-3 col-form-label">Submit Date:</label>
-                            <div class="col-sm-9">
-                                @Html.TextBoxFor(model => model.EprSubmitDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
-                            </div>
+                        <div class="form-group">
+                            <label for="eprDate">EPR Date</label>
+                            <input type="datetime-local" class="form-control" id="eprDate" name="EprDate" 
+                                   value="@(Model.EprDate?.ToString("yyyy-MM-ddTHH:mm") ?? "")">
                         </div>
-                        
-                        <div class="form-group row mb-3">
-                            <label class="col-sm-3 col-form-label">Start Date:</label>
-                            <div class="col-sm-9">
-                                @Html.TextBoxFor(model => model.EprDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
-                            </div>
+                        <div class="form-group">
+                            <label for="eprSubmitDate">Submit Date</label>
+                            <input type="datetime-local" class="form-control" id="eprSubmitDate" name="EprSubmitDate" 
+                                   value="@(Model.EprSubmitDate?.ToString("yyyy-MM-ddTHH:mm") ?? "")">
                         </div>
-                        
-                        <div class="form-group row mb-3">
-                            <label class="col-sm-3 col-form-label">Complete Date:</label>
-                            <div class="col-sm-9">
-                                @Html.TextBoxFor(model => model.EprCompleteDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
-                                <small class="form-text text-muted">Setting a completion date will unlock the next phase.</small>
-                            </div>
+                        <div class="form-group">
+                            <label for="eprCompleteDate">Complete Date</label>
+                            <input type="datetime-local" class="form-control" id="eprCompleteDate" name="EprCompleteDate" 
+                                   value="@(Model.EprCompleteDate?.ToString("yyyy-MM-ddTHH:mm") ?? "")">
                         </div>
                         
                         <div class="form-group row mb-3">
@@ -373,26 +358,20 @@
                         @Html.AntiForgeryToken()
                         @Html.HiddenFor(model => model.Id)
                         
-                        <div class="form-group row mb-3">
-                            <label class="col-sm-3 col-form-label">Submit Date:</label>
-                            <div class="col-sm-9">
-                                @Html.TextBoxFor(model => model.WorkSubmitDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
-                            </div>
+                        <div class="form-group">
+                            <label for="workDate">Work Date</label>
+                            <input type="datetime-local" class="form-control" id="workDate" name="WorkDate" 
+                                   value="@(Model.WorkDate?.ToString("yyyy-MM-ddTHH:mm") ?? "")">
                         </div>
-                        
-                        <div class="form-group row mb-3">
-                            <label class="col-sm-3 col-form-label">Start Date:</label>
-                            <div class="col-sm-9">
-                                @Html.TextBoxFor(model => model.WorkDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
-                            </div>
+                        <div class="form-group">
+                            <label for="workSubmitDate">Submit Date</label>
+                            <input type="datetime-local" class="form-control" id="workSubmitDate" name="WorkSubmitDate" 
+                                   value="@(Model.WorkSubmitDate?.ToString("yyyy-MM-ddTHH:mm") ?? "")">
                         </div>
-                        
-                        <div class="form-group row mb-3">
-                            <label class="col-sm-3 col-form-label">Complete Date:</label>
-                            <div class="col-sm-9">
-                                @Html.TextBoxFor(model => model.WorkCompleteDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
-                                <small class="form-text text-muted">When completed, renewal date will be set to 1 year from this date.</small>
-                            </div>
+                        <div class="form-group">
+                            <label for="workCompleteDate">Complete Date</label>
+                            <input type="datetime-local" class="form-control" id="workCompleteDate" name="WorkCompleteDate" 
+                                   value="@(Model.WorkCompleteDate?.ToString("yyyy-MM-ddTHH:mm") ?? "")">
                         </div>
                         
                         <div class="form-group row mb-3">

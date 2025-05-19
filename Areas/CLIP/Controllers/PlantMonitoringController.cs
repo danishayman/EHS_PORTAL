@@ -207,8 +207,13 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                     ExpStatus = pm.ExpStatus,
                     ExpDate = pm.ExpDate,
                     QuoteDate = pm.QuoteDate,
+                    QuoteSubmitDate = pm.QuoteSubmitDate,
+                    QuoteCompleteDate = pm.QuoteCompleteDate,
                     EprDate = pm.EprDate,
+                    EprSubmitDate = pm.EprSubmitDate,
+                    EprCompleteDate = pm.EprCompleteDate,
                     WorkDate = pm.WorkDate,
+                    WorkSubmitDate = pm.WorkSubmitDate,
                     WorkCompleteDate = pm.WorkCompleteDate
                 };
 
@@ -847,8 +852,13 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
         public string ExpStatus { get; set; }
         public DateTime? ExpDate { get; set; }
         public DateTime? QuoteDate { get; set; }
+        public DateTime? QuoteSubmitDate { get; set; }
+        public DateTime? QuoteCompleteDate { get; set; }
         public DateTime? EprDate { get; set; }
+        public DateTime? EprSubmitDate { get; set; }
+        public DateTime? EprCompleteDate { get; set; }
         public DateTime? WorkDate { get; set; }
+        public DateTime? WorkSubmitDate { get; set; }
         public DateTime? WorkCompleteDate { get; set; }
 
         public string ProcStatusCssClass
