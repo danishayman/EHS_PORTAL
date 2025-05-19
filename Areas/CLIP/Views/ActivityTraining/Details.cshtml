@@ -1,0 +1,93 @@
+@model EHS_PORTAL.Areas.CLIP.Models.ActivityTraining
+
+@{
+    ViewBag.Title = "Training Activity Details";
+    Layout = "~/Areas/CLIP/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <i class="fa fa-info-circle"></i> Training Activity Details
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-3 text-right">
+                            <strong>@Html.DisplayNameFor(model => model.ActivityName):</strong>
+                        </div>
+                        <div class="col-md-9">
+                            @Html.DisplayFor(model => model.ActivityName)
+                        </div>
+                    </div>
+                    <hr />
+
+                    <div class="row">
+                        <div class="col-md-3 text-right">
+                            <strong>@Html.DisplayNameFor(model => model.ActivityDate):</strong>
+                        </div>
+                        <div class="col-md-9">
+                            @Model.ActivityDate.ToString("yyyy-MM-dd")
+                        </div>
+                    </div>
+                    <hr />
+
+                    <div class="row">
+                        <div class="col-md-3 text-right">
+                            <strong>@Html.DisplayNameFor(model => model.CEPPointsGained):</strong>
+                        </div>
+                        <div class="col-md-9">
+                            @(Model.CEPPointsGained.HasValue ? Model.CEPPointsGained.Value.ToString() : "None")
+                        </div>
+                    </div>
+                    <hr />
+
+                    <div class="row">
+                        <div class="col-md-3 text-right">
+                            <strong>@Html.DisplayNameFor(model => model.CPDPointsGained):</strong>
+                        </div>
+                        <div class="col-md-9">
+                            @(Model.CPDPointsGained.HasValue ? Model.CPDPointsGained.Value.ToString() : "None")
+                        </div>
+                    </div>
+                    <hr />
+
+                    <div class="row">
+                        <div class="col-md-3 text-right">
+                            <strong>Supporting Document:</strong>
+                        </div>
+                        <div class="col-md-9">
+                            @if (!string.IsNullOrEmpty(Model.Document))
+                            {
+                                <a href="@Url.Action("DownloadDocument", new { id = Model.Id })" class="btn btn-info btn-sm">
+                                    <i class="fa fa-download"></i> Download Document
+                                </a>
+                            }
+                            else
+                            {
+                                <span class="text-muted">No document attached</span>
+                            }
+                        </div>
+                    </div>
+                    <hr />
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="pull-right">
+                                <a href="@Url.Action("Edit", new { id = Model.Id })" class="btn btn-warning">
+                                    <i class="fa fa-edit"></i> Edit
+                                </a>
+                                <a href="@Url.Action("Index")" class="btn btn-default">
+                                    <i class="fa fa-arrow-left"></i> Back to List
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 

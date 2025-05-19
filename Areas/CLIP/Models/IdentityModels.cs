@@ -54,6 +54,7 @@ namespace EHS_PORTAL.Areas.CLIP.Models
         public DbSet<Monitoring> Monitorings { get; set; }
         public DbSet<PlantMonitoring> PlantMonitorings { get; set; }
         public DbSet<MonitoringDocument> MonitoringDocuments { get; set; }
+        public DbSet<ActivityTraining> ActivityTrainings { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
