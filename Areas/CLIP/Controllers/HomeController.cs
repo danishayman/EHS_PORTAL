@@ -212,6 +212,7 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                 return RedirectToAction("Competency", new { area = "CLIP" });
             }
             
+            
             return View(model);
         }
     }

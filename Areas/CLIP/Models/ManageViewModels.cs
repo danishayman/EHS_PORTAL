@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
 
 namespace EHS_PORTAL.Areas.CLIP.Models
@@ -12,6 +13,38 @@ namespace EHS_PORTAL.Areas.CLIP.Models
         public string PhoneNumber { get; set; }
         public bool TwoFactor { get; set; }
         public bool BrowserRemembered { get; set; }
+        
+        // Added user profile information
+        public string UserId { get; set; }
+        
+        [Required]
+        [Display(Name = "Username")]
+        public string UserName { get; set; }
+        
+        [Required]
+        [EmailAddress]
+        [Display(Name = "Email")]
+        public string Email { get; set; }
+        
+        [Required]
+        [Display(Name = "Employee ID")]
+        public string EmpID { get; set; }
+        
+        [Display(Name = "CEP Points")]
+        public int? CEP_Points { get; set; }
+        
+        [Display(Name = "CPD Points")]
+        public int? CPD_Points { get; set; }
+        
+        // User relationships
+        public IEnumerable<string> UserRoles { get; set; }
+        public IEnumerable<Plant> UserPlants { get; set; }
+        public IEnumerable<UserCompetency> UserCompetencies { get; set; }
+        
+        // Plant selection
+        [Display(Name = "Assigned Plants")]
+        public List<int> SelectedPlantIds { get; set; }
+        public IEnumerable<System.Web.Mvc.SelectListItem> PlantsList { get; set; }
     }
 
     public class ManageLoginsViewModel
@@ -82,5 +115,57 @@ namespace EHS_PORTAL.Areas.CLIP.Models
     {
         public string SelectedProvider { get; set; }
         public ICollection<System.Web.Mvc.SelectListItem> Providers { get; set; }
+    }
+
+    public class EditUserProfileViewModel
+    {
+        public string Id { get; set; }
+
+        [Required]
+        [EmailAddress]
+        [Display(Name = "Email")]
+        public string Email { get; set; }
+
+        [Required]
+        [Display(Name = "Username")]
+        public string UserName { get; set; }
+
+        [Required]
+        [Display(Name = "Employee ID")]
+        public string EmpID { get; set; }
+
+        [Display(Name = "CEP Points")]
+        public int? CEP_Points { get; set; }
+
+        [Display(Name = "CPD Points")]
+        public int? CPD_Points { get; set; }
+
+        [Display(Name = "Phone Number")]
+        public string PhoneNumber { get; set; }
+
+        [Display(Name = "Role")]
+        public string Role { get; set; }
+        
+        public IEnumerable<System.Web.Mvc.SelectListItem> RolesList { get; set; }
+
+        [Display(Name = "Assigned Plants")]
+        public List<int> SelectedPlantIds { get; set; }
+        
+        public IEnumerable<System.Web.Mvc.SelectListItem> PlantsList { get; set; }
+
+        [Display(Name = "Email Confirmed")]
+        public bool EmailConfirmed { get; set; }
+
+        [Display(Name = "Phone Confirmed")]
+        public bool PhoneNumberConfirmed { get; set; }
+
+        [Display(Name = "Two-Factor Enabled")]
+        public bool TwoFactorEnabled { get; set; }
+
+        [Display(Name = "Lockout Enabled")]
+        public bool LockoutEnabled { get; set; }
+
+        [Display(Name = "Access Failed Count")]
+        public int AccessFailedCount { get; set; }
     }
 }
