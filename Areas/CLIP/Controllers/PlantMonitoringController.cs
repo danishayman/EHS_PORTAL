@@ -884,7 +884,7 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                         return "bg-danger";
                     case "Expiring Soon":
                         return "bg-warning";
-                    case "Valid":
+                    case "Active":
                         return "bg-success";
                     case "No Expiry":
                         return "bg-secondary";

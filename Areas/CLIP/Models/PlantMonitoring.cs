@@ -139,7 +139,7 @@ namespace EHS_PORTAL.Areas.CLIP.Models
             else if (ExpDate < DateTime.Now.AddDays(30))
                 ExpStatus = "Expiring Soon";
             else
-                ExpStatus = "Valid";
+                ExpStatus = "Active";
         }
 
         // Helper method to calculate both statuses
@@ -183,7 +183,7 @@ namespace EHS_PORTAL.Areas.CLIP.Models
                         return "bg-danger";
                     case "Expiring Soon":
                         return "bg-warning";
-                    case "Valid":
+                    case "Active":
                         return "bg-success";
                     case "No Expiry":
                         return "bg-secondary";

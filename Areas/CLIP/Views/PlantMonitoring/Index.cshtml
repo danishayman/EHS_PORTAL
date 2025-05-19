@@ -5,7 +5,7 @@
     var recordCount = Model.Count();
     var expiredCount = Model.Count(i => i.ExpStatus == "Expired");
     var expiringCount = Model.Count(i => i.ExpStatus == "Expiring Soon");
-    var validCount = Model.Count(i => i.ExpStatus == "Valid" || i.ExpStatus == "No Expiry");
+    var validCount = Model.Count(i => i.ExpStatus == "Active" || i.ExpStatus == "No Expiry");
     var completedCount = Model.Count(i => i.ProcStatus == "Completed");
     var workInProgressCount = Model.Count(i => i.ProcStatus == "Work In Progress");
     var eprRaisedCount = Model.Count(i => i.ProcStatus == "ePR Raised");
@@ -154,7 +154,7 @@
                             <div class="progress-circle">
                                 <div class="progress-circle-overlay text-center">
                                     <span class="progress-circle-percent mb-0">@validPercent%</span>
-                                    <p class="text-muted mt-0">Valid</p>
+                                    <p class="text-muted mt-0">Active</p>
                                 </div>
                                 <svg viewBox="0 0 36 36" class="circular-chart">
                                     <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
@@ -165,7 +165,7 @@
                     </div>
                     <div class="mt-4 text-center small">
                         <span class="mr-2">
-                            <i class="fas fa-circle text-success"></i> Valid (@validCount)
+                            <i class="fas fa-circle text-success"></i> Active (@validCount)
                         </span>
                         <span class="mr-2">
                             <i class="fas fa-circle text-warning"></i> Expiring Soon (@expiringCount)
@@ -254,7 +254,7 @@
                         <option value="Not Started" @(ViewBag.SelectedStatus == "Not Started" ? "selected" : "")>Not Started</option>
                     </optgroup>
                     <optgroup label="Expiration Status">
-                        <option value="Valid" @(ViewBag.SelectedStatus == "Valid" ? "selected" : "")>Valid</option>
+                        <option value="Active" @(ViewBag.SelectedStatus == "Active" ? "selected" : "")>Active</option>
                         <option value="Expiring Soon" @(ViewBag.SelectedStatus == "Expiring Soon" ? "selected" : "")>Expiring Soon</option>
                         <option value="Expired" @(ViewBag.SelectedStatus == "Expired" ? "selected" : "")>Expired</option>
                         <option value="No Expiry" @(ViewBag.SelectedStatus == "No Expiry" ? "selected" : "")>No Expiry</option>
