@@ -133,17 +133,23 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Index(IndexViewModel model, string section)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-            
             var userId = User.Identity.GetUserId();
             var user = await UserManager.FindByIdAsync(userId);
             
             if (user == null)
             {
                 return HttpNotFound();
+            }
+            
+            // For specific sections, we don't need to validate the entire model
+            if (section == "points" || section == "plants")
+            {
+                // Skip full model validation for these sections
+            }
+            else if (!ModelState.IsValid)
+            {
+                // For other sections (like basic), validate the model
+                return View(model);
             }
             
             // Handle different form sections
@@ -548,7 +554,7 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> EditUser(EditUserProfileViewModel model)
+        public async Task<ActionResult> EditUser(EditUserProfileViewModel model, string section)
         {
             if (!ModelState.IsValid)
             {
@@ -578,69 +584,90 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                 return HttpNotFound();
             }
 
-            // Update the user properties
-            user.UserName = model.UserName;
-            user.Email = model.Email;
-            user.EmpID = model.EmpID;
-            user.CEP_Points = model.CEP_Points;
-            user.CPD_Points = model.CPD_Points;
-            user.PhoneNumber = model.PhoneNumber;
-            user.EmailConfirmed = model.EmailConfirmed;
-            user.PhoneNumberConfirmed = model.PhoneNumberConfirmed;
-            user.TwoFactorEnabled = model.TwoFactorEnabled;
-            user.LockoutEnabled = model.LockoutEnabled;
-
-            // Update the user
-            var result = await UserManager.UpdateAsync(user);
-            if (!result.Succeeded)
+            // Handle different form sections
+            if (section == "points")
             {
-                AddErrors(result);
-                return View(model);
-            }
-
-            // Update user role if changed
-            var userRoles = await UserManager.GetRolesAsync(user.Id);
-            if (userRoles.Count > 0 && userRoles[0] != model.Role)
-            {
-                // Remove from current roles
-                await UserManager.RemoveFromRolesAsync(user.Id, userRoles.ToArray());
+                // Update only points
+                user.CEP_Points = model.CEP_Points;
+                user.CPD_Points = model.CPD_Points;
                 
-                // Add to new role
-                await UserManager.AddToRoleAsync(user.Id, model.Role);
-            }
-            else if (userRoles.Count == 0 && !string.IsNullOrEmpty(model.Role))
-            {
-                // User has no roles but a role was selected
-                await UserManager.AddToRoleAsync(user.Id, model.Role);
-            }
-
-            // Update user plants
-            var db = new ApplicationDbContext();
-            
-            // Remove existing plant assignments
-            var existingPlants = db.UserPlants.Where(up => up.UserId == user.Id).ToList();
-            foreach (var plant in existingPlants)
-            {
-                db.UserPlants.Remove(plant);
-            }
-            
-            // Add new plant assignments
-            if (model.SelectedPlantIds != null && model.SelectedPlantIds.Count > 0)
-            {
-                foreach (var plantId in model.SelectedPlantIds)
+                // Update the user
+                var result = await UserManager.UpdateAsync(user);
+                if (!result.Succeeded)
                 {
-                    db.UserPlants.Add(new UserPlant
-                    {
-                        UserId = user.Id,
-                        PlantId = plantId
-                    });
+                    AddErrors(result);
+                    return View(model);
                 }
+                
+                TempData["SuccessMessage"] = "Points updated successfully.";
+                return RedirectToAction("EditUser", new { id = model.Id });
             }
-            
-            await db.SaveChangesAsync();
+            else 
+            {
+                // Update all user properties
+                user.UserName = model.UserName;
+                user.Email = model.Email;
+                user.EmpID = model.EmpID;
+                user.CEP_Points = model.CEP_Points;
+                user.CPD_Points = model.CPD_Points;
+                user.PhoneNumber = model.PhoneNumber;
+                user.EmailConfirmed = model.EmailConfirmed;
+                user.PhoneNumberConfirmed = model.PhoneNumberConfirmed;
+                user.TwoFactorEnabled = model.TwoFactorEnabled;
+                user.LockoutEnabled = model.LockoutEnabled;
 
-            TempData["SuccessMessage"] = "User profile updated successfully.";
-            return RedirectToAction("Users");
+                // Update the user
+                var result = await UserManager.UpdateAsync(user);
+                if (!result.Succeeded)
+                {
+                    AddErrors(result);
+                    return View(model);
+                }
+
+                // Update user role if changed
+                var userRoles = await UserManager.GetRolesAsync(user.Id);
+                if (userRoles.Count > 0 && userRoles[0] != model.Role)
+                {
+                    // Remove from current roles
+                    await UserManager.RemoveFromRolesAsync(user.Id, userRoles.ToArray());
+                    
+                    // Add to new role
+                    await UserManager.AddToRoleAsync(user.Id, model.Role);
+                }
+                else if (userRoles.Count == 0 && !string.IsNullOrEmpty(model.Role))
+                {
+                    // User has no roles but a role was selected
+                    await UserManager.AddToRoleAsync(user.Id, model.Role);
+                }
+
+                // Update user plants
+                var db = new ApplicationDbContext();
+                
+                // Remove existing plant assignments
+                var existingPlants = db.UserPlants.Where(up => up.UserId == user.Id).ToList();
+                foreach (var plant in existingPlants)
+                {
+                    db.UserPlants.Remove(plant);
+                }
+                
+                // Add new plant assignments
+                if (model.SelectedPlantIds != null && model.SelectedPlantIds.Count > 0)
+                {
+                    foreach (var plantId in model.SelectedPlantIds)
+                    {
+                        db.UserPlants.Add(new UserPlant
+                        {
+                            UserId = user.Id,
+                            PlantId = plantId
+                        });
+                    }
+                }
+                
+                await db.SaveChangesAsync();
+
+                TempData["SuccessMessage"] = "User profile updated successfully.";
+                return RedirectToAction("Users");
+            }
         }
 
         // GET: Manage/UserDetails/userId

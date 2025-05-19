@@ -63,10 +63,9 @@
                         </button>
                     </div>
                     <div class="card-body card-content">
-                        @using (Html.BeginForm("Index", "Manage", FormMethod.Post, new { @class = "needs-validation" }))
-                {
+                        @using (Html.BeginForm("Index", "Manage", FormMethod.Post, new { @class = "needs-validation", id = "basicInfoForm" }))
+                        {
                             @Html.AntiForgeryToken()
-                            @Html.ValidationSummary(true, "", new { @class = "text-danger mb-3" })
                             @Html.HiddenFor(m => m.UserId)
                             
                             <div class="row g-4">
@@ -75,7 +74,7 @@
                                         @Html.LabelFor(m => m.UserName, new { @class = "form-label" })
                                         <div class="input-group">
                                             <span class="input-group-text bg-primary text-white"><i class="fas fa-user"></i></span>
-                                            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
+                                            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", form = "basicInfoForm" })
                                         </div>
                                         @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
                                     </div>
@@ -84,7 +83,7 @@
                                         @Html.LabelFor(m => m.Email, new { @class = "form-label" })
                                         <div class="input-group">
                                             <span class="input-group-text bg-primary text-white"><i class="fas fa-envelope"></i></span>
-                                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control", form = "basicInfoForm" })
                                         </div>
                                         @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
                                     </div>
@@ -95,7 +94,7 @@
                                         @Html.LabelFor(m => m.EmpID, new { @class = "form-label" })
                                         <div class="input-group">
                                             <span class="input-group-text bg-primary text-white"><i class="fas fa-id-badge"></i></span>
-                                            @Html.TextBoxFor(m => m.EmpID, new { @class = "form-control" })
+                                            @Html.TextBoxFor(m => m.EmpID, new { @class = "form-control", form = "basicInfoForm" })
                                         </div>
                                         @Html.ValidationMessageFor(m => m.EmpID, "", new { @class = "text-danger" })
                                     </div>
@@ -104,7 +103,7 @@
                                         @Html.LabelFor(m => m.PhoneNumber, new { @class = "form-label" })
                                         <div class="input-group">
                                             <span class="input-group-text bg-primary text-white"><i class="fas fa-phone"></i></span>
-                                            @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control" })
+                                            @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control", form = "basicInfoForm" })
                                         </div>
                                         @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "text-danger" })
                                     </div>
@@ -112,7 +111,7 @@
                             </div>
                             
                             <div class="d-flex justify-content-end mt-3">
-                                <button type="submit" name="section" value="basic" class="btn btn-primary">
+                                <button type="submit" name="section" value="basic" class="btn btn-primary" form="basicInfoForm">
                                     <i class="fas fa-save me-2"></i>Save Basic Information
                                 </button>
                             </div>
@@ -129,7 +128,7 @@
                         </button>
                     </div>
                     <div class="card-body card-content">
-                        @using (Html.BeginForm("Index", "Manage", FormMethod.Post, new { @class = "needs-validation" }))
+                        @using (Html.BeginForm("Index", "Manage", FormMethod.Post, new { @class = "needs-validation", id = "pointsForm" }))
                         {
                             @Html.AntiForgeryToken()
                             @Html.HiddenFor(m => m.UserId)
@@ -142,7 +141,7 @@
                                             @Html.LabelFor(m => m.CEP_Points, new { @class = "form-label" })
                                             <div class="input-group">
                                                 <span class="input-group-text bg-info text-white"><i class="fas fa-star"></i></span>
-                                                @Html.TextBoxFor(m => m.CEP_Points, new { @class = "form-control" })
+                                                @Html.TextBoxFor(m => m.CEP_Points, new { @class = "form-control", form = "pointsForm" })
                                             </div>
                                             @Html.ValidationMessageFor(m => m.CEP_Points, "", new { @class = "text-danger" })
                                         </div>
@@ -153,14 +152,14 @@
                                             @Html.LabelFor(m => m.CPD_Points, new { @class = "form-label" })
                                             <div class="input-group">
                                                 <span class="input-group-text bg-info text-white"><i class="fas fa-award"></i></span>
-                                                @Html.TextBoxFor(m => m.CPD_Points, new { @class = "form-control" })
+                                                @Html.TextBoxFor(m => m.CPD_Points, new { @class = "form-control", form = "pointsForm" })
                                             </div>
                                             @Html.ValidationMessageFor(m => m.CPD_Points, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
                                     
                                     <div class="col-12 mt-3">
-                                        <button type="submit" name="section" value="points" class="btn btn-info text-white float-end">
+                                        <button type="submit" name="section" value="points" class="btn btn-info text-white float-end" form="pointsForm">
                                             <i class="fas fa-save me-2"></i>Save Points Information
                                         </button>
                                     </div>
@@ -196,34 +195,34 @@
                                     </div>
                                 }
                             </div>
-                            
-                            <div class="mt-4">
-                                <div class="card bg-light border-0">
-                                    <div class="card-body">
-                                        <h5 class="card-title">
-                                            <i class="fas fa-user-tag me-2 text-info"></i>Role
-                                        </h5>
-                                        <div class="p-3 mt-3 bg-white rounded border text-center">
-                                            @if (Model.UserRoles != null && Model.UserRoles.Any())
-                                            {
-                                                foreach (var role in Model.UserRoles)
-                                                {
-                                                    <span class="badge bg-primary p-2 px-3 fs-6">
-                                                        <i class="fas fa-user-tag me-1"></i>@role
-                                                    </span>
                         }
-                    }
-                    else
-                    {
-                                                <span class="badge bg-secondary p-2 px-3 fs-6">
-                                                    <i class="fas fa-exclamation-triangle me-1"></i>No Role Assigned
+                            
+                        <div class="mt-4">
+                            <div class="card bg-light border-0">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <i class="fas fa-user-tag me-2 text-info"></i>Role
+                                    </h5>
+                                    <div class="p-3 mt-3 bg-white rounded border text-center">
+                                        @if (Model.UserRoles != null && Model.UserRoles.Any())
+                                        {
+                                            foreach (var role in Model.UserRoles)
+                                            {
+                                                <span class="badge bg-primary p-2 px-3 fs-6">
+                                                    <i class="fas fa-user-tag me-1"></i>@role
                                                 </span>
-                    }
-                                        </div>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary p-2 px-3 fs-6">
+                                                <i class="fas fa-exclamation-triangle me-1"></i>No Role Assigned
+                                            </span>
+                                        }
                                     </div>
                                 </div>
                             </div>
-                        }
+                        </div>
                     </div>
                 </div>
                 
@@ -238,9 +237,9 @@
                             </button>
                         </div>
                         <div class="card-body card-content">
-                            @using (Html.BeginForm("Index", "Manage", FormMethod.Post, new { @class = "needs-validation" }))
-                        {
-                            @Html.AntiForgeryToken()
+                            @using (Html.BeginForm("Index", "Manage", FormMethod.Post, new { @class = "needs-validation", id = "plantsForm" }))
+                            {
+                                @Html.AntiForgeryToken()
                                 @Html.HiddenFor(m => m.UserId)
                                 
                                 <div class="row">
@@ -261,7 +260,8 @@
                                                                         name="SelectedPlantIds"
                                                                         value="@plant.Value"
                                                                         @(plant.Selected ? "checked" : "")
-                                                                        class="form-check-input" />
+                                                                        class="form-check-input" 
+                                                                        form="plantsForm" />
                                                                     <label class="form-check-label" for="plant_@plant.Value">
                                                                         <i class="fas fa-building me-2 text-success"></i>@plant.Text
                                                                     </label>
@@ -282,7 +282,7 @@
                                         </div>
                                         
                                         <div class="d-flex justify-content-end mt-3">
-                                            <button type="submit" name="section" value="plants" class="btn btn-success">
+                                            <button type="submit" name="section" value="plants" class="btn btn-success" form="plantsForm">
                                                 <i class="fas fa-save me-2"></i>Save Plant Assignments
                                             </button>
                                         </div>
@@ -443,6 +443,31 @@
                 return new bootstrap.Tooltip(tooltipTriggerEl);
             });
             
+            // Handle form validations separately for points form
+            $('#pointsForm').on('submit', function(e) {
+                // Only validate CEP_Points and CPD_Points fields
+                var isValid = true;
+                
+                // For Points form, we don't need to validate other fields
+                // Clear any validation errors from fields outside this form
+                $('input:not([form="pointsForm"]), select:not([form="pointsForm"])').each(function() {
+                    $(this).removeClass('input-validation-error');
+                });
+                
+                return true;
+            });
+            
+            // Handle form validations separately for plants form
+            $('#plantsForm').on('submit', function(e) {
+                // For Plants form, we don't need to validate other fields
+                // Clear any validation errors from fields outside this form
+                $('input:not([form="plantsForm"]), select:not([form="plantsForm"])').each(function() {
+                    $(this).removeClass('input-validation-error');
+                });
+                
+                return true;
+            });
+            
             // Card expansion toggle functionality
             $('.card-toggle').on('click', function() {
                 const $card = $(this).closest('.card-expandable');
@@ -452,6 +477,14 @@
                 $content.slideToggle(300);
                 $icon.toggleClass('fa-chevron-down fa-chevron-up');
                 $card.toggleClass('card-expanded');
+            });
+            
+            // Disable validation for the points form and plants form fields when the basic form is submitted
+            $('#basicInfoForm').on('submit', function() {
+                // Remove validation from other forms' fields
+                $('input[form="pointsForm"], input[form="plantsForm"]').each(function() {
+                    $(this).removeClass('input-validation-error');
+                });
             });
             
             // Enhanced hover effects for plant cards
