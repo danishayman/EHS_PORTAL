@@ -247,6 +247,8 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                 .ToList();
                 
             ViewBag.User = user;
+            ViewBag.CEPPoints = user.CEP_Points ?? 0;
+            ViewBag.CPDPoints = user.CPD_Points ?? 0;
             
             return View(userCompetencies);
         }
@@ -257,11 +259,17 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
             string userId = User.Identity.GetUserId();
             var db = new ApplicationDbContext();
             
+            var user = db.Users.Find(userId);
+            
             var userCompetencies = db.UserCompetencies
                 .Include(uc => uc.CompetencyModule)
                 .Where(uc => uc.UserId == userId)
                 .ToList();
                 
+            ViewBag.User = user;
+            ViewBag.CEPPoints = user.CEP_Points ?? 0;
+            ViewBag.CPDPoints = user.CPD_Points ?? 0;
+            
             return View(userCompetencies);
         }
     }
