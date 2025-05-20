@@ -878,6 +878,8 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                     case "Quotation Requested":
                     case "In Quotation": // For backward compatibility
                         return "bg-primary";
+                    case "Not Started":
+                        return "bg-notstarted";
                     default:
                         return "";
                 }

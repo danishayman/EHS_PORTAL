@@ -280,7 +280,7 @@
 <div id="progressTrackers">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h4 class="h5 text-gray-800 mb-0">Monitoring Activities</h4>
-        <div class="badge badge-primary px-3 py-2 shadow-sm">
+        <div class="badge bg-secondary text-white shadow-sm px-3 py-2">
             <i class="fas fa-filter mr-1"></i> <span id="filterSummary">All Records</span>
         </div>
     </div>
@@ -297,7 +297,7 @@
                 <h6 class="m-0 font-weight-bold text-primary">
                     <i class="fas fa-chart-line mr-1"></i> @monitoring.MonitoringCategory - @monitoring.MonitoringName
                 </h6>
-                <span class="badge badge-light shadow-sm px-3 py-2">
+                <span class="badge bg-secondary text-white shadow-sm px-3 py-2">
                     @{
                         int recordsInType = 0;
                         foreach (var plantId in data[monitoring.MonitoringID].Keys)
@@ -347,23 +347,39 @@
                             <div class="monitoring-record mb-4 shadow-sm status-item" data-status="@record.ProcStatus">
                                 <!-- Status Header -->
                                 <div class="record-header d-flex justify-content-between align-items-center p-3 bg-light border-bottom">
-                                    <div class="d-flex align-items-center">
-                                        <span class="badge @record.ProcStatusCssClass text-white px-2 py-1 mr-2" data-toggle="tooltip" data-html="true" 
-                                              title="@GetStatusTooltip(record)">@record.ProcStatus</span>
-                                        <span class="badge @record.ExpStatusCssClass text-white px-2 py-1" data-toggle="tooltip" data-html="true"
-                                              title="@GetExpiryTooltip(record)">
-                                            @record.ExpStatus
-                                            @{
-                                                try 
-                                                {
-                                                    if (record.ExpDate != null && record.ExpDate != DateTime.MinValue)
+                                    <div>
+                                        @if (!string.IsNullOrEmpty(record.Area))
+                                        {
+                                            <div class="mb-2">
+                                                <span class="badge bg-dark text-white px-2 py-1">Area:</span>
+                                                <span class="font-weight-bold">@record.Area</span>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="mb-2">
+                                                <span class="badge bg-dark text-white px-2 py-1">Area:</span>
+                                                <span class="text-muted">Not Specified</span>
+                                            </div>
+                                        }
+                                        <div class="d-flex align-items-center">
+                                            <span class="badge @(record.ProcStatus == "Not Started" ? "bg-secondary" : record.ProcStatusCssClass) text-white px-2 py-1 mr-2" data-toggle="tooltip" data-html="true" 
+                                                  title="@GetStatusTooltip(record)">@record.ProcStatus</span>
+                                            <span class="badge @record.ExpStatusCssClass text-white px-2 py-1" data-toggle="tooltip" data-html="true"
+                                                  title="@GetExpiryTooltip(record)">
+                                                @record.ExpStatus
+                                                @{
+                                                    try 
                                                     {
-                                                        <span> - @record.ExpDate.Value.ToString("dd/MM/yyyy")</span>
+                                                        if (record.ExpDate != null && record.ExpDate != DateTime.MinValue)
+                                                        {
+                                                            <span> - @record.ExpDate.Value.ToString("dd/MM/yyyy")</span>
+                                                        }
                                                     }
+                                                    catch { /* Ignore conversion errors */ }
                                                 }
-                                                catch { /* Ignore conversion errors */ }
-                                            }
-                                        </span>
+                                            </span>
+                                        </div>
                                     </div>
                                     <div class="btn-group">
                                         <a href="@Url.Action("Details", new { id = record.Id })" class="btn btn-sm btn-info" title="View Details" data-toggle="tooltip">
@@ -873,6 +889,11 @@
     .legend-item {
         margin-bottom: 8px;
     }
+}
+
+.bg-notstarted {
+    background-color: #6f42c1 !important; /* Distinct purple */
+    color: #fff !important;
 }
 </style>
 
