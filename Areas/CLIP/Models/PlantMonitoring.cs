@@ -165,7 +165,7 @@ namespace EHS_PORTAL.Areas.CLIP.Models
                     case "Quotation Requested":
                         return "bg-primary";
                     case "Not Started":
-                        return "bg-secondary";
+                        return "bg-notstarted";
                     default:
                         return "";
                 }
