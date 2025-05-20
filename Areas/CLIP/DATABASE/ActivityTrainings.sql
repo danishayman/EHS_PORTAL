@@ -8,4 +8,5 @@ CREATE TABLE [dbo].[ActivityTrainings] (
     [CEPPointsGained] INT NULL DEFAULT 0,
     [CPDPointsGained] INT NULL DEFAULT 0,
     CONSTRAINT [FK_ActivityTrainings_AspNetUsers] FOREIGN KEY ([UserId]) REFERENCES [dbo].[AspNetUsers] ([Id])
+    
 ); 
