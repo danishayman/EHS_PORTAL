@@ -18,3 +18,8 @@ select,
 textarea {
     max-width: 280px;
 }
+
+/* Custom status background */
+.bg-notstarted {
+    background-color: #858796 !important;
+}
