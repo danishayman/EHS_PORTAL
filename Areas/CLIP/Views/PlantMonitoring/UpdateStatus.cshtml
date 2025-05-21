@@ -70,7 +70,7 @@
                         <label class="col-sm-2 col-form-label">Expiry Date:</label>
                         <div class="col-sm-4">
                             @Html.TextBoxFor(model => model.ExpDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
-                            <small class="form-text text-muted">Will be automatically set to 1 year after completion date when work is completed.</small>
+                            <small class="form-text text-muted">Will be automatically set based on monitoring frequency when work is completed.</small>
                         </div>
                     </div>
                     
@@ -205,7 +205,7 @@
                                 <label class="form-label">Assigned To</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="fas fa-user"></i></span>
-                                    @Html.EditorFor(model => model.QuoteUserAssign, new { htmlAttributes = new { @class = "form-control assignee-field", required = "required", placeholder = "Enter name or ID" } })
+                                    @Html.DropDownList("QuoteUserAssign", (SelectList)ViewBag.UsersList, new { @class = "form-control", required = "required" })
                                 </div>
                                 <div class="invalid-feedback">Please assign someone to this phase.</div>
                             </div>
@@ -295,7 +295,7 @@
                         <div class="form-group row mb-3">
                             <label class="col-sm-3 col-form-label">Assigned To:</label>
                             <div class="col-sm-9">
-                                @Html.EditorFor(model => model.EprUserAssign, new { htmlAttributes = new { @class = "form-control assignee-field", required = "required" } })
+                                @Html.DropDownList("EprUserAssign", (SelectList)ViewBag.UsersList, new { @class = "form-control", required = "required" })
                                 <div class="invalid-feedback">Please assign someone to this phase.</div>
                             </div>
                         </div>
@@ -377,7 +377,7 @@
                         <div class="form-group row mb-3">
                             <label class="col-sm-3 col-form-label">Assigned To:</label>
                             <div class="col-sm-9">
-                                @Html.EditorFor(model => model.WorkUserAssign, new { htmlAttributes = new { @class = "form-control assignee-field", required = "required" } })
+                                @Html.DropDownList("WorkUserAssign", (SelectList)ViewBag.UsersList, new { @class = "form-control", required = "required" })
                                 <div class="invalid-feedback">Please assign someone to this phase.</div>
                             </div>
                         </div>
@@ -571,6 +571,8 @@
                     if (!eprDate.val()) {
                         eprDate.val(quoteCompleteDate);
                         validateEprDates();
+                        // Show notification
+                        showNotification('EPR date automatically set');
                     }
                 }
             }
@@ -604,6 +606,8 @@
                     if (!workDate.val()) {
                         workDate.val(eprCompleteDate);
                         validateWorkDates();
+                        // Show notification
+                        showNotification('Work date automatically set');
                     }
                 }
             }
@@ -635,11 +639,22 @@
 
                     // Auto-set expiry date when work is completed
                     if (!expDate.val()) {
-                        var oneYearLater = new Date(workCompleteDate);
-                        oneYearLater.setFullYear(oneYearLater.getFullYear() + 1);
-                        expDate.val(oneYearLater.toISOString().slice(0, 16));
+                        // Expiry date is now set based on monitoring frequency in the controller
+                        // But we can show a message about it
+                        showNotification('Expiry date will be set based on frequency');
                     }
                 }
+            }
+            
+            // Function to show a notification
+            function showNotification(message) {
+                // Create notification element if it doesn't exist
+                if ($('#auto-notification').length === 0) {
+                    $('body').append('<div id="auto-notification" style="position: fixed; bottom: 20px; right: 20px; background-color: #28a745; color: white; padding: 10px 15px; border-radius: 4px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); z-index: 9999; display: none;"></div>');
+                }
+                
+                // Show notification with message
+                $('#auto-notification').text(message).fadeIn(300).delay(3000).fadeOut(500);
             }
 
             // Cache date input elements
@@ -652,6 +667,31 @@
             $('#quoteDate, #quoteSubmitDate, #quoteCompleteDate').on('change', validateQuotationDates);
             $('#eprDate, #eprSubmitDate, #eprCompleteDate').on('change', validateEprDates);
             $('#workDate, #workSubmitDate, #workCompleteDate').on('change', validateWorkDates);
+            
+            // Set up tab change listeners
+            $('#phasesTabs button[data-bs-toggle="tab"]').on('shown.bs.tab', function (e) {
+                var targetTab = $(e.target).attr("id");
+                
+                // When switching to EPR tab
+                if (targetTab === 'epr-tab') {
+                    var quoteCompleteDate = $('#quoteCompleteDate').val();
+                    if (quoteCompleteDate && !$('#eprDate').val()) {
+                        $('#eprDate').val(quoteCompleteDate);
+                        validateEprDates();
+                        // No notification here - only on save
+                    }
+                }
+                
+                // When switching to Work tab
+                if (targetTab === 'work-tab') {
+                    var eprCompleteDate = $('#eprCompleteDate').val();
+                    if (eprCompleteDate && !$('#workDate').val()) {
+                        $('#workDate').val(eprCompleteDate);
+                        validateWorkDates();
+                        // No notification here - only on save
+                    }
+                }
+            });
 
             // Form submission validation
             $('form').on('submit', function(e) {
@@ -697,11 +737,87 @@
                     $(this).removeClass('is-invalid');
                 }
             });
+
+            // Auto-fill dates on page load based on completed phases
+            function autofillDatesOnLoad() {
+                var quoteCompleteDate = $('#quoteCompleteDate').val();
+                var eprDate = $('#eprDate').val();
+                var eprCompleteDate = $('#eprCompleteDate').val();
+                var workDate = $('#workDate').val();
+                
+                // If Quotation is completed and EPR date is empty, fill it
+                if (quoteCompleteDate && !eprDate) {
+                    $('#eprDate').val(quoteCompleteDate);
+                    validateEprDates();
+                    // No notification here - only on save
+                }
+                
+                // If EPR is completed and Work date is empty, fill it
+                if (eprCompleteDate && !workDate) {
+                    $('#workDate').val(eprCompleteDate);
+                    validateWorkDates();
+                    // No notification here - only on save
+                }
+            }
+            
+            // Call autofill on page load
+            autofillDatesOnLoad();
+
+            // Set up notifications for auto-filled dates when a phase is saved
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <script>
+                    // Check if dates were auto-filled
+                    var autofillNotifications = [];
+                    
+                    @if (TempData["AutofillEPR"] != null)
+                    {
+                        <text>autofillNotifications.push('EPR date automatically set');</text>
+                    }
+                    
+                    @if (TempData["AutofillWork"] != null)
+                    {
+                        <text>autofillNotifications.push('Work date automatically set');</text>
+                    }
+                    
+                    // Show notifications with a slight delay after page load
+                    $(document).ready(function() {
+                        setTimeout(function() {
+                            autofillNotifications.forEach(function(message, index) {
+                                setTimeout(function() {
+                                    showNotification(message);
+                                }, index * 2000); // Stagger notifications by 2 seconds
+                            });
+                        }, 500);
+                    });
+                </script>
+            }
         });
         
         // Function to activate a specific tab
         function activateTab(tabId) {
             $('#' + tabId).tab('show');
+            
+            // When switching to EPR tab, check if we should auto-fill the date
+            if (tabId == 'epr-tab') {
+                var quoteCompleteDate = $('#quoteCompleteDate').val();
+                if (quoteCompleteDate && !$('#eprDate').val()) {
+                    $('#eprDate').val(quoteCompleteDate);
+                    validateEprDates();
+                    // No notification here - only on save
+                }
+            }
+            
+            // When switching to Work tab, check if we should auto-fill the date
+            if (tabId == 'work-tab') {
+                var eprCompleteDate = $('#eprCompleteDate').val();
+                if (eprCompleteDate && !$('#workDate').val()) {
+                    $('#workDate').val(eprCompleteDate);
+                    validateWorkDates();
+                    // No notification here - only on save
+                }
+            }
         }
     </script>
+} 
 } 

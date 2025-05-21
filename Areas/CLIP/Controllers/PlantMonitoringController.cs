@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
@@ -9,6 +10,9 @@ using EHS_PORTAL.Areas.CLIP.Models;
 using System.Globalization;
 using System.IO;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace EHS_PORTAL.Areas.CLIP.Controllers
 {
@@ -214,7 +218,8 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                     EprCompleteDate = pm.EprCompleteDate,
                     WorkDate = pm.WorkDate,
                     WorkSubmitDate = pm.WorkSubmitDate,
-                    WorkCompleteDate = pm.WorkCompleteDate
+                    WorkCompleteDate = pm.WorkCompleteDate,
+                    Remarks = pm.Remarks
                 };
 
                 data[pm.MonitoringID][pm.PlantID].Add(viewModel);
@@ -282,10 +287,17 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
             if (ModelState.IsValid)
             {
                 // If WorkCompleteDate is present (meaning the monitoring is completed),
-                // set the renewal date (ExpDate) to 1 year from completion
+                // set the renewal date (ExpDate) based on monitoring frequency
                 if (plantMonitoring.WorkCompleteDate.HasValue)
                 {
-                    plantMonitoring.ExpDate = plantMonitoring.WorkCompleteDate.Value.AddYears(1);
+                    // Get the monitoring type to determine frequency
+                    var monitoring = db.Monitorings.Find(plantMonitoring.MonitoringID);
+                    if (monitoring != null)
+                    {
+                        // Set the expiry date based on the monitoring frequency
+                        int frequencyMonths = monitoring.MonitoringFreq;
+                        plantMonitoring.ExpDate = plantMonitoring.WorkCompleteDate.Value.AddMonths(frequencyMonths);
+                    }
                 }
                 
                 plantMonitoring.CalculateStatuses();
@@ -312,8 +324,15 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.PlantID = new SelectList(db.Plants.OrderBy(p => p.PlantName), "Id", "PlantName", plantMonitoring.PlantID);
-            ViewBag.MonitoringID = new SelectList(db.Monitorings.OrderBy(m => m.MonitoringName), "MonitoringID", "MonitoringName", plantMonitoring.MonitoringID);
+            ViewBag.MonitoringID = new SelectList(db.Monitorings, "MonitoringID", "MonitoringName", plantMonitoring.MonitoringID);
+            ViewBag.PlantID = new SelectList(db.Plants, "Id", "PlantName", plantMonitoring.PlantID);
+            
+            // Get users for dropdown lists - no need to filter since only admins can access this page
+            var users = db.Users.OrderBy(u => u.UserName).ToList();
+            
+            // Create SelectList for user assignments
+            ViewBag.UsersList = new SelectList(users, "UserName", "UserName");
+            
             return View(plantMonitoring);
         }
 
@@ -326,10 +345,17 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
             if (ModelState.IsValid)
             {
                 // If WorkCompleteDate is present (meaning the monitoring is completed),
-                // set the renewal date (ExpDate) to 1 year from completion
+                // set the renewal date (ExpDate) based on monitoring frequency
                 if (plantMonitoring.WorkCompleteDate.HasValue)
                 {
-                    plantMonitoring.ExpDate = plantMonitoring.WorkCompleteDate.Value.AddYears(1);
+                    // Get the monitoring type to determine frequency
+                    var monitoring = db.Monitorings.Find(plantMonitoring.MonitoringID);
+                    if (monitoring != null)
+                    {
+                        // Set the expiry date based on the monitoring frequency
+                        int frequencyMonths = monitoring.MonitoringFreq;
+                        plantMonitoring.ExpDate = plantMonitoring.WorkCompleteDate.Value.AddMonths(frequencyMonths);
+                    }
                 }
                 
                 plantMonitoring.CalculateStatuses();
@@ -404,6 +430,42 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                 }
             }
 
+            // Get users for dropdown lists
+            var users = db.Users.OrderBy(u => u.UserName).ToList();
+            
+            // Filter out admin users if the current user is not an admin
+            if (!User.IsInRole("Admin"))
+            {
+                try
+                {
+                    // Get the admin role
+                    var adminRole = db.Roles.FirstOrDefault(r => r.Name == "Admin");
+                    
+                    if (adminRole != null)
+                    {
+                        // Use SQL to get usernames directly from database
+                        var adminUsernames = db.Database.SqlQuery<string>(@"
+                            SELECT u.UserName 
+                            FROM AspNetUsers u
+                            INNER JOIN AspNetUserRoles ur ON u.Id = ur.UserId
+                            WHERE ur.RoleId = @roleId",
+                            new System.Data.SqlClient.SqlParameter("@roleId", adminRole.Id)
+                        ).ToList();
+                        
+                        // Filter out admin users
+                        users = users.Where(u => !adminUsernames.Contains(u.UserName)).ToList();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Log the error but don't break the page
+                    System.Diagnostics.Debug.WriteLine("Failed to filter admin users: " + ex.Message);
+                }
+            }
+
+            // Create SelectList for user assignments
+            ViewBag.UsersList = new SelectList(users, "UserName", "UserName");
+
             ViewBag.IsAdmin = User.IsInRole("Admin");
             return View(plantMonitoring);
         }
@@ -456,11 +518,25 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                 plantMonitoring.WorkCompleteDate = model.WorkCompleteDate;
                 plantMonitoring.WorkUserAssign = model.WorkUserAssign;
                 
+                // Auto-fill dates based on phase completion
+                if (plantMonitoring.QuoteCompleteDate.HasValue && !plantMonitoring.EprDate.HasValue)
+                {
+                    plantMonitoring.EprDate = plantMonitoring.QuoteCompleteDate;
+                }
+                
+                if (plantMonitoring.EprCompleteDate.HasValue && !plantMonitoring.WorkDate.HasValue)
+                {
+                    plantMonitoring.WorkDate = plantMonitoring.EprCompleteDate;
+                }
+
                 // If WorkCompleteDate is present (meaning the monitoring is completed),
-                // set the renewal date (ExpDate) to 1 year from completion
+                // set the renewal date (ExpDate) based on monitoring frequency
                 if (model.WorkCompleteDate.HasValue)
                 {
-                    plantMonitoring.ExpDate = model.WorkCompleteDate.Value.AddYears(1);
+                    // Get the monitoring frequency in months
+                    int frequencyMonths = plantMonitoring.Monitoring.MonitoringFreq;
+                    // Set the expiry date based on the frequency
+                    plantMonitoring.ExpDate = model.WorkCompleteDate.Value.AddMonths(frequencyMonths);
                 }
 
                 // Calculate and set statuses
@@ -589,6 +665,42 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
             model.Plant = plantMonitoringFromDb.Plant;
             model.Monitoring = plantMonitoringFromDb.Monitoring;
 
+            // Recreate user list for dropdown
+            var users = db.Users.OrderBy(u => u.UserName).ToList();
+            
+            // Filter out admin users if the current user is not an admin
+            if (!User.IsInRole("Admin"))
+            {
+                try
+                {
+                    // Get the admin role
+                    var adminRole = db.Roles.FirstOrDefault(r => r.Name == "Admin");
+                    
+                    if (adminRole != null)
+                    {
+                        // Use SQL to get usernames directly from database
+                        var adminUsernames = db.Database.SqlQuery<string>(@"
+                            SELECT u.UserName 
+                            FROM AspNetUsers u
+                            INNER JOIN AspNetUserRoles ur ON u.Id = ur.UserId
+                            WHERE ur.RoleId = @roleId",
+                            new System.Data.SqlClient.SqlParameter("@roleId", adminRole.Id)
+                        ).ToList();
+                        
+                        // Filter out admin users
+                        users = users.Where(u => !adminUsernames.Contains(u.UserName)).ToList();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Log the error but don't break the page
+                    System.Diagnostics.Debug.WriteLine("Failed to filter admin users: " + ex.Message);
+                }
+            }
+            
+            // Create SelectList for user assignments
+            ViewBag.UsersList = new SelectList(users, "UserName", "UserName");
+
             ViewBag.IsAdmin = User.IsInRole("Admin");
             return View(model);
         }
@@ -664,6 +776,12 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
             plantMonitoring.QuoteCompleteDate = model.QuoteCompleteDate;
             plantMonitoring.QuoteUserAssign = model.QuoteUserAssign;
 
+            // If Quotation phase is completed, set the EPR phase date if not already set
+            if (model.QuoteCompleteDate.HasValue && !plantMonitoring.EprDate.HasValue)
+            {
+                plantMonitoring.EprDate = model.QuoteCompleteDate;
+            }
+
             // Handle document upload
             if (quoteDocument != null && quoteDocument.ContentLength > 0)
             {
@@ -727,6 +845,12 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
             plantMonitoring.EprSubmitDate = model.EprSubmitDate;
             plantMonitoring.EprCompleteDate = model.EprCompleteDate;
             plantMonitoring.EprUserAssign = model.EprUserAssign;
+
+            // If EPR phase is completed, set the Work phase date if not already set
+            if (model.EprCompleteDate.HasValue && !plantMonitoring.WorkDate.HasValue)
+            {
+                plantMonitoring.WorkDate = model.EprCompleteDate;
+            }
 
             // Handle document upload
             if (eprDocument != null && eprDocument.ContentLength > 0)
@@ -793,10 +917,13 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
             plantMonitoring.WorkUserAssign = model.WorkUserAssign;
 
             // If WorkCompleteDate is present (meaning the monitoring is completed),
-            // set the renewal date (ExpDate) to 1 year from completion
+            // set the renewal date (ExpDate) based on monitoring frequency
             if (model.WorkCompleteDate.HasValue)
             {
-                plantMonitoring.ExpDate = model.WorkCompleteDate.Value.AddYears(1);
+                // Get the monitoring frequency in months
+                int frequencyMonths = plantMonitoring.Monitoring.MonitoringFreq;
+                // Set the expiry date based on the frequency
+                plantMonitoring.ExpDate = model.WorkCompleteDate.Value.AddMonths(frequencyMonths);
             }
 
             // Handle document upload
@@ -860,6 +987,7 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
         public DateTime? WorkDate { get; set; }
         public DateTime? WorkSubmitDate { get; set; }
         public DateTime? WorkCompleteDate { get; set; }
+        public string Remarks { get; set; }
 
         public string ProcStatusCssClass
         {
