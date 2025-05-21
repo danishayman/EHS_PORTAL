@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.ComponentModel.DataAnnotations;
 
 namespace EHS_PORTAL.Areas.CLIP.Models
 {
@@ -17,60 +18,64 @@ namespace EHS_PORTAL.Areas.CLIP.Models
         public DateTime CreatedDate { get; set; } = DateTime.Now;
         public NotificationType Type { get; set; }
         public int ItemId { get; set; }
-        public bool IsRead { get; set; }
+        public bool IsRead { get; set; } = false;
         
         // Helper properties for UI presentation
         public string IconClass 
         { 
-            get
-            {
-                switch (Type)
-                {
-                    case NotificationType.Expiring:
-                        return "fa-calendar-exclamation text-warning";
-                    case NotificationType.Assignment:
-                        return "fa-user-check text-info";
-                    case NotificationType.PhaseComplete:
-                        return "fa-check-circle text-success";
-                    case NotificationType.NextPhaseReady:
-                        return "fa-arrow-right text-primary";
-                    case NotificationType.Overdue:
-                        return "fa-exclamation-circle text-danger";
-                    default:
-                        return "fa-bell text-secondary";
-                }
-            }
+            get { return GetIconClass(); }
         }
         
         public string BadgeClass
         {
-            get
+            get { return GetBadgeClass(); }
+        }
+
+        private string GetIconClass()
+        {
+            switch (Type)
             {
-                switch (Type)
-                {
-                    case NotificationType.Expiring:
-                        return "bg-warning";
-                    case NotificationType.Assignment:
-                        return "bg-info";
-                    case NotificationType.PhaseComplete:
-                        return "bg-success";
-                    case NotificationType.NextPhaseReady:
-                        return "bg-primary";
-                    case NotificationType.Overdue:
-                        return "bg-danger";
-                    default:
-                        return "bg-secondary";
-                }
+                case NotificationType.Expiring:
+                    return "fa-clock";
+                case NotificationType.Assignment:
+                    return "fa-tasks";
+                case NotificationType.NextPhaseReady:
+                    return "fa-arrow-right";
+                case NotificationType.Overdue:
+                    return "fa-exclamation-triangle";
+                case NotificationType.PhaseComplete:
+                    return "fa-check-circle";
+                default:
+                    return "fa-bell";
+            }
+        }
+
+        private string GetBadgeClass()
+        {
+            switch (Type)
+            {
+                case NotificationType.Expiring:
+                    return "bg-warning";
+                case NotificationType.Assignment:
+                    return "bg-info";
+                case NotificationType.NextPhaseReady:
+                    return "bg-primary";
+                case NotificationType.Overdue:
+                    return "bg-danger";
+                case NotificationType.PhaseComplete:
+                    return "bg-success";
+                default:
+                    return "bg-secondary";
             }
         }
     }
     
     public enum NotificationType
     {
-        Expiring,
-        Assignment,
-        PhaseComplete,
-        NextPhaseReady,
-        Overdue
+        Expiring,        // When items are about to expire
+        Assignment,      // Tasks assigned to the user
+        NextPhaseReady,  // When previous phase is completed and next phase can begin
+        Overdue,         // When items are past their due date
+        PhaseComplete    // When a monitoring item is completed
     }
 } 

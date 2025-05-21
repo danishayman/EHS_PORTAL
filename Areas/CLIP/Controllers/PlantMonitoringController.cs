@@ -24,6 +24,10 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
         // GET: PlantMonitoring
         public ActionResult Index(string category = null, int? plantId = null, string status = null, string monitoringType = null, int? frequency = null)
         {
+            System.Diagnostics.Debug.WriteLine("========================================");
+            System.Diagnostics.Debug.WriteLine($"INDEX ACTION CALLED - User: {User.Identity.Name}");
+            System.Diagnostics.Debug.WriteLine("========================================");
+            
             // Get all plant monitoring items with plant and monitoring details
             var query = db.PlantMonitorings
                 .Include(p => p.Plant)
@@ -334,8 +338,16 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
             ViewBag.MonitoringID = new SelectList(db.Monitorings, "MonitoringID", "MonitoringName", plantMonitoring.MonitoringID);
             ViewBag.PlantID = new SelectList(db.Plants, "Id", "PlantName", plantMonitoring.PlantID);
             
-            // Get users for dropdown lists - no need to filter since only admins can access this page
-            var users = db.Users.OrderBy(u => u.UserName).ToList();
+            // Get users that have access to this plant
+            var usersWithAccess = db.UserPlants
+                .Where(up => up.PlantId == plantMonitoring.PlantID)
+                .Select(up => up.UserId)
+                .ToList();
+            
+            var users = db.Users
+                .Where(u => usersWithAccess.Contains(u.Id))
+                .OrderBy(u => u.UserName)
+                .ToList();
             
             // Create SelectList for user assignments
             ViewBag.UsersList = new SelectList(users, "UserName", "UserName");
@@ -438,38 +450,27 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
             }
 
             // Get users for dropdown lists
-            var users = db.Users.OrderBy(u => u.UserName).ToList();
+            List<ApplicationUser> users;
             
-            // Filter out admin users if the current user is not an admin
-            if (!User.IsInRole("Admin"))
+            if (User.IsInRole("Admin"))
             {
-                try
-                {
-                    // Get the admin role
-                    var adminRole = db.Roles.FirstOrDefault(r => r.Name == "Admin");
-                    
-                    if (adminRole != null)
-                    {
-                        // Use SQL to get usernames directly from database
-                        var adminUsernames = db.Database.SqlQuery<string>(@"
-                            SELECT u.UserName 
-                            FROM AspNetUsers u
-                            INNER JOIN AspNetUserRoles ur ON u.Id = ur.UserId
-                            WHERE ur.RoleId = @roleId",
-                            new System.Data.SqlClient.SqlParameter("@roleId", adminRole.Id)
-                        ).ToList();
-                        
-                        // Filter out admin users
-                        users = users.Where(u => !adminUsernames.Contains(u.UserName)).ToList();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    // Log the error but don't break the page
-                    System.Diagnostics.Debug.WriteLine("Failed to filter admin users: " + ex.Message);
-                }
+                // If admin, show only users that have access to this plant
+                var usersWithAccess = db.UserPlants
+                    .Where(up => up.PlantId == plantMonitoring.PlantID)
+                    .Select(up => up.UserId)
+                    .ToList();
+                
+                users = db.Users
+                    .Where(u => usersWithAccess.Contains(u.Id))
+                    .OrderBy(u => u.UserName)
+                    .ToList();
             }
-
+            else
+            {
+                // For non-admin users, they can only self-assign
+                users = new List<ApplicationUser> { db.Users.FirstOrDefault(u => u.UserName == User.Identity.Name) };
+            }
+            
             // Create SelectList for user assignments
             ViewBag.UsersList = new SelectList(users, "UserName", "UserName");
 
@@ -506,6 +507,91 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                     model.QuoteUserAssign = User.Identity.Name;
                     model.EprUserAssign = User.Identity.Name;
                     model.WorkUserAssign = User.Identity.Name;
+                }
+                else
+                {
+                    // For admin users, validate that assigned users have access to this plant
+                    var usersWithAccess = db.UserPlants
+                        .Where(up => up.PlantId == plantMonitoring.PlantID)
+                        .Include(up => up.User)
+                        .Select(up => up.User.UserName)
+                        .ToList();
+                        
+                    // Check if assigned users have access to the plant
+                    if (!string.IsNullOrEmpty(model.QuoteUserAssign) && !usersWithAccess.Contains(model.QuoteUserAssign))
+                    {
+                        ModelState.AddModelError("QuoteUserAssign", "The assigned user does not have access to this plant.");
+                        var validationEntity = db.PlantMonitorings
+                            .Include(p => p.Plant)
+                            .Include(p => p.Monitoring)
+                            .FirstOrDefault(p => p.Id == id);
+                        
+                        if (validationEntity != null)
+                        {
+                            model.Plant = validationEntity.Plant;
+                            model.Monitoring = validationEntity.Monitoring;
+                        }
+                        
+                        // Recreate user list
+                        var filteredUsers = db.Users
+                            .Where(u => usersWithAccess.Contains(u.UserName))
+                            .OrderBy(u => u.UserName)
+                            .ToList();
+                            
+                        ViewBag.UsersList = new SelectList(filteredUsers, "UserName", "UserName");
+                        ViewBag.IsAdmin = User.IsInRole("Admin");
+                        return View(model);
+                    }
+                    
+                    if (!string.IsNullOrEmpty(model.EprUserAssign) && !usersWithAccess.Contains(model.EprUserAssign))
+                    {
+                        ModelState.AddModelError("EprUserAssign", "The assigned user does not have access to this plant.");
+                        var validationEntity = db.PlantMonitorings
+                            .Include(p => p.Plant)
+                            .Include(p => p.Monitoring)
+                            .FirstOrDefault(p => p.Id == id);
+                        
+                        if (validationEntity != null)
+                        {
+                            model.Plant = validationEntity.Plant;
+                            model.Monitoring = validationEntity.Monitoring;
+                        }
+                        
+                        // Recreate user list
+                        var filteredUsers = db.Users
+                            .Where(u => usersWithAccess.Contains(u.UserName))
+                            .OrderBy(u => u.UserName)
+                            .ToList();
+                            
+                        ViewBag.UsersList = new SelectList(filteredUsers, "UserName", "UserName");
+                        ViewBag.IsAdmin = User.IsInRole("Admin");
+                        return View(model);
+                    }
+                    
+                    if (!string.IsNullOrEmpty(model.WorkUserAssign) && !usersWithAccess.Contains(model.WorkUserAssign))
+                    {
+                        ModelState.AddModelError("WorkUserAssign", "The assigned user does not have access to this plant.");
+                        var validationEntity = db.PlantMonitorings
+                            .Include(p => p.Plant)
+                            .Include(p => p.Monitoring)
+                            .FirstOrDefault(p => p.Id == id);
+                        
+                        if (validationEntity != null)
+                        {
+                            model.Plant = validationEntity.Plant;
+                            model.Monitoring = validationEntity.Monitoring;
+                        }
+                        
+                        // Recreate user list
+                        var filteredUsers = db.Users
+                            .Where(u => usersWithAccess.Contains(u.UserName))
+                            .OrderBy(u => u.UserName)
+                            .ToList();
+                            
+                        ViewBag.UsersList = new SelectList(filteredUsers, "UserName", "UserName");
+                        ViewBag.IsAdmin = User.IsInRole("Admin");
+                        return View(model);
+                    }
                 }
 
                 // Update properties
@@ -784,6 +870,22 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                 // For non-admin users, always set the current user as the assignee
                 model.QuoteUserAssign = User.Identity.Name;
             }
+            else
+            {
+                // For admin users, validate that the assigned user has access to this plant
+                if (!string.IsNullOrEmpty(model.QuoteUserAssign))
+                {
+                    var userHasAccess = db.UserPlants
+                        .Include(up => up.User)
+                        .Any(up => up.PlantId == plantMonitoring.PlantID && up.User.UserName == model.QuoteUserAssign);
+                        
+                    if (!userHasAccess)
+                    {
+                        TempData["ErrorMessage"] = "The assigned user does not have access to this plant.";
+                        return RedirectToAction("UpdateStatus", new { id = plantMonitoring.Id });
+                    }
+                }
+            }
 
             // Update only quotation phase
             plantMonitoring.QuoteDate = model.QuoteDate;
@@ -856,6 +958,22 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                 
                 // For non-admin users, always set the current user as the assignee
                 model.EprUserAssign = User.Identity.Name;
+            }
+            else
+            {
+                // For admin users, validate that the assigned user has access to this plant
+                if (!string.IsNullOrEmpty(model.EprUserAssign))
+                {
+                    var userHasAccess = db.UserPlants
+                        .Include(up => up.User)
+                        .Any(up => up.PlantId == plantMonitoring.PlantID && up.User.UserName == model.EprUserAssign);
+                        
+                    if (!userHasAccess)
+                    {
+                        TempData["ErrorMessage"] = "The assigned user does not have access to this plant.";
+                        return RedirectToAction("UpdateStatus", new { id = plantMonitoring.Id });
+                    }
+                }
             }
 
             // Update only ePR phase
@@ -930,6 +1048,22 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                 // For non-admin users, always set the current user as the assignee
                 model.WorkUserAssign = User.Identity.Name;
             }
+            else
+            {
+                // For admin users, validate that the assigned user has access to this plant
+                if (!string.IsNullOrEmpty(model.WorkUserAssign))
+                {
+                    var userHasAccess = db.UserPlants
+                        .Include(up => up.User)
+                        .Any(up => up.PlantId == plantMonitoring.PlantID && up.User.UserName == model.WorkUserAssign);
+                        
+                    if (!userHasAccess)
+                    {
+                        TempData["ErrorMessage"] = "The assigned user does not have access to this plant.";
+                        return RedirectToAction("UpdateStatus", new { id = plantMonitoring.Id });
+                    }
+                }
+            }
 
             // Update only work execution phase
             plantMonitoring.WorkDate = model.WorkDate;
@@ -981,25 +1115,148 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
             return RedirectToAction("UpdateStatus", new { id = plantMonitoring.Id });
         }
 
+        // POST: PlantMonitoring/MarkNotificationAsRead
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult MarkNotificationAsRead(int id)
+        {
+            try
+            {
+                // We're not storing notifications in the database, so we'll use a session variable
+                // to track read notifications per user
+                var readNotifications = Session["ReadNotifications"] as List<int> ?? new List<int>();
+                
+                if (!readNotifications.Contains(id))
+                {
+                    readNotifications.Add(id);
+                    Session["ReadNotifications"] = readNotifications;
+                }
+                
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("Error marking notification as read: " + ex.Message);
+                return Json(new { success = false, message = "Error marking notification as read" });
+            }
+        }
+
+        // POST: PlantMonitoring/ClearAllNotifications
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ClearAllNotifications()
+        {
+            try
+            {
+                // Get all notification IDs
+                var notifications = GetMonitoringNotifications();
+                var notificationIds = notifications.Select(n => n.ItemId).ToList();
+                
+                // Store them in session as read
+                Session["ReadNotifications"] = notificationIds;
+                
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("Error clearing notifications: " + ex.Message);
+                return Json(new { success = false, message = "Error clearing notifications" });
+            }
+        }
+
+        // POST: PlantMonitoring/RenewMonitoring/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult RenewMonitoring(int id)
+        {
+            var plantMonitoring = db.PlantMonitorings
+                .Include(p => p.Plant)
+                .Include(p => p.Monitoring)
+                .FirstOrDefault(p => p.Id == id);
+            
+            if (plantMonitoring == null)
+            {
+                return HttpNotFound();
+            }
+
+            // Check if user has access to this plant monitoring record
+            if (!User.IsInRole("Admin"))
+            {
+                var userId = User.Identity.GetUserId();
+                var userHasAccessToPlant = db.UserPlants
+                    .Any(up => up.UserId == userId && up.PlantId == plantMonitoring.PlantID);
+                
+                if (!userHasAccessToPlant)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+                }
+            }
+            
+            try
+            {
+                // Create a new monitoring cycle from the existing one
+                var newMonitoring = new PlantMonitoring
+                {
+                    PlantID = plantMonitoring.PlantID,
+                    MonitoringID = plantMonitoring.MonitoringID,
+                    Area = plantMonitoring.Area,
+                    ProcStatus = "Not Started",
+                    
+                    // Assign the same users if they exist
+                    QuoteUserAssign = plantMonitoring.QuoteUserAssign,
+                    EprUserAssign = plantMonitoring.EprUserAssign,
+                    WorkUserAssign = plantMonitoring.WorkUserAssign,
+                    
+                    // Set current date as the start date for the new cycle
+                    QuoteDate = DateTime.Now,
+                    
+                    // Copy remarks if needed
+                    Remarks = $"Renewed from previous monitoring cycle (ID: {plantMonitoring.Id}) that expired on {plantMonitoring.ExpDate?.ToString("dd/MM/yyyy") ?? "N/A"}"
+                };
+                
+                // Calculate statuses
+                newMonitoring.CalculateStatuses();
+                
+                // Add to database
+                db.PlantMonitorings.Add(newMonitoring);
+                db.SaveChanges();
+                
+                TempData["SuccessMessage"] = "Monitoring has been renewed. New monitoring cycle created.";
+                return RedirectToAction("Details", new { id = newMonitoring.Id });
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "Error renewing monitoring: " + ex.Message;
+                return RedirectToAction("Details", new { id = id });
+            }
+        }
+
         // Generates monitoring notifications for the current user
         private List<MonitoringNotification> GetMonitoringNotifications()
         {
             var notifications = new List<MonitoringNotification>();
             var currentUser = User.Identity.Name;
             var today = DateTime.Now.Date;
+            var thirtyDaysFromNow = today.AddDays(30); // Calculate date before using in LINQ
+            
+            // Get the list of read notification IDs from session
+            var readNotificationIds = Session["ReadNotifications"] as List<int> ?? new List<int>();
             
             try
             {
+                System.Diagnostics.Debug.WriteLine($"Generating notifications for user: {currentUser}");
+                
                 // 1. Items expiring soon (30, 14, and 7 days)
                 var expiringItems = db.PlantMonitorings
                     .Include(p => p.Plant)
                     .Include(p => p.Monitoring)
                     .Where(p => p.ExpDate.HasValue && 
                            p.ExpDate.Value >= today &&
-                           p.ExpDate.Value <= today.AddDays(30) &&
+                           p.ExpDate.Value <= thirtyDaysFromNow &&
                            p.ProcStatus != "Completed")
                     .ToList();
                 
+                System.Diagnostics.Debug.WriteLine($"Found {expiringItems.Count} expiring items");
                 foreach (var item in expiringItems)
                 {
                     var daysRemaining = (item.ExpDate.Value - today).Days;
@@ -1019,7 +1276,7 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                         Message = $"{item.Monitoring.MonitoringName} for {item.Plant.PlantName} {(string.IsNullOrEmpty(item.Area) ? "" : "(" + item.Area + ")")} is expiring {urgency}",
                         Link = Url.Action("Details", new { id = item.Id }),
                         ItemId = item.Id,
-                        IsRead = false
+                        IsRead = readNotificationIds.Contains(item.Id)
                     });
                 }
                 
@@ -1032,6 +1289,7 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                            (p.WorkUserAssign == currentUser && p.WorkCompleteDate == null))
                     .ToList();
                 
+                System.Diagnostics.Debug.WriteLine($"Found {assignedItems.Count} assigned items");
                 foreach (var item in assignedItems)
                 {
                     string phase = "";
@@ -1049,7 +1307,7 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                         Message = $"You are assigned to the {phase} phase for {item.Monitoring.MonitoringName} at {item.Plant.PlantName}",
                         Link = Url.Action("UpdateStatus", new { id = item.Id }),
                         ItemId = item.Id,
-                        IsRead = false
+                        IsRead = readNotificationIds.Contains(item.Id)
                     });
                 }
                 
@@ -1057,10 +1315,14 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                 var readyForNextPhase = db.PlantMonitorings
                     .Include(p => p.Plant)
                     .Include(p => p.Monitoring)
+                    .Where(p => (p.QuoteCompleteDate.HasValue && !p.EprCompleteDate.HasValue) ||
+                           (p.EprCompleteDate.HasValue && !p.WorkCompleteDate.HasValue))
+                    .ToList()
                     .Where(p => (p.QuoteCompleteDate.HasValue && !p.EprCompleteDate.HasValue && p.EprUserAssign == currentUser) ||
                            (p.EprCompleteDate.HasValue && !p.WorkCompleteDate.HasValue && p.WorkUserAssign == currentUser))
                     .ToList();
                 
+                System.Diagnostics.Debug.WriteLine($"Found {readyForNextPhase.Count} items ready for next phase");
                 foreach (var item in readyForNextPhase)
                 {
                     string phase = "";
@@ -1076,7 +1338,7 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                         Message = $"The {phase} phase is ready to begin for {item.Monitoring.MonitoringName} at {item.Plant.PlantName}",
                         Link = Url.Action("UpdateStatus", new { id = item.Id }),
                         ItemId = item.Id,
-                        IsRead = false
+                        IsRead = readNotificationIds.Contains(item.Id)
                     });
                 }
                 
@@ -1084,11 +1346,16 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                 var overdueItems = db.PlantMonitorings
                     .Include(p => p.Plant)
                     .Include(p => p.Monitoring)
+                    .Where(p => (p.QuoteSubmitDate.HasValue && !p.QuoteCompleteDate.HasValue) ||
+                           (p.EprSubmitDate.HasValue && !p.EprCompleteDate.HasValue) ||
+                           (p.WorkSubmitDate.HasValue && !p.WorkCompleteDate.HasValue))
+                    .ToList()
                     .Where(p => (p.QuoteSubmitDate.HasValue && p.QuoteSubmitDate.Value < today && !p.QuoteCompleteDate.HasValue && p.QuoteUserAssign == currentUser) ||
                            (p.EprSubmitDate.HasValue && p.EprSubmitDate.Value < today && !p.EprCompleteDate.HasValue && p.EprUserAssign == currentUser) ||
                            (p.WorkSubmitDate.HasValue && p.WorkSubmitDate.Value < today && !p.WorkCompleteDate.HasValue && p.WorkUserAssign == currentUser))
                     .ToList();
                 
+                System.Diagnostics.Debug.WriteLine($"Found {overdueItems.Count} overdue items");
                 foreach (var item in overdueItems)
                 {
                     string phase = "";
@@ -1106,7 +1373,33 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                         Message = $"The {phase} phase for {item.Monitoring.MonitoringName} at {item.Plant.PlantName} is overdue",
                         Link = Url.Action("UpdateStatus", new { id = item.Id }),
                         ItemId = item.Id,
-                        IsRead = false
+                        IsRead = readNotificationIds.Contains(item.Id)
+                    });
+                }
+                
+                // 5. Recently completed monitoring items
+                var lastWeek = today.AddDays(-7); // Calculate date before using in LINQ
+                var completedItems = db.PlantMonitorings
+                    .Include(p => p.Plant)
+                    .Include(p => p.Monitoring)
+                    .Where(p => p.ProcStatus == "Completed" && 
+                          p.WorkCompleteDate.HasValue)
+                    .ToList()
+                    .Where(p => p.WorkCompleteDate.Value >= lastWeek && 
+                          (p.QuoteUserAssign == currentUser || p.EprUserAssign == currentUser || p.WorkUserAssign == currentUser))
+                    .ToList();
+                
+                System.Diagnostics.Debug.WriteLine($"Found {completedItems.Count} completed items");
+                foreach (var item in completedItems)
+                {
+                    notifications.Add(new MonitoringNotification
+                    {
+                        Type = NotificationType.PhaseComplete,
+                        Title = "Monitoring Completed",
+                        Message = $"{item.Monitoring.MonitoringName} for {item.Plant.PlantName} has been completed successfully",
+                        Link = Url.Action("Details", new { id = item.Id }),
+                        ItemId = item.Id,
+                        IsRead = readNotificationIds.Contains(item.Id)
                     });
                 }
             }
@@ -1116,11 +1409,15 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                 System.Diagnostics.Debug.WriteLine("Error generating monitoring notifications: " + ex.Message);
             }
             
-            return notifications.OrderByDescending(n => n.Type == NotificationType.Overdue)  // Overdue first
-                               .ThenByDescending(n => n.Type == NotificationType.Expiring)  // Then expiring
-                               .ThenBy(n => n.CreatedDate)  // Then by date
-                               .Take(10)  // Limit to 10 items
-                               .ToList();
+            var filteredNotifications = notifications
+                .OrderByDescending(n => n.Type == NotificationType.Overdue)  // Overdue first
+                .ThenByDescending(n => n.Type == NotificationType.Expiring)  // Then expiring
+                .ThenBy(n => n.CreatedDate)  // Then by date
+                .Take(10)  // Limit to 10 items
+                .ToList();
+            
+            System.Diagnostics.Debug.WriteLine($"Returning {filteredNotifications.Count} total notifications");
+            return filteredNotifications;
         }
 
         protected override void Dispose(bool disposing)

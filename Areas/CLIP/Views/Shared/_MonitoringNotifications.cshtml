@@ -1,14 +1,15 @@
 @model List<EHS_PORTAL.Areas.CLIP.Models.MonitoringNotification>
 
 @{
-    var notificationCount = Model?.Count ?? 0;
-    var hasNotifications = notificationCount > 0;
+    var notificationCount = Model?.Count(n => !n.IsRead) ?? 0;
+    var hasNotifications = Model?.Count > 0;
+    var unreadNotifications = notificationCount > 0;
 }
 
 <div class="notification-toggle-container">
     <button class="btn btn-light notification-toggle-btn" id="notificationToggleBtn" title="Toggle Notifications">
         <i class="fas fa-bell"></i>
-        @if (hasNotifications)
+        @if (unreadNotifications)
         {
             <span class="badge bg-danger notification-badge">@notificationCount</span>
         }
@@ -19,12 +20,20 @@
     <div class="notification-header">
         <h6 class="m-0">
             <i class="fas fa-bell me-2"></i> Notifications
-            @if (hasNotifications)
+            @if (unreadNotifications)
             {
                 <span class="badge bg-danger ms-1">@notificationCount</span>
             }
         </h6>
-        <button class="btn-close notification-close" id="notificationCloseBtn"></button>
+        <div>
+            @if (unreadNotifications)
+            {
+                <button type="button" class="btn btn-sm btn-outline-secondary me-2" id="markAllReadBtn">
+                    <i class="fas fa-check-double"></i> Mark all read
+                </button>
+            }
+            <button class="btn-close notification-close" id="notificationCloseBtn"></button>
+        </div>
     </div>
     <div class="notification-body" id="notificationsList">
         @if (hasNotifications)
@@ -32,18 +41,23 @@
             <div class="notification-list">
                 @foreach (var notification in Model)
                 {
-                    <a href="@notification.Link" class="notification-item">
-                        <div class="notification-icon @notification.BadgeClass">
-                            <i class="fas @notification.IconClass"></i>
-                        </div>
-                        <div class="notification-content">
-                            <div class="notification-title">
-                                <span>@notification.Title</span>
-                                <small>@notification.CreatedDate.ToString("MMM dd, HH:mm")</small>
+                    <div class="notification-item-wrapper">
+                        <a href="@notification.Link" class="notification-item @(notification.IsRead ? "notification-read" : "notification-unread")" data-id="@notification.ItemId">
+                            <div class="notification-icon @notification.BadgeClass">
+                                <i class="fas @notification.IconClass"></i>
                             </div>
-                            <p class="notification-message">@notification.Message</p>
-                        </div>
-                    </a>
+                            <div class="notification-content">
+                                <div class="notification-title">
+                                    <span>@notification.Title</span>
+                                    <small>@notification.CreatedDate.ToString("MMM dd, HH:mm")</small>
+                                </div>
+                                <p class="notification-message">@notification.Message</p>
+                            </div>
+                        </a>
+                        <button type="button" class="btn btn-sm btn-light mark-read-btn" title="Mark as read" data-id="@notification.ItemId">
+                            <i class="fas fa-check"></i>
+                        </button>
+                    </div>
                 }
             </div>
         }
@@ -62,6 +76,7 @@
         var notificationsPanel = document.getElementById('notificationsPanel');
         var notificationToggleBtn = document.getElementById('notificationToggleBtn');
         var notificationCloseBtn = document.getElementById('notificationCloseBtn');
+        var markAllReadBtn = document.getElementById('markAllReadBtn');
         
         if (!notificationsPanel || !notificationToggleBtn) return;
         
@@ -102,7 +117,133 @@
         var savedVisibility = localStorage.getItem('notificationsPanelVisible');
         if (savedVisibility === 'true') {
             notificationsPanel.style.display = 'block';
-        } 
+        }
+        
+        // Handle mark as read buttons
+        var markReadButtons = document.querySelectorAll('.mark-read-btn');
+        markReadButtons.forEach(function(btn) {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                e.preventDefault();
+                
+                var notificationId = this.getAttribute('data-id');
+                markNotificationAsRead(notificationId, this);
+            });
+        });
+        
+        // Mark all as read
+        if (markAllReadBtn) {
+            markAllReadBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                markAllNotificationsAsRead();
+            });
+        }
+        
+        // Function to mark a notification as read
+        function markNotificationAsRead(notificationId, button) {
+            // Create anti-forgery token form data
+            var token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+            var formData = new FormData();
+            formData.append('id', notificationId);
+            formData.append('__RequestVerificationToken', token);
+            
+            // Send AJAX request
+            fetch('@Url.Action("MarkNotificationAsRead", "PlantMonitoring")', {
+                method: 'POST',
+                body: formData,
+                credentials: 'same-origin'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Mark as read in UI
+                    var notificationItem = button.closest('.notification-item-wrapper').querySelector('.notification-item');
+                    notificationItem.classList.remove('notification-unread');
+                    notificationItem.classList.add('notification-read');
+                    
+                    // Hide the button
+                    button.style.display = 'none';
+                    
+                    // Update badge count
+                    updateNotificationCount();
+                }
+            })
+            .catch(error => {
+                console.error('Error marking notification as read:', error);
+            });
+        }
+        
+        // Function to mark all notifications as read
+        function markAllNotificationsAsRead() {
+            // Create anti-forgery token form data
+            var token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+            var formData = new FormData();
+            formData.append('__RequestVerificationToken', token);
+            
+            // Send AJAX request
+            fetch('@Url.Action("ClearAllNotifications", "PlantMonitoring")', {
+                method: 'POST',
+                body: formData,
+                credentials: 'same-origin'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Mark all as read in UI
+                    var notificationItems = document.querySelectorAll('.notification-item');
+                    notificationItems.forEach(function(item) {
+                        item.classList.remove('notification-unread');
+                        item.classList.add('notification-read');
+                    });
+                    
+                    // Hide all mark read buttons
+                    var markReadButtons = document.querySelectorAll('.mark-read-btn');
+                    markReadButtons.forEach(function(btn) {
+                        btn.style.display = 'none';
+                    });
+                    
+                    // Hide mark all read button
+                    if (markAllReadBtn) {
+                        markAllReadBtn.style.display = 'none';
+                    }
+                    
+                    // Update badge count to zero
+                    var badge = document.querySelector('.notification-badge');
+                    if (badge) {
+                        badge.style.display = 'none';
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error marking all notifications as read:', error);
+            });
+        }
+        
+        // Function to update notification count
+        function updateNotificationCount() {
+            var unreadNotifications = document.querySelectorAll('.notification-unread').length;
+            var badge = document.querySelector('.notification-badge');
+            
+            if (unreadNotifications > 0) {
+                if (badge) {
+                    badge.textContent = unreadNotifications;
+                } else {
+                    var newBadge = document.createElement('span');
+                    newBadge.className = 'badge bg-danger notification-badge';
+                    newBadge.textContent = unreadNotifications;
+                    notificationToggleBtn.appendChild(newBadge);
+                }
+            } else {
+                if (badge) {
+                    badge.style.display = 'none';
+                }
+                
+                // Hide mark all read button if no unread notifications
+                if (markAllReadBtn) {
+                    markAllReadBtn.style.display = 'none';
+                }
+            }
+        }
     });
 </script>
 
@@ -179,19 +320,36 @@
         padding: 0;
     }
     
+    .notification-item-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+        border-bottom: 1px solid #f0f0f0;
+    }
+    
     .notification-item {
         display: flex;
         padding: 12px 15px;
-        border-bottom: 1px solid #f0f0f0;
         transition: background-color 0.2s;
         text-decoration: none;
         color: inherit;
+        flex: 1;
     }
     
     .notification-item:hover {
         background-color: #f8f9fa;
         text-decoration: none;
         color: inherit;
+    }
+    
+    .notification-unread {
+        border-left: 3px solid #4e73df;
+        background-color: rgba(78, 115, 223, 0.05);
+        font-weight: 500;
+    }
+    
+    .notification-read {
+        opacity: 0.7;
     }
     
     .notification-icon {
@@ -231,6 +389,18 @@
         color: #495057;
     }
     
+    .mark-read-btn {
+        margin-right: 8px;
+        padding: 3px 6px;
+        font-size: 0.7rem;
+        display: none;
+    }
+    
+    .notification-unread + .mark-read-btn,
+    .notification-item-wrapper:hover .mark-read-btn {
+        display: inline-block;
+    }
+    
     /* Badge background colors */
     .bg-warning {
         background-color: #f6c23e !important;
@@ -253,7 +423,7 @@
     }
     
     /* Responsive adjustments */
-    @media (max-width: 576px) {
+    media (max-width: 576px) {
         .notification-panel {
             width: 300px;
             max-width: calc(100vw - 30px);
