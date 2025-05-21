@@ -247,8 +247,8 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                 .ToList();
                 
             ViewBag.User = user;
-            ViewBag.CEPPoints = user.CEP_Points ?? 0;
-            ViewBag.CPDPoints = user.CPD_Points ?? 0;
+            ViewBag.CEPPoints = user.Atom_CEP ?? 0;
+            ViewBag.CPDPoints = user.DOE_CPD ?? 0;
             
             return View(userCompetencies);
         }
@@ -267,8 +267,8 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                 .ToList();
                 
             ViewBag.User = user;
-            ViewBag.CEPPoints = user.CEP_Points ?? 0;
-            ViewBag.CPDPoints = user.CPD_Points ?? 0;
+            ViewBag.CEPPoints = user.Atom_CEP ?? 0;
+            ViewBag.CPDPoints = user.DOE_CPD ?? 0;
             
             return View(userCompetencies);
         }

@@ -55,11 +55,11 @@ namespace FETS.Pages.DataEntry
         /// </summary>
         private void GetUserPlantAndRole()
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
-                using (SqlCommand cmd = new SqlCommand("SELECT PlantID, Role FROM Users WHERE Username = @Username", conn))
+                using (SqlCommand cmd = new SqlCommand("SELECT PlantID, Role FROM FETS.Users WHERE Username = @Username", conn))
                 {
                     cmd.Parameters.AddWithValue("@Username", User.Identity.Name);
                     using (SqlDataReader reader = cmd.ExecuteReader())
@@ -89,7 +89,7 @@ namespace FETS.Pages.DataEntry
         /// </summary>
         private void LoadDropDownLists()
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
@@ -98,7 +98,7 @@ namespace FETS.Pages.DataEntry
                 LoadPlantsDropdown(conn);
 
                 // Load Fire Extinguisher Types dropdown
-                using (SqlCommand cmd = new SqlCommand("SELECT TypeID, TypeName FROM FireExtinguisherTypes ORDER BY TypeName", conn))
+                using (SqlCommand cmd = new SqlCommand("SELECT TypeID, TypeName FROM FETS.FireExtinguisherTypes ORDER BY TypeName", conn))
                 {
                     ddlType.Items.Clear();
                     ddlType.Items.Add(new ListItem("-- Select Type --", ""));
@@ -121,13 +121,13 @@ namespace FETS.Pages.DataEntry
         /// </summary>
         private void LoadPlantsForDeletion()
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
 
                 // Load Plants dropdown for deletion
-                using (SqlCommand cmd = new SqlCommand("SELECT PlantID, PlantName FROM Plants ORDER BY PlantName", conn))
+                using (SqlCommand cmd = new SqlCommand("SELECT PlantID, PlantName FROM FETS.Plants ORDER BY PlantName", conn))
                 {
                     ddlDeletePlant.Items.Clear();
                     ddlDeletePlant.Items.Add(new ListItem("-- Select Plant --", ""));
@@ -168,7 +168,7 @@ namespace FETS.Pages.DataEntry
             // For regular users with an assigned plant, only show that plant
             if (!IsAdministrator && UserPlantID.HasValue)
             {
-                using (SqlCommand cmd = new SqlCommand("SELECT PlantID, PlantName FROM Plants WHERE PlantID = @PlantID", conn))
+                using (SqlCommand cmd = new SqlCommand("SELECT PlantID, PlantName FROM FETS.Plants WHERE PlantID = @PlantID", conn))
                 {
                     cmd.Parameters.AddWithValue("@PlantID", UserPlantID.Value);
                     using (SqlDataReader reader = cmd.ExecuteReader())
@@ -197,7 +197,7 @@ namespace FETS.Pages.DataEntry
             // For administrators, show all plants
             else if (IsAdministrator)
             {
-                using (SqlCommand cmd = new SqlCommand("SELECT PlantID, PlantName FROM Plants ORDER BY PlantName", conn))
+                using (SqlCommand cmd = new SqlCommand("SELECT PlantID, PlantName FROM FETS.Plants ORDER BY PlantName", conn))
                 {
                     ddlPlant.Items.Add(new ListItem("-- Select Plant --", ""));
                     using (SqlDataReader reader = cmd.ExecuteReader())
@@ -235,13 +235,13 @@ namespace FETS.Pages.DataEntry
         /// </summary>
         private void LoadLevelsForPlant(int plantId)
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
                 
                 // Load levels for selected plant
-                using (SqlCommand cmd = new SqlCommand("SELECT LevelID, LevelName FROM Levels WHERE PlantID = @PlantID ORDER BY LevelName", conn))
+                using (SqlCommand cmd = new SqlCommand("SELECT LevelID, LevelName FROM FETS.Levels WHERE PlantID = @PlantID ORDER BY LevelName", conn))
                 {
                     cmd.Parameters.AddWithValue("@PlantID", plantId);
                     ddlLevel.Items.Clear();
@@ -310,7 +310,7 @@ namespace FETS.Pages.DataEntry
 
                 // Get status ID from database
                 using (SqlCommand cmd = new SqlCommand(
-                    "SELECT TOP 1 StatusID FROM Status WITH (NOLOCK) WHERE StatusName = @StatusName", conn))
+                    "SELECT TOP 1 StatusID FROM FETS.Status WITH (NOLOCK) WHERE StatusName = @StatusName", conn))
                 {
                     cmd.Parameters.AddWithValue("@StatusName", statusName);
                     var result = cmd.ExecuteScalar();
@@ -324,7 +324,7 @@ namespace FETS.Pages.DataEntry
 
                     // Log available statuses for debugging
                     using (SqlCommand debugCmd = new SqlCommand(
-                        "SELECT StatusID, StatusName FROM Status WITH (NOLOCK)", conn))
+                        "SELECT StatusID, StatusName FROM FETS.Status WITH (NOLOCK)", conn))
                     {
                         using (SqlDataReader reader = debugCmd.ExecuteReader())
                         {
@@ -336,7 +336,7 @@ namespace FETS.Pages.DataEntry
                         }
                     }
 
-                    throw new Exception(string.Format("Status '{0}' not found in the database. Please ensure the Status table is properly initialized.", statusName));
+                    throw new Exception(string.Format("FETS.Status '{0}' not found in the database. Please ensure the Status table is properly initialized.", statusName));
                 }
             }
             catch (Exception ex)
@@ -377,12 +377,12 @@ namespace FETS.Pages.DataEntry
             }
 
             // Check if serial number is unique
-            string connectionString = ConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
 
-                using (SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM FireExtinguishers WHERE SerialNumber = @SerialNumber", conn))
+                using (SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM FETS.FireExtinguishers WHERE SerialNumber = @SerialNumber", conn))
                 {
                     cmd.Parameters.AddWithValue("@SerialNumber", txtSerialNumber.Text);
                     int count = Convert.ToInt32(cmd.ExecuteScalar());
@@ -431,7 +431,7 @@ namespace FETS.Pages.DataEntry
                 return;
             }
 
-            string connectionString = ConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 try
@@ -453,7 +453,7 @@ namespace FETS.Pages.DataEntry
                     }
 
                     // Insert new fire extinguisher record
-                    string insertQuery = "INSERT INTO FireExtinguishers (SerialNumber, AreaCode, PlantID, LevelID, Location, TypeID, DateExpired, Remarks, StatusID) VALUES (@SerialNumber, @AreaCode, @PlantID, @LevelID, @Location, @TypeID, @DateExpired, @Remarks, @StatusID)";
+                    string insertQuery = "INSERT INTO FETS.FireExtinguishers (SerialNumber, AreaCode, PlantID, LevelID, Location, TypeID, DateExpired, Remarks, StatusID) VALUES (@SerialNumber, @AreaCode, @PlantID, @LevelID, @Location, @TypeID, @DateExpired, @Remarks, @StatusID)";
                     using (SqlCommand cmd = new SqlCommand(insertQuery, conn))
                     {
                         cmd.Parameters.AddWithValue("@SerialNumber", txtSerialNumber.Text.Trim());
@@ -469,7 +469,7 @@ namespace FETS.Pages.DataEntry
 
                         // Get the newly inserted fire extinguisher ID
                         int newFireExtinguisherId = 0;
-                        using (SqlCommand getIdCmd = new SqlCommand("SELECT MAX(FEID) FROM FireExtinguishers WHERE SerialNumber = @SerialNumber", conn))
+                        using (SqlCommand getIdCmd = new SqlCommand("SELECT MAX(FEID) FROM FETS.FireExtinguishers WHERE SerialNumber = @SerialNumber", conn))
                         {
                             getIdCmd.Parameters.AddWithValue("@SerialNumber", txtSerialNumber.Text.Trim());
                             object result = getIdCmd.ExecuteScalar();
@@ -569,13 +569,13 @@ namespace FETS.Pages.DataEntry
                 return;
             }
 
-            string connectionString = ConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
                 
                 // Check if plant name already exists
-                using (SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM Plants WHERE PlantName = @PlantName", conn))
+                using (SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM FETS.Plants WHERE PlantName = @PlantName", conn))
                 {
                     cmd.Parameters.AddWithValue("@PlantName", plantName);
                     int count = (int)cmd.ExecuteScalar();
@@ -596,7 +596,7 @@ namespace FETS.Pages.DataEntry
                         int plantId;
                         
                         // Insert new plant
-                        using (SqlCommand cmd = new SqlCommand("INSERT INTO Plants (PlantName) OUTPUT INSERTED.PlantID VALUES (@PlantName)", conn))
+                        using (SqlCommand cmd = new SqlCommand("INSERT INTO FETS.Plants (PlantName) OUTPUT INSERTED.PlantID VALUES (@PlantName)", conn))
                         {
                             cmd.Parameters.AddWithValue("@PlantName", plantName);
                             plantId = (int)cmd.ExecuteScalar();
@@ -607,7 +607,7 @@ namespace FETS.Pages.DataEntry
                             // Insert levels for the plant
                             for (int i = 1; i <= levelCount; i++)
                             {
-                                using (SqlCommand cmd = new SqlCommand("INSERT INTO Levels (PlantID, LevelName) VALUES (@PlantID, @LevelName)", conn))
+                                using (SqlCommand cmd = new SqlCommand("INSERT INTO FETS.Levels (PlantID, LevelName) VALUES (@PlantID, @LevelName)", conn))
                                 {
                                     cmd.Parameters.AddWithValue("@PlantID", plantId);
                                     cmd.Parameters.AddWithValue("@LevelName", string.Format("Level {0}", i));
@@ -685,14 +685,14 @@ namespace FETS.Pages.DataEntry
                 return;
             }
 
-            string connectionString = ConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
                 
                 // Check if there are fire extinguishers associated with this plant
                 using (SqlCommand cmd = new SqlCommand(
-                    "SELECT COUNT(*) FROM FireExtinguishers WHERE PlantID = @PlantID", conn))
+                    "SELECT COUNT(*) FROM FETS.FireExtinguishers WHERE PlantID = @PlantID", conn))
                 {
                     cmd.Parameters.AddWithValue("@PlantID", plantId);
                     int count = (int)cmd.ExecuteScalar();
@@ -709,7 +709,7 @@ namespace FETS.Pages.DataEntry
                 
                 // Check if there are map images associated with this plant
                 using (SqlCommand cmd = new SqlCommand(
-                    "SELECT COUNT(*) FROM MapImages WHERE PlantID = @PlantID", conn))
+                    "SELECT COUNT(*) FROM FETS.MapImages WHERE PlantID = @PlantID", conn))
                 {
                     cmd.Parameters.AddWithValue("@PlantID", plantId);
                     int count = (int)cmd.ExecuteScalar();
@@ -734,14 +734,14 @@ namespace FETS.Pages.DataEntry
                     {
                         // Delete all levels associated with the plant
                         using (SqlCommand cmd = new SqlCommand(
-                            "DELETE FROM Levels WHERE PlantID = @PlantID", conn, transaction))
+                            "DELETE FROM FETS.Levels WHERE PlantID = @PlantID", conn, transaction))
                         {
                             cmd.Parameters.AddWithValue("@PlantID", plantId);
                             int levelsDeleted = cmd.ExecuteNonQuery();
                             
                             // Now delete the plant
                             using (SqlCommand cmdPlant = new SqlCommand(
-                                "DELETE FROM Plants WHERE PlantID = @PlantID", conn, transaction))
+                                "DELETE FROM FETS.Plants WHERE PlantID = @PlantID", conn, transaction))
                             {
                                 cmdPlant.Parameters.AddWithValue("@PlantID", plantId);
                                 int result = cmdPlant.ExecuteNonQuery();

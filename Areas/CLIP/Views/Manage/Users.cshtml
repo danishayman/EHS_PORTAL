@@ -95,7 +95,7 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
                                 <div class="stat-label">Avg. CEP Points</div>
-                                <div class="stat-value">@(Model.Any() ? Math.Round(Model.Average(u => u.CEP_Points ?? 0), 1) : 0)</div>
+                                <div class="stat-value">@(Model.Any() ? Math.Round(Model.Average(u => u.Atom_CEP ?? 0), 1) : 0)</div>
                             </div>
                             <div class="stat-icon">
                                 <i class="fas fa-award fa-3x"></i>
@@ -110,7 +110,7 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
                                 <div class="stat-label">Avg. CPD Points</div>
-                                <div class="stat-value">@(Model.Any() ? Math.Round(Model.Average(u => u.CPD_Points ?? 0), 1) : 0)</div>
+                                <div class="stat-value">@(Model.Any() ? Math.Round(Model.Average(u => u.DOE_CPD ?? 0), 1) : 0)</div>
                             </div>
                             <div class="stat-icon">
                                 <i class="fas fa-star fa-3x"></i>
@@ -160,8 +160,8 @@
                                                 </span>
                                             </td>
                                             <td>@(string.IsNullOrEmpty(user.EmpID) ? "Not set" : user.EmpID)</td>
-                                            <td class="text-center"><span class="badge bg-success rounded-pill">@(user.CEP_Points ?? 0)</span></td>
-                                            <td class="text-center"><span class="badge bg-info rounded-pill">@(user.CPD_Points ?? 0)</span></td>
+                                            <td class="text-center"><span class="badge bg-success rounded-pill">@(user.Atom_CEP ?? 0)</span></td>
+                                            <td class="text-center"><span class="badge bg-info rounded-pill">@(user.DOE_CPD ?? 0)</span></td>
                                             <td>@(string.IsNullOrEmpty(user.PhoneNumber) ? "Not set" : user.PhoneNumber)</td>
                                             <td>
                                                 <div class="action-buttons text-end">
@@ -257,13 +257,13 @@
                                                 <div class="col-6">
                                                     <div class="p-2 border rounded text-center">
                                                         <div class="small text-muted">CEP Points</div>
-                                                        <div class="fs-5 fw-bold text-success">@(user.CEP_Points ?? 0)</div>
+                                                        <div class="fs-5 fw-bold text-success">@(user.Atom_CEP ?? 0)</div>
                                                     </div>
                                                 </div>
                                                 <div class="col-6">
                                                     <div class="p-2 border rounded text-center">
                                                         <div class="small text-muted">CPD Points</div>
-                                                        <div class="fs-5 fw-bold text-info">@(user.CPD_Points ?? 0)</div>
+                                                        <div class="fs-5 fw-bold text-info">@(user.DOE_CPD ?? 0)</div>
                                                     </div>
                                                 </div>
                                             </div>

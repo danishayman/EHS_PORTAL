@@ -7,7 +7,6 @@ using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace EHS_PORTAL.Areas.CLIP.Models
 {
-    // You can add profile data for the user by adding more properties to your ApplicationUser class, please visit https://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
     public class ApplicationUser : IdentityUser
     {
         public ApplicationUser()
@@ -17,18 +16,15 @@ namespace EHS_PORTAL.Areas.CLIP.Models
         }
 
         public string EmpID { get; set; }
-        public int? CEP_Points { get; set; }
-        public int? CPD_Points { get; set; }
+        public int? Atom_CEP { get; set; }
+        public int? DOE_CPD { get; set; }
 
-        // Navigation properties
         public virtual ICollection<UserPlant> UserPlants { get; set; }
         public virtual ICollection<UserCompetency> UserCompetencies { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
-            // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
             var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
-            // Add custom user claims here
             return userIdentity;
         }
     }
@@ -60,7 +56,26 @@ namespace EHS_PORTAL.Areas.CLIP.Models
         {
             base.OnModelCreating(modelBuilder);
 
-            // Configure UserCompetency relationships
+            // Identity Tables → CLIP schema
+            modelBuilder.Entity<ApplicationUser>().ToTable("AspNetUsers", "CLIP");
+            modelBuilder.Entity<IdentityRole>().ToTable("AspNetRoles", "CLIP");
+            modelBuilder.Entity<IdentityUserRole>().ToTable("AspNetUserRoles", "CLIP");
+            modelBuilder.Entity<IdentityUserLogin>().ToTable("AspNetUserLogins", "CLIP");
+            modelBuilder.Entity<IdentityUserClaim>().ToTable("AspNetUserClaims", "CLIP");
+
+            // Your Tables → CLIP schema
+            MapToClip<UserCompetency>(modelBuilder, "UserCompetencies");
+            MapToClip<CompetencyModule>(modelBuilder, "CompetencyModules");
+            MapToClip<UserPlant>(modelBuilder, "UserPlants");
+            MapToClip<Plant>(modelBuilder, "Plants");
+            MapToClip<AreaPlant>(modelBuilder, "AreaPlant");
+            MapToClip<CertificateOfFitness>(modelBuilder, "CertificateOfFitness");
+            MapToClip<Monitoring>(modelBuilder, "Monitoring");
+            MapToClip<PlantMonitoring>(modelBuilder, "PlantMonitoring");
+            MapToClip<MonitoringDocument>(modelBuilder, "MonitoringDocument");
+            MapToClip<ActivityTraining>(modelBuilder, "ActivityTrainings");
+
+            // Relationships
             modelBuilder.Entity<UserCompetency>()
                 .HasRequired(uc => uc.User)
                 .WithMany(u => u.UserCompetencies)
@@ -73,7 +88,6 @@ namespace EHS_PORTAL.Areas.CLIP.Models
                 .HasForeignKey(uc => uc.CompetencyModuleId)
                 .WillCascadeOnDelete(false);
 
-            // Configure UserPlant relationships
             modelBuilder.Entity<UserPlant>()
                 .HasRequired(up => up.User)
                 .WithMany(u => u.UserPlants)
@@ -86,25 +100,21 @@ namespace EHS_PORTAL.Areas.CLIP.Models
                 .HasForeignKey(up => up.PlantId)
                 .WillCascadeOnDelete(false);
 
-            // Configure unique constraint for CompetencyModule.ModuleName
             modelBuilder.Entity<CompetencyModule>()
                 .Property(c => c.ModuleName)
                 .IsRequired()
                 .HasMaxLength(256);
-                
+
             modelBuilder.Entity<CompetencyModule>()
                 .HasIndex(c => c.ModuleName)
                 .IsUnique();
 
-            // Configure CertificateOfFitness relationships
             modelBuilder.Entity<CertificateOfFitness>()
-                .ToTable("CertificateOfFitness")
                 .HasRequired(cf => cf.Plant)
                 .WithMany()
                 .HasForeignKey(cf => cf.PlantId)
                 .WillCascadeOnDelete(false);
-            
-            // Configure PlantMonitoring relationships
+
             modelBuilder.Entity<PlantMonitoring>()
                 .HasRequired(pm => pm.Plant)
                 .WithMany()
@@ -117,21 +127,17 @@ namespace EHS_PORTAL.Areas.CLIP.Models
                 .HasForeignKey(pm => pm.MonitoringID)
                 .WillCascadeOnDelete(false);
 
-            // Configure Monitoring table name
-            modelBuilder.Entity<Monitoring>()
-                .ToTable("Monitoring");
-            
-            // Configure PlantMonitoring table name
-            modelBuilder.Entity<PlantMonitoring>()
-                .ToTable("PlantMonitoring");
-                
-            // Configure MonitoringDocument relationships
             modelBuilder.Entity<MonitoringDocument>()
-                .ToTable("MonitoringDocument")
                 .HasRequired(md => md.PlantMonitoring)
                 .WithMany()
                 .HasForeignKey(md => md.PlantMonitoringId)
                 .WillCascadeOnDelete(false);
+        }
+
+        // Helper to reduce repetition
+        private void MapToClip<TEntity>(DbModelBuilder modelBuilder, string tableName) where TEntity : class
+        {
+            modelBuilder.Entity<TEntity>().ToTable(tableName, "CLIP");
         }
     }
 }
