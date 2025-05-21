@@ -7,12 +7,14 @@
 }
 
 <div class="notification-toggle-container">
-    <button class="btn btn-light notification-toggle-btn" id="notificationToggleBtn" title="Toggle Notifications">
-        <i class="fas fa-bell"></i>
-        @if (unreadNotifications)
-        {
-            <span class="badge bg-danger notification-badge">@notificationCount</span>
-        }
+    <button class="notification-toggle-btn" id="notificationToggleBtn" title="Toggle Notifications">
+        <span class="bell-wrapper">
+            <i class="fas fa-bell"></i>
+            @if (unreadNotifications)
+            {
+                <span class="notification-badge">@notificationCount</span>
+            }
+        </span>
     </button>
 </div>
 
@@ -229,9 +231,9 @@
                     badge.textContent = unreadNotifications;
                 } else {
                     var newBadge = document.createElement('span');
-                    newBadge.className = 'badge bg-danger notification-badge';
+                    newBadge.className = 'notification-badge';
                     newBadge.textContent = unreadNotifications;
-                    notificationToggleBtn.appendChild(newBadge);
+                    document.querySelector('.bell-wrapper').appendChild(newBadge);
                 }
             } else {
                 if (badge) {
@@ -255,55 +257,83 @@
     }
     
     .notification-toggle-btn {
-        width: 40px;
-        height: 40px;
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        background: linear-gradient(145deg, #ffffff, #f0f0f0);
+        box-shadow: 5px 5px 10px #d1d1d1, -5px -5px 10px #ffffff;
+        border: none;
         display: flex;
         align-items: center;
         justify-content: center;
         position: fixed;
-        right: 15px;
-        top: 70px;
-        border-radius: 50%;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        background-color: white;
-        border: none;
+        right: 20px;
+        top: 80px;
+        transition: all 0.3s ease;
+        cursor: pointer;
         z-index: 1001;
     }
     
     .notification-toggle-btn:hover {
-        background-color: #f8f9fa;
+        transform: scale(1.05);
+        box-shadow: 6px 6px 12px #d1d1d1, -6px -6px 12px #ffffff;
+    }
+    
+    .notification-toggle-btn:active {
+        transform: scale(0.95);
+        box-shadow: inset 2px 2px 5px #d1d1d1, inset -2px -2px 5px #ffffff;
+    }
+    
+    .bell-wrapper {
+        position: relative;
+        color: #4e73df;
+        font-size: 1.2rem;
     }
     
     .notification-badge {
         position: absolute;
-        top: -5px;
-        right: -5px;
+        top: -10px;
+        right: -10px;
         font-size: 0.65rem;
-        padding: 0.25rem 0.4rem;
+        background-color: #e74a3b;
+        color: white;
+        border-radius: 50%;
+        width: 18px;
+        height: 18px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 2px solid white;
     }
     
     .notification-panel {
         position: fixed;
-        top: 115px;
-        right: 15px;
+        top: 130px;
+        right: 20px;
         width: 350px;
         max-width: 90vw;
         max-height: 70vh;
         background-color: white;
-        border-radius: 8px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
         z-index: 1000;
         overflow: hidden;
         display: none;
+        border: 1px solid rgba(0,0,0,0.08);
     }
     
     .notification-header {
-        padding: 12px 15px;
+        padding: 15px;
         background-color: #f8f9fa;
         border-bottom: 1px solid #e9ecef;
         display: flex;
         justify-content: space-between;
         align-items: center;
+    }
+    
+    .notification-header h6 {
+        font-weight: 600;
+        color: #5a5c69;
     }
     
     .notification-close {
@@ -312,7 +342,7 @@
     }
     
     .notification-body {
-        max-height: calc(70vh - 40px);
+        max-height: calc(70vh - 50px);
         overflow-y: auto;
     }
     
@@ -329,7 +359,7 @@
     
     .notification-item {
         display: flex;
-        padding: 12px 15px;
+        padding: 15px;
         transition: background-color 0.2s;
         text-decoration: none;
         color: inherit;
@@ -349,7 +379,8 @@
     }
     
     .notification-read {
-        opacity: 0.7;
+        opacity: 0.75;
+        border-left: 3px solid transparent;
     }
     
     .notification-icon {
@@ -394,11 +425,18 @@
         padding: 3px 6px;
         font-size: 0.7rem;
         display: none;
+        border-radius: 50%;
+        width: 25px;
+        height: 25px;
+        line-height: 1;
+        padding: 0;
     }
     
     .notification-unread + .mark-read-btn,
     .notification-item-wrapper:hover .mark-read-btn {
-        display: inline-block;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
     }
     
     /* Badge background colors */
@@ -432,6 +470,12 @@
         
         .notification-toggle-btn {
             right: 10px;
+            width: 40px;
+            height: 40px;
+        }
+        
+        .bell-wrapper {
+            font-size: 1rem;
         }
     }
 </style> 
