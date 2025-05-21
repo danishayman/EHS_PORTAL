@@ -646,6 +646,7 @@
     <Compile Include="Areas\CLIP\Models\ManageViewModels.cs" />
     <Compile Include="Areas\CLIP\Models\Monitoring.cs" />
     <Compile Include="Areas\CLIP\Models\MonitoringDocument.cs" />
+    <Compile Include="Areas\CLIP\Models\MonitoringNotification.cs" />
     <Compile Include="Areas\CLIP\Models\Plant.cs" />
     <Compile Include="Areas\CLIP\Models\PlantMonitoring.cs" />
     <Compile Include="Areas\CLIP\Models\UserCompetency.cs" />

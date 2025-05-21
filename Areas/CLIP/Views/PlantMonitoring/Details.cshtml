@@ -1,33 +1,39 @@
 @model EHS_PORTAL.Areas.CLIP.Models.PlantMonitoring
 
 @{
-    ViewBag.Title = "Monitoring Record Details";
+    ViewBag.Title = "Plant Monitoring Details";
+    var isAdmin = ViewBag.IsAdmin;
 }
 
-<h2>Monitoring Record Details</h2>
+<h2>Monitoring Details</h2>
 
-<div class="row">
-    <div class="col-md-12 mb-3">
-        <div class="btn-group">
-            <a href="@Url.Action("Index")" class="btn btn-secondary" title="Back to List">
-                <i class="fas fa-arrow-left"></i>
+@if (ViewBag.Notifications != null)
+{
+    @Html.Partial("_MonitoringNotifications", (List<EHS_PORTAL.Areas.CLIP.Models.MonitoringNotification>)ViewBag.Notifications)
+}
+
+<div class="d-flex justify-content-between mb-3">
+    <div>
+        <a href="@Url.Action("Index")" class="btn btn-sm btn-secondary">
+            <i class="fas fa-arrow-left me-1"></i> Back to List
+        </a>
+        <a href="@Url.Action("Schedule")" class="btn btn-sm btn-info">
+            <i class="fas fa-calendar me-1"></i> Schedule View
+        </a>
+    </div>
+    <div>
+        <a href="@Url.Action("UpdateStatus", new { id = Model.Id })" class="btn btn-sm btn-primary">
+            <i class="fas fa-edit me-1"></i> Update Status
+        </a>
+        @if (isAdmin)
+        {
+            <a href="@Url.Action("Edit", new { id = Model.Id })" class="btn btn-sm btn-warning">
+                <i class="fas fa-pencil-alt me-1"></i> Edit
             </a>
-            @if (User.IsInRole("Admin"))
-            {
-                <a href="@Url.Action("Edit", new { id = Model.Id })" class="btn btn-warning" title="Edit Record">
-                    <i class="fas fa-edit"></i>
-                </a>
-            }
-            <a href="@Url.Action("UpdateStatus", new { id = Model.Id })" class="btn btn-primary" title="Update Status">
-                <i class="fas fa-tasks"></i>
+            <a href="@Url.Action("Delete", new { id = Model.Id })" class="btn btn-sm btn-danger">
+                <i class="fas fa-trash me-1"></i> Delete
             </a>
-            @if (User.IsInRole("Admin"))
-            {
-                <a href="@Url.Action("Delete", new { id = Model.Id })" class="btn btn-danger" title="Delete Record">
-                    <i class="fas fa-trash"></i>
-                </a>
-            }
-        </div>
+        }
     </div>
 </div>
 

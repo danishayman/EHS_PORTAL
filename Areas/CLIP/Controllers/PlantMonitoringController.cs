@@ -136,6 +136,9 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                 "No Expiry"
             };
 
+            // Get monitoring notifications for the current user
+            ViewBag.Notifications = GetMonitoringNotifications();
+            
             // Group by Month for schedule view
             var currentYear = DateTime.Now.Year;
             var result = query.ToList();
@@ -266,6 +269,10 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
             }
 
             ViewBag.IsAdmin = User.IsInRole("Admin");
+            
+            // Get monitoring notifications for the current user
+            ViewBag.Notifications = GetMonitoringNotifications();
+            
             return View(plantMonitoring);
         }
 
@@ -494,6 +501,11 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                     {
                         return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
                     }
+                    
+                    // For non-admin users, enforce self-assignment to all phases
+                    model.QuoteUserAssign = User.Identity.Name;
+                    model.EprUserAssign = User.Identity.Name;
+                    model.WorkUserAssign = User.Identity.Name;
                 }
 
                 // Update properties
@@ -768,6 +780,9 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
                 }
+                
+                // For non-admin users, always set the current user as the assignee
+                model.QuoteUserAssign = User.Identity.Name;
             }
 
             // Update only quotation phase
@@ -838,6 +853,9 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
                 }
+                
+                // For non-admin users, always set the current user as the assignee
+                model.EprUserAssign = User.Identity.Name;
             }
 
             // Update only ePR phase
@@ -908,6 +926,9 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
                 }
+                
+                // For non-admin users, always set the current user as the assignee
+                model.WorkUserAssign = User.Identity.Name;
             }
 
             // Update only work execution phase
@@ -958,6 +979,148 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
 
             // Redirect back to the update page
             return RedirectToAction("UpdateStatus", new { id = plantMonitoring.Id });
+        }
+
+        // Generates monitoring notifications for the current user
+        private List<MonitoringNotification> GetMonitoringNotifications()
+        {
+            var notifications = new List<MonitoringNotification>();
+            var currentUser = User.Identity.Name;
+            var today = DateTime.Now.Date;
+            
+            try
+            {
+                // 1. Items expiring soon (30, 14, and 7 days)
+                var expiringItems = db.PlantMonitorings
+                    .Include(p => p.Plant)
+                    .Include(p => p.Monitoring)
+                    .Where(p => p.ExpDate.HasValue && 
+                           p.ExpDate.Value >= today &&
+                           p.ExpDate.Value <= today.AddDays(30) &&
+                           p.ProcStatus != "Completed")
+                    .ToList();
+                
+                foreach (var item in expiringItems)
+                {
+                    var daysRemaining = (item.ExpDate.Value - today).Days;
+                    string urgency = "";
+                    
+                    if (daysRemaining <= 7)
+                        urgency = "Very soon (7 days)";
+                    else if (daysRemaining <= 14)
+                        urgency = "Soon (14 days)";
+                    else
+                        urgency = "Within 30 days";
+                    
+                    notifications.Add(new MonitoringNotification
+                    {
+                        Type = NotificationType.Expiring,
+                        Title = "Monitoring Expiring",
+                        Message = $"{item.Monitoring.MonitoringName} for {item.Plant.PlantName} {(string.IsNullOrEmpty(item.Area) ? "" : "(" + item.Area + ")")} is expiring {urgency}",
+                        Link = Url.Action("Details", new { id = item.Id }),
+                        ItemId = item.Id,
+                        IsRead = false
+                    });
+                }
+                
+                // 2. Items assigned to the current user
+                var assignedItems = db.PlantMonitorings
+                    .Include(p => p.Plant)
+                    .Include(p => p.Monitoring)
+                    .Where(p => (p.QuoteUserAssign == currentUser && p.QuoteCompleteDate == null) || 
+                           (p.EprUserAssign == currentUser && p.EprCompleteDate == null) ||
+                           (p.WorkUserAssign == currentUser && p.WorkCompleteDate == null))
+                    .ToList();
+                
+                foreach (var item in assignedItems)
+                {
+                    string phase = "";
+                    if (item.QuoteUserAssign == currentUser && item.QuoteCompleteDate == null)
+                        phase = "Quotation";
+                    else if (item.EprUserAssign == currentUser && item.EprCompleteDate == null)
+                        phase = "ePR";
+                    else if (item.WorkUserAssign == currentUser && item.WorkCompleteDate == null)
+                        phase = "Work Execution";
+                    
+                    notifications.Add(new MonitoringNotification
+                    {
+                        Type = NotificationType.Assignment,
+                        Title = "Task Assigned",
+                        Message = $"You are assigned to the {phase} phase for {item.Monitoring.MonitoringName} at {item.Plant.PlantName}",
+                        Link = Url.Action("UpdateStatus", new { id = item.Id }),
+                        ItemId = item.Id,
+                        IsRead = false
+                    });
+                }
+                
+                // 3. Items with completed phase needing next phase initiation
+                var readyForNextPhase = db.PlantMonitorings
+                    .Include(p => p.Plant)
+                    .Include(p => p.Monitoring)
+                    .Where(p => (p.QuoteCompleteDate.HasValue && !p.EprCompleteDate.HasValue && p.EprUserAssign == currentUser) ||
+                           (p.EprCompleteDate.HasValue && !p.WorkCompleteDate.HasValue && p.WorkUserAssign == currentUser))
+                    .ToList();
+                
+                foreach (var item in readyForNextPhase)
+                {
+                    string phase = "";
+                    if (item.QuoteCompleteDate.HasValue && !item.EprCompleteDate.HasValue)
+                        phase = "ePR";
+                    else
+                        phase = "Work Execution";
+                    
+                    notifications.Add(new MonitoringNotification
+                    {
+                        Type = NotificationType.NextPhaseReady,
+                        Title = "Next Phase Ready",
+                        Message = $"The {phase} phase is ready to begin for {item.Monitoring.MonitoringName} at {item.Plant.PlantName}",
+                        Link = Url.Action("UpdateStatus", new { id = item.Id }),
+                        ItemId = item.Id,
+                        IsRead = false
+                    });
+                }
+                
+                // 4. Overdue items (for items with dates set but not completed)
+                var overdueItems = db.PlantMonitorings
+                    .Include(p => p.Plant)
+                    .Include(p => p.Monitoring)
+                    .Where(p => (p.QuoteSubmitDate.HasValue && p.QuoteSubmitDate.Value < today && !p.QuoteCompleteDate.HasValue && p.QuoteUserAssign == currentUser) ||
+                           (p.EprSubmitDate.HasValue && p.EprSubmitDate.Value < today && !p.EprCompleteDate.HasValue && p.EprUserAssign == currentUser) ||
+                           (p.WorkSubmitDate.HasValue && p.WorkSubmitDate.Value < today && !p.WorkCompleteDate.HasValue && p.WorkUserAssign == currentUser))
+                    .ToList();
+                
+                foreach (var item in overdueItems)
+                {
+                    string phase = "";
+                    if (item.QuoteSubmitDate.HasValue && !item.QuoteCompleteDate.HasValue && item.QuoteUserAssign == currentUser)
+                        phase = "Quotation";
+                    else if (item.EprSubmitDate.HasValue && !item.EprCompleteDate.HasValue && item.EprUserAssign == currentUser)
+                        phase = "ePR";
+                    else
+                        phase = "Work Execution";
+                    
+                    notifications.Add(new MonitoringNotification
+                    {
+                        Type = NotificationType.Overdue,
+                        Title = "Overdue Task",
+                        Message = $"The {phase} phase for {item.Monitoring.MonitoringName} at {item.Plant.PlantName} is overdue",
+                        Link = Url.Action("UpdateStatus", new { id = item.Id }),
+                        ItemId = item.Id,
+                        IsRead = false
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log error but don't break the page
+                System.Diagnostics.Debug.WriteLine("Error generating monitoring notifications: " + ex.Message);
+            }
+            
+            return notifications.OrderByDescending(n => n.Type == NotificationType.Overdue)  // Overdue first
+                               .ThenByDescending(n => n.Type == NotificationType.Expiring)  // Then expiring
+                               .ThenBy(n => n.CreatedDate)  // Then by date
+                               .Take(10)  // Limit to 10 items
+                               .ToList();
         }
 
         protected override void Dispose(bool disposing)

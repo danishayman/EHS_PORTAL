@@ -22,6 +22,12 @@
     var notStartedPercent = recordCount > 0 ? (int)Math.Round((double)notStartedCount / recordCount * 100) : 0;
 }
 
+
+@if (ViewBag.Notifications != null)
+{
+    @Html.Partial("_MonitoringNotifications", (List<EHS_PORTAL.Areas.CLIP.Models.MonitoringNotification>)ViewBag.Notifications)
+}
+
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Monitoring Dashboard</h1>
     <div class="d-flex">

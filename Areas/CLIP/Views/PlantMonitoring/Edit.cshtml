@@ -2,6 +2,8 @@
 
 @{
     ViewBag.Title = "Edit Monitoring Record";
+    var isAdmin = User.IsInRole("Admin");
+    var currentUser = User.Identity.Name;
 }
 
 <h2>Edit Monitoring Record</h2>
@@ -87,7 +89,14 @@
                     <div class="form-group row">
                         <label class="col-sm-4 col-form-label">Assigned:</label>
                         <div class="col-sm-8">
-                            @Html.DropDownList("QuoteUserAssign", (SelectList)ViewBag.UsersList, new { @class = "form-control" })
+                            @if (isAdmin)
+                            {
+                                @Html.DropDownList("QuoteUserAssign", (SelectList)ViewBag.UsersList, new { @class = "form-control" })
+                            }
+                            else
+                            {
+                                <input type="text" name="QuoteUserAssign" value="@(string.IsNullOrEmpty(Model.QuoteUserAssign) ? currentUser : Model.QuoteUserAssign)" class="form-control" readonly />
+                            }
                         </div>
                     </div>
                 </div>
@@ -125,7 +134,14 @@
                     <div class="form-group row">
                         <label class="col-sm-4 col-form-label">Assigned:</label>
                         <div class="col-sm-8">
-                            @Html.DropDownList("EprUserAssign", (SelectList)ViewBag.UsersList, new { @class = "form-control" })
+                            @if (isAdmin)
+                            {
+                                @Html.DropDownList("EprUserAssign", (SelectList)ViewBag.UsersList, new { @class = "form-control" })
+                            }
+                            else
+                            {
+                                <input type="text" name="EprUserAssign" value="@(string.IsNullOrEmpty(Model.EprUserAssign) ? currentUser : Model.EprUserAssign)" class="form-control" readonly />
+                            }
                         </div>
                     </div>
                 </div>
@@ -164,7 +180,14 @@
                     <div class="form-group row">
                         <label class="col-sm-4 col-form-label">Assigned:</label>
                         <div class="col-sm-8">
-                            @Html.DropDownList("WorkUserAssign", (SelectList)ViewBag.UsersList, new { @class = "form-control" })
+                            @if (isAdmin)
+                            {
+                                @Html.DropDownList("WorkUserAssign", (SelectList)ViewBag.UsersList, new { @class = "form-control" })
+                            }
+                            else
+                            {
+                                <input type="text" name="WorkUserAssign" value="@(string.IsNullOrEmpty(Model.WorkUserAssign) ? currentUser : Model.WorkUserAssign)" class="form-control" readonly />
+                            }
                         </div>
                     </div>
                 </div>

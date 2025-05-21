@@ -1,0 +1,149 @@
+@model List<EHS_PORTAL.Areas.CLIP.Models.MonitoringNotification>
+
+@{
+    var notificationCount = Model?.Count ?? 0;
+    var hasNotifications = notificationCount > 0;
+}
+
+<div class="notification-toggle-container">
+    <button class="btn btn-primary notification-toggle-btn" id="notificationToggleBtn" title="Toggle Notifications">
+        <i class="fas fa-bell"></i>
+        @if (hasNotifications)
+        {
+            <span class="badge bg-danger">@notificationCount</span>
+        }
+    </button>
+</div>
+
+<div class="card mb-4 shadow-sm notification-panel" id="notificationsPanel" style="display: none;">
+    <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">
+            <i class="fas fa-bell me-2"></i> Monitoring Notifications
+            @if (hasNotifications)
+            {
+                <span class="badge bg-danger ms-2">@notificationCount</span>
+            }
+        </h5>
+    </div>
+    <div class="card-body" id="notificationsList">
+        @if (hasNotifications)
+        {
+            <div class="list-group">
+                @foreach (var notification in Model)
+                {
+                    <a href="@notification.Link" class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1">
+                                <span class="badge @notification.BadgeClass me-2">@notification.Title</span>
+                                <i class="fas @notification.IconClass me-1"></i>
+                            </h6>
+                            <small>@notification.CreatedDate.ToString("MMM dd, HH:mm")</small>
+                        </div>
+                        <p class="mb-1">@notification.Message</p>
+                    </a>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="text-center py-3">
+                <i class="fas fa-check-circle text-success fa-3x mb-3"></i>
+                <p class="mb-0">You have no pending notifications</p>
+            </div>
+        }
+    </div>
+</div>
+
+<script>
+    $(function() {
+        // Ensure this script runs after the DOM is fully loaded
+        // Toggle notifications panel when the bell icon is clicked
+        $("#notificationToggleBtn").on("click", function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            $("#notificationsPanel").slideToggle('fast');
+            
+            // Save the visibility state to localStorage
+            var isPanelVisible = $("#notificationsPanel").is(":visible");
+            localStorage.setItem("notificationsPanelVisible", isPanelVisible);
+        });
+        
+        // Check if we have saved the visibility state in localStorage
+        var savedVisibility = localStorage.getItem("notificationsPanelVisible");
+        if (savedVisibility === "true") {
+            $("#notificationsPanel").show();
+        }
+        
+        // Auto-show if there are notifications and no preference has been set
+        @if (hasNotifications && notificationCount > 0)
+        {
+            <text>
+            if (savedVisibility === null) {
+                $("#notificationsPanel").show();
+            }
+            </text>
+        }
+    });
+</script>
+
+<style>
+    .notification-toggle-container {
+        position: fixed;
+        z-index: 9999;
+        right: 20px;
+        top: 80px;
+    }
+    
+    .notification-toggle-btn {
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        cursor: pointer;
+    }
+    
+    .notification-toggle-btn .badge {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        font-size: 0.7rem;
+    }
+    
+    .notification-panel {
+        position: fixed;
+        top: 140px;
+        right: 20px;
+        width: 350px;
+        max-height: 500px;
+        overflow-y: auto;
+        z-index: 9998;
+        border-left: 4px solid var(--bs-primary);
+    }
+    
+    .notification-panel .list-group-item:hover {
+        background-color: rgba(var(--bs-primary-rgb), 0.05);
+    }
+    
+    .notification-panel .list-group-item {
+        border-left: none;
+        border-right: none;
+    }
+    
+    .notification-panel .list-group-item:first-child {
+        border-top: none;
+    }
+    
+    .notification-panel .list-group-item:last-child {
+        border-bottom: none;
+    }
+    
+    @media (max-width: 576px) {
+        .notification-panel {
+            width: 90%;
+            right: 5%;
+        }
+    }
+</style> 
