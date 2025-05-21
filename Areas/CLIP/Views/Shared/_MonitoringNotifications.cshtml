@@ -6,40 +6,43 @@
 }
 
 <div class="notification-toggle-container">
-    <button class="btn btn-primary notification-toggle-btn" id="notificationToggleBtn" title="Toggle Notifications">
+    <button class="btn btn-light notification-toggle-btn" id="notificationToggleBtn" title="Toggle Notifications">
         <i class="fas fa-bell"></i>
         @if (hasNotifications)
         {
-            <span class="badge bg-danger">@notificationCount</span>
+            <span class="badge bg-danger notification-badge">@notificationCount</span>
         }
     </button>
 </div>
 
-<div class="card mb-4 shadow-sm notification-panel" id="notificationsPanel" style="display: none;">
-    <div class="card-header bg-primary text-white">
-        <h5 class="mb-0">
-            <i class="fas fa-bell me-2"></i> Monitoring Notifications
+<div class="notification-panel" id="notificationsPanel">
+    <div class="notification-header">
+        <h6 class="m-0">
+            <i class="fas fa-bell me-2"></i> Notifications
             @if (hasNotifications)
             {
-                <span class="badge bg-danger ms-2">@notificationCount</span>
+                <span class="badge bg-danger ms-1">@notificationCount</span>
             }
-        </h5>
+        </h6>
+        <button class="btn-close notification-close" id="notificationCloseBtn"></button>
     </div>
-    <div class="card-body" id="notificationsList">
+    <div class="notification-body" id="notificationsList">
         @if (hasNotifications)
         {
-            <div class="list-group">
+            <div class="notification-list">
                 @foreach (var notification in Model)
                 {
-                    <a href="@notification.Link" class="list-group-item list-group-item-action">
-                        <div class="d-flex w-100 justify-content-between">
-                            <h6 class="mb-1">
-                                <span class="badge @notification.BadgeClass me-2">@notification.Title</span>
-                                <i class="fas @notification.IconClass me-1"></i>
-                            </h6>
-                            <small>@notification.CreatedDate.ToString("MMM dd, HH:mm")</small>
+                    <a href="@notification.Link" class="notification-item">
+                        <div class="notification-icon @notification.BadgeClass">
+                            <i class="fas @notification.IconClass"></i>
                         </div>
-                        <p class="mb-1">@notification.Message</p>
+                        <div class="notification-content">
+                            <div class="notification-title">
+                                <span>@notification.Title</span>
+                                <small>@notification.CreatedDate.ToString("MMM dd, HH:mm")</small>
+                            </div>
+                            <p class="notification-message">@notification.Message</p>
+                        </div>
                     </a>
                 }
             </div>
@@ -47,103 +50,218 @@
         else
         {
             <div class="text-center py-3">
-                <i class="fas fa-check-circle text-success fa-3x mb-3"></i>
-                <p class="mb-0">You have no pending notifications</p>
+                <i class="fas fa-check-circle text-success fa-2x mb-2"></i>
+                <p class="mb-0">No pending notifications</p>
             </div>
         }
     </div>
 </div>
 
-<script>
-    $(function() {
-        // Ensure this script runs after the DOM is fully loaded
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+        var notificationsPanel = document.getElementById('notificationsPanel');
+        var notificationToggleBtn = document.getElementById('notificationToggleBtn');
+        var notificationCloseBtn = document.getElementById('notificationCloseBtn');
+        
+        if (!notificationsPanel || !notificationToggleBtn) return;
+        
+        // Initially hide the panel
+        notificationsPanel.style.display = 'none';
+        
         // Toggle notifications panel when the bell icon is clicked
-        $("#notificationToggleBtn").on("click", function(e) {
-            e.preventDefault();
+        notificationToggleBtn.addEventListener('click', function(e) {
             e.stopPropagation();
-            $("#notificationsPanel").slideToggle('fast');
-            
-            // Save the visibility state to localStorage
-            var isPanelVisible = $("#notificationsPanel").is(":visible");
-            localStorage.setItem("notificationsPanelVisible", isPanelVisible);
+            if (notificationsPanel.style.display === 'none') {
+                notificationsPanel.style.display = 'block';
+                localStorage.setItem('notificationsPanelVisible', 'true');
+            } else {
+                notificationsPanel.style.display = 'none';
+                localStorage.setItem('notificationsPanelVisible', 'false');
+            }
+        });
+        
+        // Close button event
+        if (notificationCloseBtn) {
+            notificationCloseBtn.addEventListener('click', function() {
+                notificationsPanel.style.display = 'none';
+                localStorage.setItem('notificationsPanelVisible', 'false');
+            });
+        }
+        
+        // Close panel when clicking outside
+        document.addEventListener('click', function(e) {
+            if (notificationsPanel.style.display !== 'none') {
+                if (!notificationsPanel.contains(e.target) && e.target !== notificationToggleBtn) {
+                    notificationsPanel.style.display = 'none';
+                    localStorage.setItem('notificationsPanelVisible', 'false');
+                }
+            }
         });
         
         // Check if we have saved the visibility state in localStorage
-        var savedVisibility = localStorage.getItem("notificationsPanelVisible");
-        if (savedVisibility === "true") {
-            $("#notificationsPanel").show();
-        }
-        
-        // Auto-show if there are notifications and no preference has been set
-        @if (hasNotifications && notificationCount > 0)
-        {
-            <text>
-            if (savedVisibility === null) {
-                $("#notificationsPanel").show();
-            }
-            </text>
-        }
+        var savedVisibility = localStorage.getItem('notificationsPanelVisible');
+        if (savedVisibility === 'true') {
+            notificationsPanel.style.display = 'block';
+        } 
     });
 </script>
 
 <style>
+    /* Notification panel styles */
     .notification-toggle-container {
-        position: fixed;
-        z-index: 9999;
-        right: 20px;
-        top: 80px;
+        position: relative;
+        z-index: 1001;
     }
     
     .notification-toggle-btn {
-        border-radius: 50%;
-        width: 50px;
-        height: 50px;
+        width: 40px;
+        height: 40px;
         display: flex;
         align-items: center;
         justify-content: center;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        cursor: pointer;
+        position: fixed;
+        right: 15px;
+        top: 70px;
+        border-radius: 50%;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        background-color: white;
+        border: none;
+        z-index: 1001;
     }
     
-    .notification-toggle-btn .badge {
+    .notification-toggle-btn:hover {
+        background-color: #f8f9fa;
+    }
+    
+    .notification-badge {
         position: absolute;
         top: -5px;
         right: -5px;
-        font-size: 0.7rem;
+        font-size: 0.65rem;
+        padding: 0.25rem 0.4rem;
     }
     
     .notification-panel {
         position: fixed;
-        top: 140px;
-        right: 20px;
+        top: 115px;
+        right: 15px;
         width: 350px;
-        max-height: 500px;
+        max-width: 90vw;
+        max-height: 70vh;
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        z-index: 1000;
+        overflow: hidden;
+        display: none;
+    }
+    
+    .notification-header {
+        padding: 12px 15px;
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #e9ecef;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .notification-close {
+        font-size: 0.8rem;
+        padding: 0.2rem;
+    }
+    
+    .notification-body {
+        max-height: calc(70vh - 40px);
         overflow-y: auto;
-        z-index: 9998;
-        border-left: 4px solid var(--bs-primary);
     }
     
-    .notification-panel .list-group-item:hover {
-        background-color: rgba(var(--bs-primary-rgb), 0.05);
+    .notification-list {
+        padding: 0;
     }
     
-    .notification-panel .list-group-item {
-        border-left: none;
-        border-right: none;
+    .notification-item {
+        display: flex;
+        padding: 12px 15px;
+        border-bottom: 1px solid #f0f0f0;
+        transition: background-color 0.2s;
+        text-decoration: none;
+        color: inherit;
     }
     
-    .notification-panel .list-group-item:first-child {
-        border-top: none;
+    .notification-item:hover {
+        background-color: #f8f9fa;
+        text-decoration: none;
+        color: inherit;
     }
     
-    .notification-panel .list-group-item:last-child {
-        border-bottom: none;
+    .notification-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 12px;
+        color: white;
     }
     
+    .notification-content {
+        flex: 1;
+    }
+    
+    .notification-title {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 4px;
+    }
+    
+    .notification-title span {
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+    
+    .notification-title small {
+        color: #6c757d;
+        font-size: 0.75rem;
+    }
+    
+    .notification-message {
+        font-size: 0.85rem;
+        margin-bottom: 0;
+        color: #495057;
+    }
+    
+    /* Badge background colors */
+    .bg-warning {
+        background-color: #f6c23e !important;
+    }
+    
+    .bg-info {
+        background-color: #36b9cc !important;
+    }
+    
+    .bg-success {
+        background-color: #1cc88a !important;
+    }
+    
+    .bg-primary {
+        background-color: #4e73df !important;
+    }
+    
+    .bg-danger {
+        background-color: #e74a3b !important;
+    }
+    
+    /* Responsive adjustments */
     @media (max-width: 576px) {
         .notification-panel {
-            width: 90%;
-            right: 5%;
+            width: 300px;
+            max-width: calc(100vw - 30px);
+            right: 10px;
+        }
+        
+        .notification-toggle-btn {
+            right: 10px;
         }
     }
 </style> 
