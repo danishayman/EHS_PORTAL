@@ -41,11 +41,11 @@ namespace FETS.Pages.MapLayout
         /// </summary>
         private void GetUserPlantAndRole()
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
-                using (SqlCommand cmd = new SqlCommand("SELECT PlantID, Role FROM Users WHERE Username = @Username", conn))
+                using (SqlCommand cmd = new SqlCommand("SELECT PlantID, Role FROM FETS.Users WHERE Username = @Username", conn))
                 {
                     cmd.Parameters.AddWithValue("@Username", User.Identity.Name);
                     using (SqlDataReader reader = cmd.ExecuteReader())
@@ -75,13 +75,13 @@ namespace FETS.Pages.MapLayout
             try
             {
                 // Try to get plants from cache first
-                DataTable dtPlants = Cache["Plants"] as DataTable;
+                DataTable dtPlants = Cache["FETS.Plants"] as DataTable;
                 if (dtPlants == null)
                 {
-                    string connectionString = ConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString;
+                    string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
                     
                     // For upload dropdown - restrict to user's plant if not admin
-                    string uploadPlantQuery = @"SELECT PlantID, PlantName FROM Plants WITH (NOLOCK)";
+                    string uploadPlantQuery = @"SELECT PlantID, PlantName FROM FETS.Plants WITH (NOLOCK)";
                     if (!IsAdministrator && UserPlantID.HasValue)
                     {
                         uploadPlantQuery += " WHERE PlantID = @UserPlantID";
@@ -107,7 +107,7 @@ namespace FETS.Pages.MapLayout
                         
                         // For filter dropdown - always get all plants
                         using (SqlCommand cmd = new SqlCommand(
-                            @"SELECT PlantID, PlantName FROM Plants WITH (NOLOCK) ORDER BY PlantName", conn))
+                            @"SELECT PlantID, PlantName FROM FETS.Plants WITH (NOLOCK) ORDER BY PlantName", conn))
                         {
                             using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
                             {
@@ -115,7 +115,7 @@ namespace FETS.Pages.MapLayout
                                 adapter.Fill(dtPlants);
                                 
                                 // Cache all plants for the filter dropdown
-                                Cache.Insert("Plants", dtPlants, null, DateTime.Now.AddHours(1), Cache.NoSlidingExpiration);
+                                Cache.Insert("FETS.Plants", dtPlants, null, DateTime.Now.AddHours(1), Cache.NoSlidingExpiration);
                             }
                         }
                     }
@@ -282,13 +282,13 @@ namespace FETS.Pages.MapLayout
 
                 if (dtLevels == null)
                 {
-                    string connectionString = ConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString;
+                    string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
                     using (SqlConnection conn = new SqlConnection(connectionString))
                     {
                         conn.Open();
                         using (SqlCommand cmd = new SqlCommand(@"
                             SELECT LevelID, LevelName 
-                            FROM Levels WITH (NOLOCK)
+                            FROM FETS.Levels WITH (NOLOCK)
                             WHERE PlantID = @PlantID 
                             ORDER BY LevelName", conn))
                         {
@@ -352,12 +352,12 @@ namespace FETS.Pages.MapLayout
                 string filePath = Path.Combine(uploadPath, fileName);
                 fuMapImage.SaveAs(filePath);
 
-                string connectionString = ConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString;
+                string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
                     string insertQuery = @"
-                        INSERT INTO MapImages (PlantID, LevelID, ImagePath, UploadDate)
+                        INSERT INTO FETS.MapImages (PlantID, LevelID, ImagePath, UploadDate)
                         VALUES (@PlantID, @LevelID, @ImagePath, GETDATE());
                         SELECT SCOPE_IDENTITY();";
 
@@ -404,16 +404,16 @@ namespace FETS.Pages.MapLayout
 
         public void LoadMaps()
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
                 string query = @"
                     SELECT m.MapID, m.PlantID, m.LevelID, m.ImagePath, m.UploadDate,
                            p.PlantName, l.LevelName
-                    FROM MapImages m
-                    INNER JOIN Plants p ON m.PlantID = p.PlantID
-                    INNER JOIN Levels l ON m.LevelID = l.LevelID
+                    FROM FETS.MapImages m
+                    INNER JOIN FETS.Plants p ON m.PlantID = p.PlantID
+                    INNER JOIN FETS.Levels l ON m.LevelID = l.LevelID
                     WHERE (@PlantID IS NULL OR m.PlantID = @PlantID)
                     AND (@LevelID IS NULL OR m.LevelID = @LevelID)
                     ORDER BY m.UploadDate DESC";
@@ -461,7 +461,7 @@ namespace FETS.Pages.MapLayout
 
         private void DeleteMap(int mapId)
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
@@ -473,9 +473,9 @@ namespace FETS.Pages.MapLayout
                 
                 using (SqlCommand cmd = new SqlCommand(@"
                     SELECT m.ImagePath, p.PlantName, l.LevelName 
-                    FROM MapImages m
-                    JOIN Plants p ON m.PlantID = p.PlantID
-                    JOIN Levels l ON m.LevelID = l.LevelID
+                    FROM FETS.MapImages m
+                    JOIN FETS.Plants p ON m.PlantID = p.PlantID
+                    JOIN FETS.Levels l ON m.LevelID = l.LevelID
                     WHERE m.MapID = @MapID", conn))
                 {
                     cmd.Parameters.AddWithValue("@MapID", mapId);
@@ -491,7 +491,7 @@ namespace FETS.Pages.MapLayout
                 }
 
                 // Delete the database record
-                using (SqlCommand cmd = new SqlCommand("DELETE FROM MapImages WHERE MapID = @MapID", conn))
+                using (SqlCommand cmd = new SqlCommand("DELETE FROM FETS.MapImages WHERE MapID = @MapID", conn))
                 {
                     cmd.Parameters.AddWithValue("@MapID", mapId);
                     cmd.ExecuteNonQuery();

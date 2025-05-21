@@ -42,11 +42,11 @@ namespace FETS.Pages.Profile
         /// </summary>
         private void CheckAdminAccess()
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
-                using (SqlCommand cmd = new SqlCommand("SELECT Role FROM Users WHERE Username = @Username", conn))
+                using (SqlCommand cmd = new SqlCommand("SELECT Role FROM FETS.Users WHERE Username = @Username", conn))
                 {
                     cmd.Parameters.AddWithValue("@Username", User.Identity.Name);
                     string role = (string)cmd.ExecuteScalar();
@@ -61,14 +61,14 @@ namespace FETS.Pages.Profile
         /// </summary>
         private void LoadUsers()
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
                 using (SqlCommand cmd = new SqlCommand(
                     "SELECT u.UserID, u.Username, u.Role, u.PlantID, ISNULL(p.PlantName, 'None') AS PlantName " +
-                    "FROM Users u " +
-                    "LEFT JOIN Plants p ON u.PlantID = p.PlantID " +
+                    "FROM FETS.Users u " +
+                    "LEFT JOIN FETS.Plants p ON u.PlantID = p.PlantID " +
                     "ORDER BY Username", conn))
                 {
                     using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
@@ -103,13 +103,13 @@ namespace FETS.Pages.Profile
             string plantName = ddlPlant.SelectedItem.Text;
             int newUserId = 0;
 
-            string connectionString = ConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
 
                 // Check if username already exists
-                using (SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM Users WHERE Username = @Username", conn))
+                using (SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM FETS.Users WHERE Username = @Username", conn))
                 {
                     cmd.Parameters.AddWithValue("@Username", username);
                     int count = (int)cmd.ExecuteScalar();
@@ -131,7 +131,7 @@ namespace FETS.Pages.Profile
 
                 // Add new user with plant assignment
                 using (SqlCommand cmd = new SqlCommand(
-                    @"INSERT INTO Users (Username, PasswordHash, Role, PlantID) 
+                    @"INSERT INTO FETS.Users (Username, PasswordHash, Role, PlantID) 
                     VALUES (@Username, HASHBYTES('SHA2_256', @Password), @Role, @PlantID);
                     SELECT SCOPE_IDENTITY();", conn))
                 {
@@ -185,7 +185,7 @@ namespace FETS.Pages.Profile
             string role = "";
             string plantName = "";
             
-            string connectionString = ConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
@@ -193,8 +193,8 @@ namespace FETS.Pages.Profile
                 // Get user details for logging before deletion
                 using (SqlCommand cmd = new SqlCommand(@"
                     SELECT u.Username, u.Role, ISNULL(p.PlantName, '-- None --') AS PlantName 
-                    FROM Users u
-                    LEFT JOIN Plants p ON u.PlantID = p.PlantID
+                    FROM FETS.Users u
+                    LEFT JOIN FETS.Plants p ON u.PlantID = p.PlantID
                     WHERE u.UserID = @UserID", conn))
                 {
                     cmd.Parameters.AddWithValue("@UserID", userId);
@@ -210,7 +210,7 @@ namespace FETS.Pages.Profile
                 }
                 
                 // Delete the user
-                using (SqlCommand cmd = new SqlCommand("DELETE FROM Users WHERE UserID = @UserID", conn))
+                using (SqlCommand cmd = new SqlCommand("DELETE FROM FETS.Users WHERE UserID = @UserID", conn))
                 {
                     cmd.Parameters.AddWithValue("@UserID", userId);
                     cmd.ExecuteNonQuery();
@@ -247,14 +247,14 @@ namespace FETS.Pages.Profile
         /// </summary>
         private void LoadEmailRecipients()
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
                 
                 // First check if the table exists
                 bool tableExists = false;
-                string checkTableQuery = "SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'EmailRecipients'";
+                string checkTableQuery = "SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'FETS.EmailRecipients'";
                 using (SqlCommand checkCmd = new SqlCommand(checkTableQuery, conn))
                 {
                     int tableCount = (int)checkCmd.ExecuteScalar();
@@ -281,7 +281,7 @@ namespace FETS.Pages.Profile
                 }
                 
                 // Query to get all recipients
-                using (SqlCommand cmd = new SqlCommand("SELECT RecipientID, EmailAddress, RecipientName, NotificationType, IsActive FROM EmailRecipients ORDER BY RecipientName", conn))
+                using (SqlCommand cmd = new SqlCommand("SELECT RecipientID, EmailAddress, RecipientName, NotificationType, IsActive FROM FETS.EmailRecipients ORDER BY RecipientName", conn))
                 {
                     using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
                     {
@@ -306,13 +306,13 @@ namespace FETS.Pages.Profile
             string recipientName = txtRecipientName.Text.Trim();
             string notificationType = ddlNotificationType.SelectedValue;
             
-            string connectionString = ConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
                 
                 // Check if email already exists
-                using (SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM EmailRecipients WHERE EmailAddress = @EmailAddress", conn))
+                using (SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM FETS.EmailRecipients WHERE EmailAddress = @EmailAddress", conn))
                 {
                     cmd.Parameters.AddWithValue("@EmailAddress", emailAddress);
                     int count = (int)cmd.ExecuteScalar();
@@ -325,7 +325,7 @@ namespace FETS.Pages.Profile
                 
                 // Add new recipient
                 using (SqlCommand cmd = new SqlCommand(
-                    "INSERT INTO EmailRecipients (EmailAddress, RecipientName, NotificationType) VALUES (@EmailAddress, @RecipientName, @NotificationType)", conn))
+                    "INSERT INTO FETS.EmailRecipients (EmailAddress, RecipientName, NotificationType) VALUES (@EmailAddress, @RecipientName, @NotificationType)", conn))
                 {
                     cmd.Parameters.AddWithValue("@EmailAddress", emailAddress);
                     cmd.Parameters.AddWithValue("@RecipientName", recipientName);
@@ -376,11 +376,11 @@ namespace FETS.Pages.Profile
         /// </summary>
         private void DeleteRecipient(int recipientId)
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
-                using (SqlCommand cmd = new SqlCommand("DELETE FROM EmailRecipients WHERE RecipientID = @RecipientID", conn))
+                using (SqlCommand cmd = new SqlCommand("DELETE FROM FETS.EmailRecipients WHERE RecipientID = @RecipientID", conn))
                 {
                     cmd.Parameters.AddWithValue("@RecipientID", recipientId);
                     cmd.ExecuteNonQuery();
@@ -396,11 +396,11 @@ namespace FETS.Pages.Profile
         /// </summary>
         private void LoadRecipientForEdit(int recipientId)
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
-                using (SqlCommand cmd = new SqlCommand("SELECT RecipientID, EmailAddress, RecipientName, NotificationType FROM EmailRecipients WHERE RecipientID = @RecipientID", conn))
+                using (SqlCommand cmd = new SqlCommand("SELECT RecipientID, EmailAddress, RecipientName, NotificationType FROM FETS.EmailRecipients WHERE RecipientID = @RecipientID", conn))
                 {
                     cmd.Parameters.AddWithValue("@RecipientID", recipientId);
                     using (SqlDataReader reader = cmd.ExecuteReader())
@@ -434,13 +434,13 @@ namespace FETS.Pages.Profile
             string recipientName = txtRecipientName.Text.Trim();
             string notificationType = ddlNotificationType.SelectedValue;
             
-            string connectionString = ConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
                 
                 // Check if email already exists but not for this recipient
-                using (SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM EmailRecipients WHERE EmailAddress = @EmailAddress AND RecipientID != @RecipientID", conn))
+                using (SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM FETS.EmailRecipients WHERE EmailAddress = @EmailAddress AND RecipientID != @RecipientID", conn))
                 {
                     cmd.Parameters.AddWithValue("@EmailAddress", emailAddress);
                     cmd.Parameters.AddWithValue("@RecipientID", recipientId);
@@ -454,7 +454,7 @@ namespace FETS.Pages.Profile
                 
                 // Update recipient
                 using (SqlCommand cmd = new SqlCommand(
-                    "UPDATE EmailRecipients SET EmailAddress = @EmailAddress, RecipientName = @RecipientName, NotificationType = @NotificationType WHERE RecipientID = @RecipientID", conn))
+                    "UPDATE FETS.EmailRecipients SET EmailAddress = @EmailAddress, RecipientName = @RecipientName, NotificationType = @NotificationType WHERE RecipientID = @RecipientID", conn))
                 {
                     cmd.Parameters.AddWithValue("@RecipientID", recipientId);
                     cmd.Parameters.AddWithValue("@EmailAddress", emailAddress);
@@ -488,12 +488,12 @@ namespace FETS.Pages.Profile
         /// </summary>
         private void ToggleRecipientStatus(int recipientId)
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
                 using (SqlCommand cmd = new SqlCommand(
-                    "UPDATE EmailRecipients SET IsActive = CASE WHEN IsActive = 1 THEN 0 ELSE 1 END WHERE RecipientID = @RecipientID", conn))
+                    "UPDATE FETS.EmailRecipients SET IsActive = CASE WHEN IsActive = 1 THEN 0 ELSE 1 END WHERE RecipientID = @RecipientID", conn))
                 {
                     cmd.Parameters.AddWithValue("@RecipientID", recipientId);
                     cmd.ExecuteNonQuery();
@@ -516,14 +516,14 @@ namespace FETS.Pages.Profile
             string currentPassword = txtCurrentPassword.Text;
             string newPassword = txtNewPassword.Text;
 
-            string connectionString = ConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
                 
                 // First verify current password
                 using (SqlCommand cmd = new SqlCommand(
-                    "SELECT COUNT(*) FROM Users WHERE Username = @Username AND PasswordHash = HASHBYTES('SHA2_256', @Password)", conn))
+                    "SELECT COUNT(*) FROM FETS.Users WHERE Username = @Username AND PasswordHash = HASHBYTES('SHA2_256', @Password)", conn))
                 {
                     cmd.Parameters.AddWithValue("@Username", username);
                     cmd.Parameters.AddWithValue("@Password", currentPassword);
@@ -547,7 +547,7 @@ namespace FETS.Pages.Profile
 
                 // Get user ID for activity logging
                 int userId = 0;
-                using (SqlCommand cmd = new SqlCommand("SELECT UserID FROM Users WHERE Username = @Username", conn))
+                using (SqlCommand cmd = new SqlCommand("SELECT UserID FROM FETS.Users WHERE Username = @Username", conn))
                 {
                     cmd.Parameters.AddWithValue("@Username", username);
                     userId = Convert.ToInt32(cmd.ExecuteScalar());
@@ -555,7 +555,7 @@ namespace FETS.Pages.Profile
 
                 // Update to new password
                 using (SqlCommand cmd = new SqlCommand(
-                    "UPDATE Users SET PasswordHash = HASHBYTES('SHA2_256', @NewPassword) WHERE Username = @Username", conn))
+                    "UPDATE FETS.Users SET PasswordHash = HASHBYTES('SHA2_256', @NewPassword) WHERE Username = @Username", conn))
                 {
                     cmd.Parameters.AddWithValue("@Username", username);
                     cmd.Parameters.AddWithValue("@NewPassword", newPassword);
@@ -600,11 +600,11 @@ namespace FETS.Pages.Profile
         /// </summary>
         private void LoadPlants()
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
-                using (SqlCommand cmd = new SqlCommand("SELECT PlantID, PlantName FROM Plants ORDER BY PlantName", conn))
+                using (SqlCommand cmd = new SqlCommand("SELECT PlantID, PlantName FROM FETS.Plants ORDER BY PlantName", conn))
                 {
                     using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
                     {
@@ -631,11 +631,11 @@ namespace FETS.Pages.Profile
         /// </summary>
         private void LoadUserForEdit(int userId)
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
-                using (SqlCommand cmd = new SqlCommand("SELECT UserID, Username, Role, PlantID FROM Users WHERE UserID = @UserID", conn))
+                using (SqlCommand cmd = new SqlCommand("SELECT UserID, Username, Role, PlantID FROM FETS.Users WHERE UserID = @UserID", conn))
                 {
                     cmd.Parameters.AddWithValue("@UserID", userId);
                     using (SqlDataReader reader = cmd.ExecuteReader())
@@ -691,7 +691,7 @@ namespace FETS.Pages.Profile
             string oldRole = string.Empty;
             string oldPlantName = string.Empty;
             
-            string connectionString = ConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
@@ -699,8 +699,8 @@ namespace FETS.Pages.Profile
                 // Get current user info for logging changes
                 using (SqlCommand cmd = new SqlCommand(@"
                     SELECT u.Role, ISNULL(p.PlantName, '-- None --') AS PlantName 
-                    FROM Users u
-                    LEFT JOIN Plants p ON u.PlantID = p.PlantID
+                    FROM FETS.Users u
+                    LEFT JOIN FETS.Plants p ON u.PlantID = p.PlantID
                     WHERE u.UserID = @UserID", conn))
                 {
                     cmd.Parameters.AddWithValue("@UserID", userId);
@@ -716,7 +716,7 @@ namespace FETS.Pages.Profile
                 
                 // Update user
                 using (SqlCommand cmd = new SqlCommand(
-                    "UPDATE Users SET Role = @Role, PlantID = @PlantID WHERE UserID = @UserID", conn))
+                    "UPDATE FETS.Users SET Role = @Role, PlantID = @PlantID WHERE UserID = @UserID", conn))
                 {
                     cmd.Parameters.AddWithValue("@UserID", userId);
                     cmd.Parameters.AddWithValue("@Role", role);

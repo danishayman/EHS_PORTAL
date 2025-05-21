@@ -198,8 +198,8 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                     UserName = model.UserName, 
                     Email = model.Email, 
                     EmpID = model.EmpID,
-                    CEP_Points = model.CEP_Points,
-                    CPD_Points = model.CPD_Points
+                    Atom_CEP = model.Atom_CEP,
+                    DOE_CPD = model.DOE_CPD
                 };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)

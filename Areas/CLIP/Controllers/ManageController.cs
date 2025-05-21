@@ -111,8 +111,8 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                 UserName = user.UserName,
                 Email = user.Email,
                 EmpID = user.EmpID,
-                CEP_Points = user.CEP_Points,
-                CPD_Points = user.CPD_Points,
+                Atom_CEP = user.Atom_CEP,
+                DOE_CPD = user.DOE_CPD,
                 UserRoles = userRoles,
                 UserPlants = userPlants,
                 UserCompetencies = userCompetencies,
@@ -167,8 +167,8 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                     // CEP and CPD points are only editable by admins
                     if (User.IsInRole("Admin"))
                     {
-                        user.CEP_Points = model.CEP_Points;
-                        user.CPD_Points = model.CPD_Points;
+                        user.Atom_CEP = model.Atom_CEP;
+                        user.DOE_CPD = model.DOE_CPD;
                     }
                     break;
                 
@@ -208,8 +208,8 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                     
                     if (User.IsInRole("Admin"))
                     {
-                        user.CEP_Points = model.CEP_Points;
-                        user.CPD_Points = model.CPD_Points;
+                        user.Atom_CEP = model.Atom_CEP;
+                        user.DOE_CPD = model.DOE_CPD;
                     }
                     break;
             }
@@ -528,8 +528,8 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                 Email = user.Email,
                 UserName = user.UserName,
                 EmpID = user.EmpID,
-                CEP_Points = user.CEP_Points,
-                CPD_Points = user.CPD_Points,
+                Atom_CEP = user.Atom_CEP,
+                DOE_CPD = user.DOE_CPD,
                 PhoneNumber = user.PhoneNumber,
                 Role = currentRole,
                 RolesList = roleItems,
@@ -588,8 +588,8 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
             if (section == "points")
             {
                 // Update only points
-                user.CEP_Points = model.CEP_Points;
-                user.CPD_Points = model.CPD_Points;
+                user.Atom_CEP = model.Atom_CEP;
+                user.DOE_CPD = model.DOE_CPD;
                 
                 // Update the user
                 var result = await UserManager.UpdateAsync(user);
@@ -608,8 +608,8 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                 user.UserName = model.UserName;
                 user.Email = model.Email;
                 user.EmpID = model.EmpID;
-                user.CEP_Points = model.CEP_Points;
-                user.CPD_Points = model.CPD_Points;
+                user.Atom_CEP = model.Atom_CEP;
+                user.DOE_CPD = model.DOE_CPD;
                 user.PhoneNumber = model.PhoneNumber;
                 user.EmailConfirmed = model.EmailConfirmed;
                 user.PhoneNumberConfirmed = model.PhoneNumberConfirmed;

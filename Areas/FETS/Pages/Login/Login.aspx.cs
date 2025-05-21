@@ -63,7 +63,7 @@ namespace FETS.Pages.Login
                     }
 
                     // Log directly to the database
-                    string connectionString = ConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString;
+                    string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
                     using (SqlConnection conn = new SqlConnection(connectionString))
                     {
                         string query = @"
@@ -121,10 +121,10 @@ namespace FETS.Pages.Login
         /// <returns>True if credentials are valid, false otherwise</returns>
         private bool ValidateUser(string username, string password)
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                string query = "SELECT COUNT(1) FROM Users WHERE Username = @Username AND PasswordHash = HASHBYTES('SHA2_256', @Password)";
+                string query = "SELECT COUNT(1) FROM FETS.Users WHERE Username = @Username AND PasswordHash = HASHBYTES('SHA2_256', @Password)";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
                     cmd.Parameters.AddWithValue("@Username", username);
@@ -177,14 +177,14 @@ namespace FETS.Pages.Login
 
         private void ResetAdminPassword()
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 try
                 {
                     conn.Open();
                     using (SqlCommand cmd = new SqlCommand(
-                        "UPDATE Users SET PasswordHash = HASHBYTES('SHA2_256', N'admin123') WHERE Username = 'admin'", conn))
+                        "UPDATE FETS.Users SET PasswordHash = HASHBYTES('SHA2_256', N'admin123') WHERE Username = 'admin'", conn))
                     {
                         cmd.ExecuteNonQuery();
                     }
@@ -213,13 +213,13 @@ namespace FETS.Pages.Login
             }
 
             // Since we don't have a valid session/user yet, we'll log directly to the database
-            string connectionString = ConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 string query = @"
                     INSERT INTO ActivityLogs (UserID, Action, Description, EntityType, EntityID, IPAddress)
                     SELECT UserID, 'Failed Login', 'Failed login attempt', 'User', CAST(UserID AS NVARCHAR(50)), @IPAddress
-                    FROM Users 
+                    FROM FETS.Users 
                     WHERE Username = @Username";
 
                 using (SqlCommand cmd = new SqlCommand(query, conn))
@@ -248,10 +248,10 @@ namespace FETS.Pages.Login
         /// <returns>The user's role or empty string if not found</returns>
         private string GetUserRole(string username)
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                string query = "SELECT Role FROM Users WHERE Username = @Username";
+                string query = "SELECT Role FROM FETS.Users WHERE Username = @Username";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
                     cmd.Parameters.AddWithValue("@Username", username);
@@ -279,10 +279,10 @@ namespace FETS.Pages.Login
         /// <returns>The user's ID or 0 if not found</returns>
         private int GetUserId(string username)
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                string query = "SELECT UserID FROM Users WHERE Username = @Username";
+                string query = "SELECT UserID FROM FETS.Users WHERE Username = @Username";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
                     cmd.Parameters.AddWithValue("@Username", username);

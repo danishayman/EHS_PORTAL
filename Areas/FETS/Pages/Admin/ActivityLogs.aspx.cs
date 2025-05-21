@@ -44,13 +44,13 @@ namespace FETS.Pages.Admin
         {
             try
             {
-                using (SqlConnection conn = new SqlConnection(WebConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString))
+                using (SqlConnection conn = new SqlConnection(WebConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString))
                 {
                     conn.Open();
                     string query = @"
                         SELECT DISTINCT u.Username, al.UserID 
-                        FROM ActivityLogs al
-                        INNER JOIN Users u ON al.UserID = u.UserID
+                        FROM FETS.ActivityLogs al
+                        INNER JOIN FETS.Users u ON al.UserID = u.UserID
                         ORDER BY u.Username";
                     
                     using (SqlCommand cmd = new SqlCommand(query, conn))
@@ -81,10 +81,10 @@ namespace FETS.Pages.Admin
         {
             try
             {
-                using (SqlConnection conn = new SqlConnection(WebConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString))
+                using (SqlConnection conn = new SqlConnection(WebConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString))
                 {
                     conn.Open();
-                    string query = "SELECT DISTINCT Action FROM ActivityLogs WHERE Action IS NOT NULL ORDER BY Action";
+                    string query = "SELECT DISTINCT Action FROM FETS.ActivityLogs WHERE Action IS NOT NULL ORDER BY Action";
                     
                     using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
@@ -112,10 +112,10 @@ namespace FETS.Pages.Admin
         {
             try
             {
-                using (SqlConnection conn = new SqlConnection(WebConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString))
+                using (SqlConnection conn = new SqlConnection(WebConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString))
                 {
                     conn.Open();
-                    string query = "SELECT DISTINCT EntityType FROM ActivityLogs WHERE EntityType IS NOT NULL ORDER BY EntityType";
+                    string query = "SELECT DISTINCT EntityType FROM FETS.ActivityLogs WHERE EntityType IS NOT NULL ORDER BY EntityType";
                     
                     using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
@@ -143,15 +143,15 @@ namespace FETS.Pages.Admin
         {
             try
             {
-                string connectionString = WebConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString;
+                string connectionString = WebConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
                     StringBuilder queryBuilder = new StringBuilder(@"
                         SELECT al.LogID, al.Action, al.Description, al.EntityType, al.EntityID, 
                                al.IPAddress, al.Timestamp, u.Username
-                        FROM ActivityLogs al
-                        LEFT JOIN Users u ON al.UserID = u.UserID
+                        FROM FETS.ActivityLogs al
+                        LEFT JOIN FETS.Users u ON al.UserID = u.UserID
                         WHERE 1=1");
                     
                     List<SqlParameter> parameters = new List<SqlParameter>();
@@ -201,8 +201,8 @@ namespace FETS.Pages.Admin
                     // First get total count for display
                     string countQuery = @"
                         SELECT COUNT(*)
-                        FROM ActivityLogs al
-                        LEFT JOIN Users u ON al.UserID = u.UserID
+                        FROM FETS.ActivityLogs al
+                        LEFT JOIN FETS.Users u ON al.UserID = u.UserID
                         WHERE 1=1";
                         
                     // Apply the same filters to the count query
@@ -297,15 +297,15 @@ namespace FETS.Pages.Admin
             try
             {
                 // Get the data with filters applied
-                string connectionString = WebConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString;
+                string connectionString = WebConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
                     StringBuilder queryBuilder = new StringBuilder(@"
                         SELECT al.LogID, al.Action, al.Description, al.EntityType, al.EntityID, 
                                al.IPAddress, al.Timestamp, u.Username
-                        FROM ActivityLogs al
-                        LEFT JOIN Users u ON al.UserID = u.UserID
+                        FROM FETS.ActivityLogs al
+                        LEFT JOIN FETS.Users u ON al.UserID = u.UserID
                         WHERE 1=1");
                         
                     List<SqlParameter> parameters = new List<SqlParameter>();

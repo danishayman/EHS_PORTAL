@@ -138,23 +138,23 @@
                                 {
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            @Html.LabelFor(m => m.CEP_Points, new { @class = "form-label" })
+                                            @Html.LabelFor(m => m.Atom_CEP, new { @class = "form-label" })
                                             <div class="input-group">
                                                 <span class="input-group-text bg-info text-white"><i class="fas fa-star"></i></span>
-                                                @Html.TextBoxFor(m => m.CEP_Points, new { @class = "form-control", form = "pointsForm" })
+                                                @Html.TextBoxFor(m => m.Atom_CEP, new { @class = "form-control", form = "pointsForm" })
                                             </div>
-                                            @Html.ValidationMessageFor(m => m.CEP_Points, "", new { @class = "text-danger" })
+                                            @Html.ValidationMessageFor(m => m.Atom_CEP, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
                                     
                                     <div class="col-md-6">
                                         <div class="mb-3">
-                                            @Html.LabelFor(m => m.CPD_Points, new { @class = "form-label" })
+                                            @Html.LabelFor(m => m.DOE_CPD, new { @class = "form-label" })
                                             <div class="input-group">
                                                 <span class="input-group-text bg-info text-white"><i class="fas fa-award"></i></span>
-                                                @Html.TextBoxFor(m => m.CPD_Points, new { @class = "form-control", form = "pointsForm" })
+                                                @Html.TextBoxFor(m => m.DOE_CPD, new { @class = "form-control", form = "pointsForm" })
                                             </div>
-                                            @Html.ValidationMessageFor(m => m.CPD_Points, "", new { @class = "text-danger" })
+                                            @Html.ValidationMessageFor(m => m.DOE_CPD, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
                                     
@@ -171,7 +171,7 @@
                                             <div class="card-body text-center">
                                                 <h5 class="card-title">CEP Points</h5>
                                                 <div class="display-4 my-3 fw-bold text-info">
-                                                    @(Model.CEP_Points ?? 0)
+                                                    @(Model.Atom_CEP ?? 0)
                                                 </div>
                                                 <div class="text-center">
                                                     <i class="fas fa-star text-warning fa-2x"></i>
@@ -185,7 +185,7 @@
                                             <div class="card-body text-center">
                                                 <h5 class="card-title">CPD Points</h5>
                                                 <div class="display-4 my-3 fw-bold text-info">
-                                                    @(Model.CPD_Points ?? 0)
+                                                    @(Model.DOE_CPD ?? 0)
                                                 </div>
                                                 <div class="text-center">
                                                     <i class="fas fa-award text-info fa-2x"></i>
@@ -445,7 +445,7 @@
             
             // Handle form validations separately for points form
             $('#pointsForm').on('submit', function(e) {
-                // Only validate CEP_Points and CPD_Points fields
+                // Only validate Atom_CEP and DOE_CPD fields
                 var isValid = true;
                 
                 // For Points form, we don't need to validate other fields

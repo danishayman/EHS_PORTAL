@@ -84,12 +84,12 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                 {
                     if (model.CEPPointsGained.HasValue)
                     {
-                        user.CEP_Points = (user.CEP_Points ?? 0) + (int)model.CEPPointsGained.Value;
+                        user.Atom_CEP = (user.Atom_CEP ?? 0) + (int)model.CEPPointsGained.Value;
                     }
                     
                     if (model.CPDPointsGained.HasValue)
                     {
-                        user.CPD_Points = (user.CPD_Points ?? 0) + (int)model.CPDPointsGained.Value;
+                        user.DOE_CPD = (user.DOE_CPD ?? 0) + (int)model.CPDPointsGained.Value;
                     }
                 }
                 
@@ -220,12 +220,12 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                     // Update CEP points
                     int oldPoints = (int)originalCEP;
                     int newPoints = model.CEPPointsGained.HasValue ? (int)model.CEPPointsGained.Value : 0;
-                    user.CEP_Points = (user.CEP_Points ?? 0) - oldPoints + newPoints;
+                    user.Atom_CEP = (user.Atom_CEP ?? 0) - oldPoints + newPoints;
                     
                     // Update CPD points
                     int oldPointsCPD = (int)originalCPD;
                     int newPointsCPD = model.CPDPointsGained.HasValue ? (int)model.CPDPointsGained.Value : 0;
-                    user.CPD_Points = (user.CPD_Points ?? 0) - oldPointsCPD + newPointsCPD;
+                    user.DOE_CPD = (user.DOE_CPD ?? 0) - oldPointsCPD + newPointsCPD;
                 }
                 
                 db.SaveChanges();
@@ -258,11 +258,11 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                 var user = db.Users.Find(userId);
                 if (user != null)
                 {
-                    user.CEP_Points = (user.CEP_Points ?? 0) - (int)activity.CEPPointsGained;
-                    if (user.CEP_Points < 0) user.CEP_Points = 0;
+                    user.Atom_CEP = (user.Atom_CEP ?? 0) - (int)activity.CEPPointsGained;
+                    if (user.Atom_CEP < 0) user.Atom_CEP = 0;
                     
-                    user.CPD_Points = (user.CPD_Points ?? 0) - (int)activity.CPDPointsGained;
-                    if (user.CPD_Points < 0) user.CPD_Points = 0;
+                    user.DOE_CPD = (user.DOE_CPD ?? 0) - (int)activity.CPDPointsGained;
+                    if (user.DOE_CPD < 0) user.DOE_CPD = 0;
                 }
                 
                 // Delete file if exists

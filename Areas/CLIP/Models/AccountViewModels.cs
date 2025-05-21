@@ -75,10 +75,10 @@ namespace EHS_PORTAL.Areas.CLIP.Models
         public string EmpID { get; set; }
 
         [Display(Name = "CEP Points")]
-        public int? CEP_Points { get; set; }
+        public int? Atom_CEP { get; set; }
 
         [Display(Name = "CPD Points")]
-        public int? CPD_Points { get; set; }
+        public int? DOE_CPD { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]

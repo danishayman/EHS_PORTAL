@@ -35,7 +35,7 @@ namespace FETS.Pages.MapLayout
                 return;
             }
 
-            string connectionString = ConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
@@ -43,9 +43,9 @@ namespace FETS.Pages.MapLayout
                 // Load plant and level names
                 using (SqlCommand cmd = new SqlCommand(@"
                     SELECT p.PlantName, l.LevelName, m.ImagePath, m.UploadDate
-                    FROM Plants p
-                    INNER JOIN Levels l ON p.PlantID = l.PlantID
-                    LEFT JOIN MapImages m ON l.PlantID = m.PlantID AND l.LevelID = m.LevelID
+                    FROM FETS.Plants p
+                    INNER JOIN FETS.Levels l ON p.PlantID = l.PlantID
+                    LEFT JOIN FETS.MapImages m ON l.PlantID = m.PlantID AND l.LevelID = m.LevelID
                     WHERE p.PlantID = @PlantID AND l.LevelID = @LevelID", conn))
                 {
                     cmd.Parameters.AddWithValue("@PlantID", plantId);
@@ -81,9 +81,9 @@ namespace FETS.Pages.MapLayout
                         fe.DateExpired,
                         s.StatusName,
                         s.ColorCode
-                    FROM FireExtinguishers fe
-                    INNER JOIN FireExtinguisherTypes t ON fe.TypeID = t.TypeID
-                    INNER JOIN Status s ON fe.StatusID = s.StatusID
+                    FROM FETS.FireExtinguishers fe
+                    INNER JOIN FETS.FireExtinguisherTypes t ON fe.TypeID = t.TypeID
+                    INNER JOIN FETS.Status s ON fe.StatusID = s.StatusID
                     WHERE fe.PlantID = @PlantID AND fe.LevelID = @LevelID
                     ORDER BY fe.Location", conn))
                 {

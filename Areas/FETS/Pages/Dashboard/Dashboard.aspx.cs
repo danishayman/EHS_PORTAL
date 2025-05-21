@@ -39,7 +39,7 @@ namespace FETS.Pages
         /// </summary>
         private void LoadTotalStatusCounts()
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
@@ -50,8 +50,8 @@ namespace FETS.Pages
                         SUM(CASE WHEN s.StatusName = 'Under Service' THEN 1 ELSE 0 END) as TotalUnderService,
                         SUM(CASE WHEN s.StatusName = 'Expired' THEN 1 ELSE 0 END) as TotalExpired,
                         SUM(CASE WHEN s.StatusName = 'Expiring Soon' THEN 1 ELSE 0 END) as TotalExpiringSoon
-                    FROM FireExtinguishers fe
-                    JOIN Status s ON fe.StatusID = s.StatusID", conn))
+                    FROM FETS.FireExtinguishers fe
+                    JOIN FETS.Status s ON fe.StatusID = s.StatusID", conn))
                 {
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
@@ -73,7 +73,7 @@ namespace FETS.Pages
         /// </summary>
         private void LoadPlantStatistics()
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
@@ -91,9 +91,9 @@ SELECT
         THEN fe.DateExpired 
         ELSE NULL 
     END) as NextExpiryDate
-FROM Plants p
-LEFT JOIN FireExtinguishers fe ON p.PlantID = fe.PlantID
-LEFT JOIN Status s ON fe.StatusID = s.StatusID
+FROM FETS.Plants p
+LEFT JOIN FETS.FireExtinguishers fe ON p.PlantID = fe.PlantID
+LEFT JOIN FETS.Status s ON fe.StatusID = s.StatusID
 GROUP BY p.PlantID, p.PlantName
 ORDER BY p.PlantName", conn))
                 {
@@ -125,14 +125,14 @@ ORDER BY p.PlantName", conn))
         /// </summary>
         private void LoadChartData()
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
                 using (SqlCommand cmd = new SqlCommand(@"
                     SELECT fet.TypeName as Type, COUNT(fe.FEID) as Count
-                    FROM FireExtinguisherTypes fet
-                    LEFT JOIN FireExtinguishers fe ON fet.TypeID = fe.TypeID
+                    FROM FETS.FireExtinguisherTypes fet
+                    LEFT JOIN FETS.FireExtinguishers fe ON fet.TypeID = fe.TypeID
                     GROUP BY fet.TypeName
                     ORDER BY fet.TypeName", conn))
                 {
