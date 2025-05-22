@@ -955,6 +955,7 @@
     <None Include="Areas\FETS\Properties\PublishProfiles\FolderProfile4.pubxml" />
     <None Include="Areas\FETS\Properties\PublishProfiles\FolderProfile5.pubxml" />
     <None Include="Areas\FETS\Properties\PublishProfiles\FolderProfile6.pubxml" />
+    <Content Include="Views\CertificateOfFitness\Uploads\20250520103109_dummy.pdf" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
