@@ -142,7 +142,19 @@ namespace FETS
                 System.Diagnostics.Debug.WriteLine(string.Format("Error logging logout: {0}", ex.Message));
             }
 
+            // Standard Forms Authentication SignOut
             FormsAuthentication.SignOut();
+            
+            // Also explicitly remove the FETS authentication cookie
+            HttpCookie cookie = new HttpCookie(FormsAuthentication.FormsCookieName);
+            cookie.Expires = DateTime.Now.AddDays(-1);
+            cookie.Path = "/FETS";
+            Response.Cookies.Add(cookie);
+            
+            // Clear session data
+            Session.Clear();
+            Session.Abandon();
+            
             Response.Redirect("~/FETS/Login");
         }
 
@@ -172,6 +184,12 @@ namespace FETS
         {
             // Clear authentication cookie
             FormsAuthentication.SignOut();
+            
+            // Also explicitly remove the FETS authentication cookie
+            HttpCookie cookie = new HttpCookie(FormsAuthentication.FormsCookieName);
+            cookie.Expires = DateTime.Now.AddDays(-1);
+            cookie.Path = "/FETS";
+            Response.Cookies.Add(cookie);
             
             // Clear session data
             Session.Clear();
