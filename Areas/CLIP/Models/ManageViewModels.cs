@@ -30,11 +30,14 @@ namespace EHS_PORTAL.Areas.CLIP.Models
         [Display(Name = "Employee ID")]
         public string EmpID { get; set; }
         
-        [Display(Name = "CEP Points")]
+        [Display(Name = "ATOM CEP Points")]
         public int? Atom_CEP { get; set; }
         
-        [Display(Name = "CPD Points")]
+        [Display(Name = "DOE CPD Points")]
         public int? DOE_CPD { get; set; }
+        
+        [Display(Name = "DOSH CEP Points")]
+        public int? Dosh_CEP { get; set; }
         
         // User relationships
         public IEnumerable<string> UserRoles { get; set; }
@@ -134,11 +137,14 @@ namespace EHS_PORTAL.Areas.CLIP.Models
         [Display(Name = "Employee ID")]
         public string EmpID { get; set; }
 
-        [Display(Name = "CEP Points")]
+        [Display(Name = "ATOM CEP Points")]
         public int? Atom_CEP { get; set; }
 
-        [Display(Name = "CPD Points")]
+        [Display(Name = "DOE CPD Points")]
         public int? DOE_CPD { get; set; }
+
+        [Display(Name = "DOSH CEP Points")]
+        public int? Dosh_CEP { get; set; }
 
         [Display(Name = "Phone Number")]
         public string PhoneNumber { get; set; }
