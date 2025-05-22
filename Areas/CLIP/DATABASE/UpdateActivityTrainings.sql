@@ -1,5 +1,5 @@
 -- Rename Atom_CEP to Atom_CEP
-EXEC sp_rename 'AspNetUsers.Atom_CEP', 'Atom_CEP', 'COLUMN';
+EXEC sp_rename 'AspNetUsers.CPD_Points', 'Atom_CEP', 'COLUMN';
 
 -- Rename DOE_CPD to DOE_CPD
 EXEC sp_rename 'AspNetUsers.DOE_CPD', 'DOE_CPD', 'COLUMN';
