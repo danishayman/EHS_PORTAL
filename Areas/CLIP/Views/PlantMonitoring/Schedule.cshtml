@@ -382,6 +382,13 @@
                                         </div>
                                     </div>
                                     <div class="btn-group">
+                                        @if (!string.IsNullOrEmpty(record.Remarks))
+                                        {
+                                            <button type="button" class="btn btn-info btn-sm" data-toggle="tooltip" data-html="true" 
+                                                    title="<strong>Remarks:</strong><br>@record.Remarks.Replace("\n", "<br>")">
+                                                <i class="fas fa-comment-dots"></i>
+                                            </button>
+                                        }
                                         <a href="@Url.Action("Details", new { id = record.Id })" class="btn btn-sm btn-info" title="View Details" data-toggle="tooltip">
                                             <i class="fas fa-info-circle"></i>
                                         </a>
@@ -895,6 +902,24 @@
     background-color: #2e98c2 !important; /* Distinct purple */
     color: #0273a3 !important;
 }
+
+/* Remarks button styling */
+.remarks-btn {
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-left: 0.5rem;
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+}
+
+.remarks-btn:hover {
+    background-color: #138496 !important;
+    box-shadow: 0 0 8px rgba(23, 162, 184, 0.5);
+}
+
+.remarks-btn i {
+    margin-right: 4px;
+}
 </style>
 
 @functions {
@@ -1170,7 +1195,10 @@
         // Initialize tooltips with proper HTML support
         $('[data-toggle="tooltip"]').tooltip({
             html: true,
-            container: 'body'
+            container: 'body',
+            placement: 'auto',
+            boundary: 'window',
+            template: '<div class="tooltip" role="tooltip"><div class="arrow"></div><div class="tooltip-inner"></div></div>'
         });
         
         // Initialize status chart segments
