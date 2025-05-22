@@ -116,11 +116,11 @@ namespace FETS.Pages.ViewSection
         /// </summary>
         private void GetUserPlantAndRole()
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
-                using (SqlCommand cmd = new SqlCommand("SELECT PlantID, Role FROM Users WHERE Username = @Username", conn))
+                using (SqlCommand cmd = new SqlCommand("SELECT PlantID, Role FROM FETS.Users WHERE Username = @Username", conn))
                 {
                     cmd.Parameters.AddWithValue("@Username", User.Identity.Name);
                     using (SqlDataReader reader = cmd.ExecuteReader())
@@ -148,19 +148,19 @@ namespace FETS.Pages.ViewSection
         
         /// <summary>
         /// Loads all dropdown lists with data:
-        /// - Plants dropdown
+        /// - FETS.Plants dropdown
         /// - Status dropdown
         /// Used for filtering fire extinguishers in the view
         /// </summary>
         private void LoadDropDownLists()
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
 
                 // Modify the Plant dropdown loading to respect user's assigned plant
-                string plantQuery = "SELECT PlantID, PlantName FROM Plants";
+                string plantQuery = "SELECT PlantID, PlantName FROM FETS.Plants";
                 
                 // If not administrator and has assigned plant, only show that plant
                 if (!IsAdministrator && UserPlantID.HasValue)
@@ -216,7 +216,7 @@ namespace FETS.Pages.ViewSection
                 }
 
                 // Load Status
-                using (SqlCommand cmd = new SqlCommand("SELECT StatusID, StatusName FROM Status ORDER BY StatusName", conn))
+                using (SqlCommand cmd = new SqlCommand("SELECT StatusID, StatusName FROM FETS.Status ORDER BY StatusName", conn))
                 {
                     ddlFilterStatus.Items.Clear();
                     ddlFilterStatus.Items.Add(new ListItem("-- All Status --", ""));
@@ -233,7 +233,7 @@ namespace FETS.Pages.ViewSection
                 }
                 
                 // Load Fire Extinguisher Types
-                using (SqlCommand cmd = new SqlCommand("SELECT TypeID, TypeName FROM FireExtinguisherTypes ORDER BY TypeName", conn))
+                using (SqlCommand cmd = new SqlCommand("SELECT TypeID, TypeName FROM FETS.FireExtinguisherTypes ORDER BY TypeName", conn))
                 {
                     ddlFilterType.Items.Clear();
                     ddlFilterType.Items.Add(new ListItem("-- All Types --", ""));
@@ -278,21 +278,21 @@ namespace FETS.Pages.ViewSection
             if (string.IsNullOrEmpty(ddlFilterPlant.SelectedValue))
             {
                 ddlFilterLevel.Items.Clear();
-                ddlFilterLevel.Items.Add(new ListItem("-- All Levels --", ""));
+                ddlFilterLevel.Items.Add(new ListItem("-- All FETS.Levels --", ""));
                 return;
             }
 
-            string connectionString = ConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
 
                 using (SqlCommand cmd = new SqlCommand(
-                    "SELECT LevelID, LevelName FROM Levels WHERE PlantID = @PlantID ORDER BY LevelName", conn))
+                    "SELECT LevelID, LevelName FROM FETS.Levels WHERE PlantID = @PlantID ORDER BY LevelName", conn))
                 {
                     cmd.Parameters.AddWithValue("@PlantID", ddlFilterPlant.SelectedValue);
                     ddlFilterLevel.Items.Clear();
-                    ddlFilterLevel.Items.Add(new ListItem("-- All Levels --", ""));
+                    ddlFilterLevel.Items.Add(new ListItem("-- All FETS.Levels --", ""));
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
@@ -313,18 +313,18 @@ namespace FETS.Pages.ViewSection
         /// </summary>
         private void LoadFireExtinguishers()
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 string baseQuery = @"
                     SELECT fe.FEID, fe.SerialNumber, fe.AreaCode, p.PlantName, l.LevelName, 
                            fe.Location, t.TypeName, fe.DateExpired, s.StatusName,
                            s.ColorCode, fe.Remarks, fe.Replacement
-                    FROM FireExtinguishers fe
-                    INNER JOIN Plants p ON fe.PlantID = p.PlantID
-                    INNER JOIN Levels l ON fe.LevelID = l.LevelID
-                    INNER JOIN FireExtinguisherTypes t ON fe.TypeID = t.TypeID
-                    INNER JOIN Status s ON fe.StatusID = s.StatusID
+                    FROM FETS.FireExtinguishers fe
+                    INNER JOIN FETS.Plants p ON fe.PlantID = p.PlantID
+                    INNER JOIN FETS.Levels l ON fe.LevelID = l.LevelID
+                    INNER JOIN FETS.FireExtinguisherTypes t ON fe.TypeID = t.TypeID
+                    INNER JOIN FETS.Status s ON fe.StatusID = s.StatusID
                     WHERE 1=1";
 
                 // Add restriction based on user's assigned plant (if not administrator)
@@ -480,9 +480,9 @@ namespace FETS.Pages.ViewSection
             ddlFilterPlant.SelectedIndex = 0;
             LoadDropDownLists();
             
-            // Initialize Level dropdown with default "All Levels" option
+            // Initialize Level dropdown with default "All FETS.Levels" option
             ddlFilterLevel.Items.Clear();
-            ddlFilterLevel.Items.Add(new ListItem("-- All Levels --", ""));
+            ddlFilterLevel.Items.Add(new ListItem("-- All FETS.Levels --", ""));
             
             // Now we can safely set the selected index
             ddlFilterLevel.SelectedIndex = 0;
@@ -507,7 +507,7 @@ namespace FETS.Pages.ViewSection
                 string remarks = txtServiceRemarks.Text.Trim();
                 
                 // Get FE details for email
-                string connectionString = ConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString;
+                string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
@@ -519,10 +519,10 @@ namespace FETS.Pages.ViewSection
                             fe.Location,
                             t.TypeName,
                             fe.Remarks
-                        FROM FireExtinguishers fe
-                        INNER JOIN Plants p ON fe.PlantID = p.PlantID
-                        INNER JOIN Levels l ON fe.LevelID = l.LevelID
-                        INNER JOIN FireExtinguisherTypes t ON fe.TypeID = t.TypeID
+                        FROM FETS.FireExtinguishers fe
+                        INNER JOIN FETS.Plants p ON fe.PlantID = p.PlantID
+                        INNER JOIN FETS.Levels l ON fe.LevelID = l.LevelID
+                        INNER JOIN FETS.FireExtinguisherTypes t ON fe.TypeID = t.TypeID
                         WHERE fe.FEID = @FEID";
 
                     using (SqlCommand cmd = new SqlCommand(query, conn))
@@ -592,7 +592,7 @@ namespace FETS.Pages.ViewSection
             string levelName = "";
             string location = "";
             
-            string connectionString = ConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
@@ -600,9 +600,9 @@ namespace FETS.Pages.ViewSection
                 // Get fire extinguisher details for logging
                 using (SqlCommand cmd = new SqlCommand(@"
                     SELECT fe.SerialNumber, p.PlantName, l.LevelName, fe.Location
-                    FROM FireExtinguishers fe
-                    JOIN Plants p ON fe.PlantID = p.PlantID
-                    JOIN Levels l ON fe.LevelID = l.LevelID
+                    FROM FETS.FireExtinguishers fe
+                    JOIN FETS.Plants p ON fe.PlantID = p.PlantID
+                    JOIN FETS.Levels l ON fe.LevelID = l.LevelID
                     WHERE fe.FEID = @FEID", conn))
                 {
                     cmd.Parameters.AddWithValue("@FEID", feId);
@@ -620,14 +620,14 @@ namespace FETS.Pages.ViewSection
 
                 // Get the 'Under Service' status ID
                 int underServiceStatusId;
-                using (SqlCommand cmd = new SqlCommand("SELECT StatusID FROM Status WHERE StatusName = 'Under Service'", conn))
+                using (SqlCommand cmd = new SqlCommand("SELECT StatusID FROM FETS.Status WHERE StatusName = 'Under Service'", conn))
                 {
                     underServiceStatusId = (int)cmd.ExecuteScalar();
                 }
 
                 // Update fire extinguisher status, remarks and replacement
                 using (SqlCommand cmd = new SqlCommand(
-                    "UPDATE FireExtinguishers SET StatusID = @StatusID, Remarks = @Remarks, Replacement = @Replacement, DateSentService = @DateSentService WHERE FEID = @FEID", conn))
+                    "UPDATE FETS.FireExtinguishers SET StatusID = @StatusID, Remarks = @Remarks, Replacement = @Replacement, DateSentService = @DateSentService WHERE FEID = @FEID", conn))
                 {
                     cmd.Parameters.AddWithValue("@StatusID", underServiceStatusId);
                     cmd.Parameters.AddWithValue("@FEID", feId);
@@ -834,7 +834,7 @@ namespace FETS.Pages.ViewSection
         /// </summary>
         private void LoadUnderServiceGrid()
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 string query = @"
@@ -848,11 +848,11 @@ namespace FETS.Pages.ViewSection
                         fe.DateExpired,
                         fe.DateSentService,
                         s.StatusName
-                    FROM FireExtinguishers fe
-                    INNER JOIN Status s ON fe.StatusID = s.StatusID
-                    INNER JOIN Plants p ON fe.PlantID = p.PlantID
-                    INNER JOIN Levels l ON fe.LevelID = l.LevelID
-                    INNER JOIN FireExtinguisherTypes t ON fe.TypeID = t.TypeID
+                    FROM FETS.FireExtinguishers fe
+                    INNER JOIN FETS.Status s ON fe.StatusID = s.StatusID
+                    INNER JOIN FETS.Plants p ON fe.PlantID = p.PlantID
+                    INNER JOIN FETS.Levels l ON fe.LevelID = l.LevelID
+                    INNER JOIN FETS.FireExtinguisherTypes t ON fe.TypeID = t.TypeID
                     WHERE s.StatusName = 'Under Service'
                     ORDER BY fe.DateExpired ASC";
 
@@ -875,7 +875,7 @@ namespace FETS.Pages.ViewSection
         private string GetConnectionString()
         {
             var builder = new SqlConnectionStringBuilder(
-                ConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString);
+                ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
             builder.ConnectTimeout = 120; // 2 minutes
             return builder.ConnectionString;
         }
@@ -905,11 +905,11 @@ namespace FETS.Pages.ViewSection
                         CASE 
                             WHEN fe.DateExpired < GETDATE() THEN 'Expired'
                             ELSE 'Expiring Soon'
-                        END as Status
-                    FROM FireExtinguishers fe
-                    INNER JOIN Plants p ON fe.PlantID = p.PlantID
-                    INNER JOIN Levels l ON fe.LevelID = l.LevelID
-                    INNER JOIN Status s ON fe.StatusID = s.StatusID
+                        END as FETS.Status
+                    FROM FETS.FireExtinguishers fe
+                    INNER JOIN FETS.Plants p ON fe.PlantID = p.PlantID
+                    INNER JOIN FETS.Levels l ON fe.LevelID = l.LevelID
+                    INNER JOIN FETS.Status s ON fe.StatusID = s.StatusID
                     WHERE ";
 
                 if (mode == "single")
@@ -967,7 +967,7 @@ namespace FETS.Pages.ViewSection
 
         private void LoadTabData()
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 try
@@ -980,8 +980,8 @@ namespace FETS.Pages.ViewSection
                             SUM(CASE WHEN fe.DateExpired < GETDATE() AND s.StatusName != 'Under Service' THEN 1 ELSE 0 END) as ExpiredCount,
                             SUM(CASE WHEN fe.DateExpired >= GETDATE() AND fe.DateExpired <= DATEADD(day, 60, GETDATE()) AND s.StatusName != 'Under Service' THEN 1 ELSE 0 END) as ExpiringSoonCount,
                             SUM(CASE WHEN s.StatusName = 'Under Service' THEN 1 ELSE 0 END) as UnderServiceCount
-                        FROM FireExtinguishers fe
-                        INNER JOIN Status s ON fe.StatusID = s.StatusID
+                        FROM FETS.FireExtinguishers fe
+                        INNER JOIN FETS.Status s ON fe.StatusID = s.StatusID
                         WHERE 1=1";
                         
                     // Add plant restriction for non-admin users
@@ -1035,11 +1035,11 @@ namespace FETS.Pages.ViewSection
                                     fe.DateExpired,
                                     s.StatusName,
                                     DATEDIFF(day, fe.DateExpired, GETDATE()) as DaysExpired
-                                FROM FireExtinguishers fe
-                                INNER JOIN Status s ON fe.StatusID = s.StatusID
-                                INNER JOIN Plants p ON fe.PlantID = p.PlantID
-                                INNER JOIN Levels l ON fe.LevelID = l.LevelID
-                                INNER JOIN FireExtinguisherTypes t ON fe.TypeID = t.TypeID
+                                FROM FETS.FireExtinguishers fe
+                                INNER JOIN FETS.Status s ON fe.StatusID = s.StatusID
+                                INNER JOIN FETS.Plants p ON fe.PlantID = p.PlantID
+                                INNER JOIN FETS.Levels l ON fe.LevelID = l.LevelID
+                                INNER JOIN FETS.FireExtinguisherTypes t ON fe.TypeID = t.TypeID
                                 WHERE fe.DateExpired < GETDATE() AND s.StatusName != 'Under Service'";
                                 
                             // Add plant restriction for non-admin users
@@ -1064,11 +1064,11 @@ namespace FETS.Pages.ViewSection
                                     fe.DateExpired,
                                     s.StatusName,
                                     DATEDIFF(day, GETDATE(), fe.DateExpired) as DaysLeft
-                                FROM FireExtinguishers fe
-                                INNER JOIN Status s ON fe.StatusID = s.StatusID
-                                INNER JOIN Plants p ON fe.PlantID = p.PlantID
-                                INNER JOIN Levels l ON fe.LevelID = l.LevelID
-                                INNER JOIN FireExtinguisherTypes t ON fe.TypeID = t.TypeID
+                                FROM FETS.FireExtinguishers fe
+                                INNER JOIN FETS.Status s ON fe.StatusID = s.StatusID
+                                INNER JOIN FETS.Plants p ON fe.PlantID = p.PlantID
+                                INNER JOIN FETS.Levels l ON fe.LevelID = l.LevelID
+                                INNER JOIN FETS.FireExtinguisherTypes t ON fe.TypeID = t.TypeID
                                 WHERE fe.DateExpired >= GETDATE() AND fe.DateExpired <= DATEADD(day, 60, GETDATE()) AND s.StatusName != 'Under Service'";
                                 
                             // Add plant restriction for non-admin users
@@ -1093,11 +1093,11 @@ namespace FETS.Pages.ViewSection
                                     fe.DateExpired,
                                     s.StatusName,
                                     fe.DateSentService
-                                FROM FireExtinguishers fe
-                                INNER JOIN Status s ON fe.StatusID = s.StatusID
-                                INNER JOIN Plants p ON fe.PlantID = p.PlantID
-                                INNER JOIN Levels l ON fe.LevelID = l.LevelID
-                                INNER JOIN FireExtinguisherTypes t ON fe.TypeID = t.TypeID
+                                FROM FETS.FireExtinguishers fe
+                                INNER JOIN FETS.Status s ON fe.StatusID = s.StatusID
+                                INNER JOIN FETS.Plants p ON fe.PlantID = p.PlantID
+                                INNER JOIN FETS.Levels l ON fe.LevelID = l.LevelID
+                                INNER JOIN FETS.FireExtinguisherTypes t ON fe.TypeID = t.TypeID
                                 WHERE s.StatusName = 'Under Service'";
                                 
                             // Add plant restriction for non-admin users
@@ -1263,8 +1263,8 @@ namespace FETS.Pages.ViewSection
                             fe.SerialNumber, 
                             p.PlantName,
                             fe.Location
-                        FROM FireExtinguishers fe
-                        JOIN Plants p ON fe.PlantID = p.PlantID
+                        FROM FETS.FireExtinguishers fe
+                        JOIN FETS.Plants p ON fe.PlantID = p.PlantID
                         WHERE fe.FEID = @FEID", conn))
                     {
                         cmdGetDetails.Parameters.AddWithValue("@FEID", feId);
@@ -1279,9 +1279,9 @@ namespace FETS.Pages.ViewSection
                         }
                     }
                     
-                    // First, delete related records from ServiceReminders table
+                    // First, delete related records from FETS.ServiceReminders table
                     using (SqlCommand cmdDeleteReminders = new SqlCommand(
-                        "DELETE FROM ServiceReminders WHERE FEID = @FEID", conn))
+                        "DELETE FROM FETS.ServiceReminders WHERE FEID = @FEID", conn))
                     {
                         cmdDeleteReminders.Parameters.AddWithValue("@FEID", feId);
                         cmdDeleteReminders.ExecuteNonQuery();
@@ -1289,7 +1289,7 @@ namespace FETS.Pages.ViewSection
                     
                     // Then delete the fire extinguisher
                     using (SqlCommand cmdDeleteFE = new SqlCommand(
-                        "DELETE FROM FireExtinguishers WHERE FEID = @FEID", conn))
+                        "DELETE FROM FETS.FireExtinguishers WHERE FEID = @FEID", conn))
                     {
                         cmdDeleteFE.Parameters.AddWithValue("@FEID", feId);
                         cmdDeleteFE.ExecuteNonQuery();
@@ -1323,13 +1323,13 @@ namespace FETS.Pages.ViewSection
         /// </summary>
         private void UpdateFireExtinguisherStatus(int feId, string statusName)
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
                 using (SqlCommand cmd = new SqlCommand(@"
-                    UPDATE FireExtinguishers 
-                    SET StatusID = (SELECT StatusID FROM Status WHERE StatusName = @StatusName)
+                    UPDATE FETS.FireExtinguishers 
+                    SET StatusID = (SELECT StatusID FROM FETS.Status WHERE StatusName = @StatusName)
                     WHERE FEID = @FEID", conn))
                 {
                     cmd.Parameters.AddWithValue("@FEID", feId);
@@ -1442,7 +1442,7 @@ namespace FETS.Pages.ViewSection
             private static List<EmailRecipient> GetEmailRecipientsFromDB(string notificationType, string fallbackType = null)
             {
                 List<EmailRecipient> recipients = new List<EmailRecipient>();
-                string connectionString = ConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString;
+                string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
                 
                 try
                 {
@@ -1452,7 +1452,7 @@ namespace FETS.Pages.ViewSection
                         
                         // First check if the EmailRecipients table exists
                         bool tableExists = false;
-                        string checkTableQuery = "SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'EmailRecipients'";
+                        string checkTableQuery = "SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'FETS.EmailRecipients'";
                         using (SqlCommand checkCmd = new SqlCommand(checkTableQuery, conn))
                         {
                             int tableCount = (int)checkCmd.ExecuteScalar();
@@ -1467,7 +1467,7 @@ namespace FETS.Pages.ViewSection
                         // Query to get recipients for this notification type or "All" type
                         string query = @"
                             SELECT EmailAddress, RecipientName, NotificationType 
-                            FROM EmailRecipients 
+                            FROM FETS.EmailRecipients 
                             WHERE IsActive = 1 AND (NotificationType = @NotificationType OR NotificationType = 'All'";
                         
                         // Add fallback type if specified
@@ -1530,20 +1530,20 @@ namespace FETS.Pages.ViewSection
             string location = "";
             string typeName = "";
 
-            string connectionString = ConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
 
                 // First update the status to "Under Service" and set DateSentService
                 int underServiceStatusId;
-                using (SqlCommand cmd = new SqlCommand("SELECT StatusID FROM Status WHERE StatusName = 'Under Service'", conn))
+                using (SqlCommand cmd = new SqlCommand("SELECT StatusID FROM FETS.Status WHERE StatusName = 'Under Service'", conn))
                 {
                     underServiceStatusId = (int)cmd.ExecuteScalar();
                 }
 
                 using (SqlCommand cmd = new SqlCommand(
-                    "UPDATE FireExtinguishers SET StatusID = @StatusID, DateSentService = @DateSentService WHERE FEID = @FEID", conn))
+                    "UPDATE FETS.FireExtinguishers SET StatusID = @StatusID, DateSentService = @DateSentService WHERE FEID = @FEID", conn))
                 {
                     cmd.Parameters.AddWithValue("@StatusID", underServiceStatusId);
                     cmd.Parameters.AddWithValue("@FEID", extinguisherId);
@@ -1561,11 +1561,11 @@ namespace FETS.Pages.ViewSection
                         t.TypeName,
                         fe.Remarks,
                         s.StatusName
-                    FROM FireExtinguishers fe
-                    INNER JOIN Plants p ON fe.PlantID = p.PlantID
-                    INNER JOIN Levels l ON fe.LevelID = l.LevelID
-                    INNER JOIN FireExtinguisherTypes t ON fe.TypeID = t.TypeID
-                    INNER JOIN Status s ON fe.StatusID = s.StatusID
+                    FROM FETS.FireExtinguishers fe
+                    INNER JOIN FETS.Plants p ON fe.PlantID = p.PlantID
+                    INNER JOIN FETS.Levels l ON fe.LevelID = l.LevelID
+                    INNER JOIN FETS.FireExtinguisherTypes t ON fe.TypeID = t.TypeID
+                    INNER JOIN FETS.Status s ON fe.StatusID = s.StatusID
                     WHERE fe.FEID = @FEID";
 
                 using (SqlCommand cmd = new SqlCommand(query, conn))
@@ -1628,7 +1628,7 @@ namespace FETS.Pages.ViewSection
 
         private void LoadServiceSelectionGrid()
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
@@ -1642,11 +1642,11 @@ namespace FETS.Pages.ViewSection
                         fe.Location,
                         t.TypeName,
                         fe.Remarks
-                    FROM FireExtinguishers fe
-                    INNER JOIN Plants p ON fe.PlantID = p.PlantID
-                    INNER JOIN Levels l ON fe.LevelID = l.LevelID
-                    INNER JOIN FireExtinguisherTypes t ON fe.TypeID = t.TypeID
-                    INNER JOIN Status s ON fe.StatusID = s.StatusID
+                    FROM FETS.FireExtinguishers fe
+                    INNER JOIN FETS.Plants p ON fe.PlantID = p.PlantID
+                    INNER JOIN FETS.Levels l ON fe.LevelID = l.LevelID
+                    INNER JOIN FETS.FireExtinguisherTypes t ON fe.TypeID = t.TypeID
+                    INNER JOIN FETS.Status s ON fe.StatusID = s.StatusID
                     WHERE s.StatusName != 'Under Service'
                     AND (
                         fe.DateExpired < GETDATE() -- Expired
@@ -1723,7 +1723,7 @@ namespace FETS.Pages.ViewSection
                 // Get details for all selected fire extinguishers
                 List<FireExtinguisherServiceInfo> extinguisherDetails = new List<FireExtinguisherServiceInfo>();
                 Dictionary<int, string> extinguisherDescriptions = new Dictionary<int, string>();
-                string connectionString = ConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString;
+                string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
                 
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
@@ -1740,10 +1740,10 @@ namespace FETS.Pages.ViewSection
                             t.TypeName,
                             fe.Remarks,
                             fe.Replacement
-                        FROM FireExtinguishers fe
-                        INNER JOIN Plants p ON fe.PlantID = p.PlantID
-                        INNER JOIN Levels l ON fe.LevelID = l.LevelID
-                        INNER JOIN FireExtinguisherTypes t ON fe.TypeID = t.TypeID
+                        FROM FETS.FireExtinguishers fe
+                        INNER JOIN FETS.Plants p ON fe.PlantID = p.PlantID
+                        INNER JOIN FETS.Levels l ON fe.LevelID = l.LevelID
+                        INNER JOIN FETS.FireExtinguisherTypes t ON fe.TypeID = t.TypeID
                         WHERE fe.FEID IN ({feIdList})";
 
                     using (SqlCommand cmd = new SqlCommand(query, conn))
@@ -1796,8 +1796,8 @@ namespace FETS.Pages.ViewSection
                     foreach (int feId in selectedFEIDs)
                     {
                         string updateQuery = @"
-                            UPDATE FireExtinguishers
-                            SET StatusID = (SELECT StatusID FROM Status WHERE StatusName = 'Under Service'),
+                            UPDATE FETS.FireExtinguishers
+                            SET StatusID = (SELECT StatusID FROM FETS.Status WHERE StatusName = 'Under Service'),
                                 Remarks = @Remarks,
                                 Replacement = @Replacement,
                                 DateSentService = @DateSentService
@@ -1898,13 +1898,13 @@ namespace FETS.Pages.ViewSection
             }
 
             // Load levels based on selected plant
-            string connectionString = ConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
 
                 using (SqlCommand cmd = new SqlCommand(
-                    "SELECT LevelID, LevelName FROM Levels WHERE PlantID = @PlantID ORDER BY LevelName", conn))
+                    "SELECT LevelID, LevelName FROM FETS.Levels WHERE PlantID = @PlantID ORDER BY LevelName", conn))
                 {
                     cmd.Parameters.AddWithValue("@PlantID", ddlPlant.SelectedValue);
                     ddlLevel.Items.Clear();
@@ -1932,7 +1932,7 @@ namespace FETS.Pages.ViewSection
             LoadDropdownsForEdit();
 
             // Load fire extinguisher details
-            string connectionString = ConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
@@ -1948,7 +1948,7 @@ namespace FETS.Pages.ViewSection
                         fe.DateExpired, 
                         fe.Remarks,
                         fe.Replacement
-                    FROM FireExtinguishers fe
+                    FROM FETS.FireExtinguishers fe
                     WHERE fe.FEID = @FEID";
 
                 // For non-admin users with assigned plant, verify they can only edit their own plant's extinguishers
@@ -2031,7 +2031,7 @@ namespace FETS.Pages.ViewSection
         /// </summary>
         private void LoadDropdownsForEdit()
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
@@ -2040,7 +2040,7 @@ namespace FETS.Pages.ViewSection
                 if (!IsAdministrator && UserPlantID.HasValue)
                 {
                     // For users with assigned plant, only load their plant and disable the dropdown
-                    using (SqlCommand cmd = new SqlCommand("SELECT PlantID, PlantName FROM Plants WHERE PlantID = @PlantID", conn))
+                    using (SqlCommand cmd = new SqlCommand("SELECT PlantID, PlantName FROM FETS.Plants WHERE PlantID = @PlantID", conn))
                     {
                         cmd.Parameters.AddWithValue("@PlantID", UserPlantID.Value);
                         ddlPlant.Items.Clear();
@@ -2057,7 +2057,7 @@ namespace FETS.Pages.ViewSection
                 else
                 {
                     // For administrators or users without assigned plant, load all plants
-                    using (SqlCommand cmd = new SqlCommand("SELECT PlantID, PlantName FROM Plants ORDER BY PlantName", conn))
+                    using (SqlCommand cmd = new SqlCommand("SELECT PlantID, PlantName FROM FETS.Plants ORDER BY PlantName", conn))
                     {
                         ddlPlant.Items.Clear();
                         ddlPlant.Items.Add(new ListItem("-- Select Plant --", ""));
@@ -2075,7 +2075,7 @@ namespace FETS.Pages.ViewSection
                 }
 
                 // Load Fire Extinguisher Types
-                using (SqlCommand cmd = new SqlCommand("SELECT TypeID, TypeName FROM FireExtinguisherTypes ORDER BY TypeName", conn))
+                using (SqlCommand cmd = new SqlCommand("SELECT TypeID, TypeName FROM FETS.FireExtinguisherTypes ORDER BY TypeName", conn))
                 {
                     ddlType.Items.Clear();
                     ddlType.Items.Add(new ListItem("-- Select Type --", ""));
@@ -2092,7 +2092,7 @@ namespace FETS.Pages.ViewSection
                 }
 
                 // Load Status
-                using (SqlCommand cmd = new SqlCommand("SELECT StatusID, StatusName FROM Status ORDER BY StatusName", conn))
+                using (SqlCommand cmd = new SqlCommand("SELECT StatusID, StatusName FROM FETS.Status ORDER BY StatusName", conn))
                 {
                     ddlStatus.Items.Clear();
                     ddlStatus.Items.Add(new ListItem("-- Select Status --", ""));
@@ -2122,12 +2122,12 @@ namespace FETS.Pages.ViewSection
                 return;
             }
 
-            string connectionString = ConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
                 using (SqlCommand cmd = new SqlCommand(
-                    "SELECT LevelID, LevelName FROM Levels WHERE PlantID = @PlantID ORDER BY LevelName", conn))
+                    "SELECT LevelID, LevelName FROM FETS.Levels WHERE PlantID = @PlantID ORDER BY LevelName", conn))
                 {
                     cmd.Parameters.AddWithValue("@PlantID", plantId);
                     ddlLevel.Items.Clear();
@@ -2168,7 +2168,7 @@ namespace FETS.Pages.ViewSection
                 List<string> changedFields = new List<string>();
                 string serialNumber = string.Empty;
 
-                string connectionString = ConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString;
+                string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
@@ -2190,11 +2190,11 @@ namespace FETS.Pages.ViewSection
                             fe.DateExpired,
                             fe.Remarks,
                             fe.Replacement
-                        FROM FireExtinguishers fe
-                        LEFT JOIN Plants p ON fe.PlantID = p.PlantID
-                        LEFT JOIN Levels l ON fe.LevelID = l.LevelID
-                        LEFT JOIN FireExtinguisherTypes t ON fe.TypeID = t.TypeID
-                        LEFT JOIN Status s ON fe.StatusID = s.StatusID
+                        FROM FETS.FireExtinguishers fe
+                        LEFT JOIN FETS.Plants p ON fe.PlantID = p.PlantID
+                        LEFT JOIN FETS.Levels l ON fe.LevelID = l.LevelID
+                        LEFT JOIN FETS.FireExtinguisherTypes t ON fe.TypeID = t.TypeID
+                        LEFT JOIN FETS.Status s ON fe.StatusID = s.StatusID
                         WHERE fe.FEID = @FEID";
 
                     using (SqlCommand cmd = new SqlCommand(getQuery, conn))
@@ -2288,7 +2288,7 @@ namespace FETS.Pages.ViewSection
 
                     // Now update the database with new values
                     string updateQuery = @"
-                        UPDATE FireExtinguishers 
+                        UPDATE FETS.FireExtinguishers 
                         SET 
                             SerialNumber = @SerialNumber,
                             AreaCode = @AreaCode,
@@ -2385,7 +2385,7 @@ namespace FETS.Pages.ViewSection
         /// </summary>
         private void LoadCompleteServiceGrid()
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
@@ -2400,11 +2400,11 @@ namespace FETS.Pages.ViewSection
                         t.TypeName,
                         fe.DateExpired,
                         s.StatusName
-                    FROM FireExtinguishers fe
-                    INNER JOIN Plants p ON fe.PlantID = p.PlantID
-                    INNER JOIN Levels l ON fe.LevelID = l.LevelID
-                    INNER JOIN FireExtinguisherTypes t ON fe.TypeID = t.TypeID
-                    INNER JOIN Status s ON fe.StatusID = s.StatusID
+                    FROM FETS.FireExtinguishers fe
+                    INNER JOIN FETS.Plants p ON fe.PlantID = p.PlantID
+                    INNER JOIN FETS.Levels l ON fe.LevelID = l.LevelID
+                    INNER JOIN FETS.FireExtinguisherTypes t ON fe.TypeID = t.TypeID
+                    INNER JOIN FETS.Status s ON fe.StatusID = s.StatusID
                     WHERE s.StatusName = 'Under Service'";
                     
                 // Add plant restriction for non-admin users
@@ -2468,7 +2468,7 @@ namespace FETS.Pages.ViewSection
             DateTime serviceDate = DateTime.Now;
             DateTime newExpiryDate = DateTime.Now.AddYears(1); // Default value
             
-            string connectionString = ConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
@@ -2508,10 +2508,10 @@ namespace FETS.Pages.ViewSection
                                                 fe.Location,
                                                 t.TypeName AS Type,
                                                 fe.Remarks
-                                            FROM FireExtinguishers fe
-                                            INNER JOIN Plants p ON fe.PlantID = p.PlantID
-                                            INNER JOIN Levels l ON fe.LevelID = l.LevelID
-                                            INNER JOIN FireExtinguisherTypes t ON fe.TypeID = t.TypeID
+                                            FROM FETS.FireExtinguishers fe
+                                            INNER JOIN FETS.Plants p ON fe.PlantID = p.PlantID
+                                            INNER JOIN FETS.Levels l ON fe.LevelID = l.LevelID
+                                            INNER JOIN FETS.FireExtinguisherTypes t ON fe.TypeID = t.TypeID
                                             WHERE fe.FEID = @FEID";
                                             
                                         using (SqlCommand cmd = new SqlCommand(query, conn, transaction))
@@ -2553,8 +2553,8 @@ namespace FETS.Pages.ViewSection
 
                                         // Update the fire extinguisher status, expiry date, and clear replacement
                                         string updateQuery = @"
-                                            UPDATE FireExtinguishers
-                                            SET StatusID = (SELECT StatusID FROM Status WHERE StatusName = 'Active'),
+                                            UPDATE FETS.FireExtinguishers
+                                            SET StatusID = (SELECT StatusID FROM FETS.Status WHERE StatusName = 'Active'),
                                                 DateExpired = @NewExpiryDate,
                                                 Replacement = NULL
                                             WHERE FEID = @FEID";
@@ -2569,7 +2569,7 @@ namespace FETS.Pages.ViewSection
                                         // Add service reminder for follow-up
                                         DateTime reminderDate = serviceDate.AddDays(7); // Remind in one week
                                         using (SqlCommand cmd = new SqlCommand(
-                                            "INSERT INTO ServiceReminders (FEID, DateCompleteService, ReminderDate) VALUES (@FEID, @DateCompleteService, @ReminderDate)", 
+                                            "INSERT INTO FETS.ServiceReminders (FEID, DateCompleteService, ReminderDate) VALUES (@FEID, @DateCompleteService, @ReminderDate)", 
                                             conn, transaction))
                                         {
                                             cmd.Parameters.AddWithValue("@FEID", feId);
@@ -2852,7 +2852,7 @@ namespace FETS.Pages.ViewSection
         /// </summary>
         private DataTable GetFireExtinguishersForExport()
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             DataTable dt = new DataTable();
             
             using (SqlConnection conn = new SqlConnection(connectionString))
@@ -2864,11 +2864,11 @@ namespace FETS.Pages.ViewSection
                     SELECT fe.FEID, fe.SerialNumber, fe.Location, fe.DateExpired, fe.Remarks,
                            p.PlantID, p.PlantName, l.LevelID, l.LevelName, 
                            s.StatusID, s.StatusName, t.TypeID, t.TypeName
-                    FROM FireExtinguishers fe
-                    INNER JOIN Plants p ON fe.PlantID = p.PlantID
-                    INNER JOIN Levels l ON fe.LevelID = l.LevelID
-                    INNER JOIN Status s ON fe.StatusID = s.StatusID
-                    INNER JOIN FireExtinguisherTypes t ON fe.TypeID = t.TypeID
+                    FROM FETS.FireExtinguishers fe
+                    INNER JOIN FETS.Plants p ON fe.PlantID = p.PlantID
+                    INNER JOIN FETS.Levels l ON fe.LevelID = l.LevelID
+                    INNER JOIN FETS.Status s ON fe.StatusID = s.StatusID
+                    INNER JOIN FETS.FireExtinguisherTypes t ON fe.TypeID = t.TypeID
                     WHERE 1=1";
                 
                 // Apply the same filters used in the UI
@@ -2935,9 +2935,9 @@ namespace FETS.Pages.ViewSection
                 string query = @"
                     SELECT TOP 100 m.MapID, m.PlantID, m.LevelID, m.ImagePath, m.UploadDate,
                            p.PlantName, l.LevelName
-                    FROM MapImages m WITH (NOLOCK)
-                    INNER JOIN Plants p WITH (NOLOCK) ON m.PlantID = p.PlantID
-                    INNER JOIN Levels l WITH (NOLOCK) ON m.LevelID = l.LevelID AND m.PlantID = l.PlantID
+                    FROM FETS.MapImages m WITH (NOLOCK)
+                    INNER JOIN FETS.Plants p WITH (NOLOCK) ON m.PlantID = p.PlantID
+                    INNER JOIN FETS.Levels l WITH (NOLOCK) ON m.LevelID = l.LevelID AND m.PlantID = l.PlantID
                     WHERE m.PlantID = @PlantID
                     ORDER BY l.LevelName ASC, m.UploadDate DESC";
 

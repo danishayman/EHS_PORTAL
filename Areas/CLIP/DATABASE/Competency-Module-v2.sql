@@ -8,8 +8,8 @@ ALTER TABLE CompetencyModules
 ADD CompetencyType NVARCHAR(100);
 
 ALTER TABLE AspNetUsers
-ADD CEP_Points INT,
-    CPD_Points INT;
+ADD Atom_CEP INT,
+    DOE_CPD INT;
 
 
 ALTER TABLE UserCompetencies

@@ -13,44 +13,45 @@
             <div class="col-md-10">
                 <label class="form-label"><i class="bi bi-search"></i> Search by Registration Number or Machine Name</label>
                 <div class="input-group">
-                    @Html.TextBox("searchString", ViewBag.CurrentSearch as string, new { @class = "form-control", placeholder = "Enter registration number or machine name..." })
-                    <button type="submit" class="btn btn-outline-primary">
-                        <i class="bi bi-search"></i> Search
-                    </button>
-                </div>
-                <input type="hidden" name="sortOrder" value="@ViewBag.CurrentSort" />
-                <input type="hidden" name="plantFilter" value="@ViewBag.CurrentPlantFilter" />
+                    @Html.TextBox("searchString", ViewBag.CurrentSearch as string, new { @class = "form-control",
+                    placeholder = "Enter registration number or machine name..." })
+                <button type="submit" class="btn btn-outline-primary">
+                    <i class="bi bi-search"></i> Search
+                </button>
             </div>
-            <div class="col-md-2 d-flex align-items-end">
-                @if (!string.IsNullOrEmpty(ViewBag.CurrentSearch as string) || ViewBag.CurrentPlantFilter != null)
-                {
-                    <a href="@Url.Action("Index", "CertificateOfFitness")" class="btn btn-outline-secondary">
-                        <i class="bi bi-x-circle"></i> Clear Filters
-                    </a>
+            <input type="hidden" name="sortOrder" value="@ViewBag.CurrentSort" />
+            <input type="hidden" name="plantFilter" value="@ViewBag.CurrentPlantFilter" />
+        </div>
+        <div class="col-md-2 d-flex align-items-end">
+            @if (!string.IsNullOrEmpty(ViewBag.CurrentSearch as string) || ViewBag.CurrentPlantFilter != null)
+            {
+                <a href="@Url.Action("Index", "CertificateOfFitness")" class="btn btn-outline-secondary">
+                    <i class="bi bi-x-circle"></i> Clear Filters
+                </a>
+            }
+        </div>
                 }
-            </div>
-        }
-        
+
         <div class="mt-3">
             <div class="d-flex flex-wrap gap-2">
-                <a href="@Url.Action("Index", "CertificateOfFitness", new { plantFilter = "", searchString = ViewBag.CurrentSearch, sortOrder = ViewBag.CurrentSort })" 
-                   class="btn @(ViewBag.CurrentPlantFilter == null ? "btn-primary" : "btn-outline-primary")">
+                <a href="@Url.Action("Index", "CertificateOfFitness", new { plantFilter = "", searchString = ViewBag.CurrentSearch, sortOrder = ViewBag.CurrentSort })"
+                    class="btn @(ViewBag.CurrentPlantFilter == null ? "btn-primary" : "btn-outline-primary")">
                     All Plants
                 </a>
-                <a href="@Url.Action("Index", "CertificateOfFitness", new { plantFilter = "135", searchString = ViewBag.CurrentSearch, sortOrder = ViewBag.CurrentSort })" 
-                   class="btn @(ViewBag.CurrentPlantFilter != null && ViewBag.CurrentPlantFilter.ToString() == "135" ? "btn-primary" : "btn-outline-primary")">
-                    P1,3,5
+                <a href="@Url.Action("Index", "CertificateOfFitness", new { plantFilter = "135", searchString = ViewBag.CurrentSearch, sortOrder = ViewBag.CurrentSort })"
+                    class="btn @(ViewBag.CurrentPlantFilter != null && ViewBag.CurrentPlantFilter.ToString() == "135" ? "btn-primary" : "btn-outline-primary")">
+                    P1, P3, P5
                 </a>
-                <a href="@Url.Action("Index", "CertificateOfFitness", new { plantFilter = "21", searchString = ViewBag.CurrentSearch, sortOrder = ViewBag.CurrentSort })" 
-                   class="btn @(ViewBag.CurrentPlantFilter != null && ViewBag.CurrentPlantFilter.ToString() == "21" ? "btn-primary" : "btn-outline-primary")">
+                <a href="@Url.Action("Index", "CertificateOfFitness", new { plantFilter = "21", searchString = ViewBag.CurrentSearch, sortOrder = ViewBag.CurrentSort })"
+                    class="btn @(ViewBag.CurrentPlantFilter != null && ViewBag.CurrentPlantFilter.ToString() == "21" ? "btn-primary" : "btn-outline-primary")">
                     P21
                 </a>
-                <a href="@Url.Action("Index", "CertificateOfFitness", new { plantFilter = "13,55", searchString = ViewBag.CurrentSearch, sortOrder = ViewBag.CurrentSort })" 
-                   class="btn @(ViewBag.CurrentPlantFilter != null && ViewBag.CurrentPlantFilter.ToString() == "13,55" ? "btn-primary" : "btn-outline-primary")">
-                    P13,55
+                <a href="@Url.Action("Index", "CertificateOfFitness", new { plantFilter = "13,55", searchString = ViewBag.CurrentSearch, sortOrder = ViewBag.CurrentSort })"
+                    class="btn @(ViewBag.CurrentPlantFilter != null && ViewBag.CurrentPlantFilter.ToString() == "13,55" ? "btn-primary" : "btn-outline-primary")">
+                    P13, P55
                 </a>
-                <a href="@Url.Action("Index", "CertificateOfFitness", new { plantFilter = "34", searchString = ViewBag.CurrentSearch, sortOrder = ViewBag.CurrentSort })" 
-                   class="btn @(ViewBag.CurrentPlantFilter != null && ViewBag.CurrentPlantFilter.ToString() == "34" ? "btn-primary" : "btn-outline-primary")">
+                <a href="@Url.Action("Index", "CertificateOfFitness", new { plantFilter = "34", searchString = ViewBag.CurrentSearch, sortOrder = ViewBag.CurrentSort })"
+                    class="btn @(ViewBag.CurrentPlantFilter != null && ViewBag.CurrentPlantFilter.ToString() == "34" ? "btn-primary" : "btn-outline-primary")">
                     P34
                 </a>
             </div>
@@ -72,7 +73,8 @@
         <thead class="bg-light">
             <tr>
                 <th>
-                    <a href="@Url.Action("Index", "CertificateOfFitness", new { sortOrder = ViewBag.PlantSortParam, searchString = ViewBag.CurrentSearch, plantFilter = ViewBag.CurrentPlantFilter })" class="text-dark text-decoration-none">
+                    <a href="@Url.Action("Index", "CertificateOfFitness", new { sortOrder = ViewBag.PlantSortParam, searchString = ViewBag.CurrentSearch, plantFilter = ViewBag.CurrentPlantFilter })"
+                        class="text-dark text-decoration-none">
                         @Html.DisplayNameFor(model => model.Plant.PlantName)
                         @if (ViewBag.CurrentSort == "plant_asc")
                         {
@@ -95,7 +97,8 @@
                     @Html.DisplayNameFor(model => model.MachineName)
                 </th>
                 <th>
-                    <a href="@Url.Action("Index", "CertificateOfFitness", new { sortOrder = ViewBag.DateSortParam, searchString = ViewBag.CurrentSearch, plantFilter = ViewBag.CurrentPlantFilter })" class="text-dark text-decoration-none">
+                    <a href="@Url.Action("Index", "CertificateOfFitness", new { sortOrder = ViewBag.DateSortParam, searchString = ViewBag.CurrentSearch, plantFilter = ViewBag.CurrentPlantFilter })"
+                        class="text-dark text-decoration-none">
                         @Html.DisplayNameFor(model => model.ExpiryDate)
                         @if (ViewBag.CurrentSort == "date_asc")
                         {
@@ -182,21 +185,25 @@
                         <td>
                             @if (!string.IsNullOrEmpty(item.DocumentPath))
                             {
-                                <a href="@Url.Action("ViewDocument", "CertificateOfFitness", new { id = item.Id })" class="btn btn-sm btn-outline-primary" title="View PDF Document" target="_blank">
+                                <a href="@Url.Action("ViewDocument", "CertificateOfFitness", new { id = item.Id })"
+                                    class="btn btn-sm btn-outline-primary" title="View PDF Document" target="_blank">
                                     <i class="bi bi-file-earmark-pdf"></i>
                                 </a>
                             }
                         </td>
                         <td>
-                            <a href="@Url.Action("Details", "CertificateOfFitness", new { id = item.Id })" class="btn btn-info btn-sm">
+                            <a href="@Url.Action("Details", "CertificateOfFitness", new { id = item.Id })"
+                                class="btn btn-info btn-sm">
                                 <i class="bi bi-info-circle"></i> Details
                             </a>
                             @if (User.IsInRole("Admin"))
                             {
-                                <a href="@Url.Action("Edit", "CertificateOfFitness", new { id = item.Id })" class="btn btn-warning btn-sm">
+                                <a href="@Url.Action("Edit", "CertificateOfFitness", new { id = item.Id })"
+                                    class="btn btn-warning btn-sm">
                                     <i class="bi bi-pencil-square"></i> Edit
                                 </a>
-                                <a href="@Url.Action("Delete", "CertificateOfFitness", new { id = item.Id })" class="btn btn-danger btn-sm">
+                                <a href="@Url.Action("Delete", "CertificateOfFitness", new { id = item.Id })"
+                                    class="btn btn-danger btn-sm">
                                     <i class="bi bi-trash"></i> Delete
                                 </a>
                             }
@@ -206,4 +213,4 @@
             }
         </tbody>
     </table>
-</div> 
+</div>

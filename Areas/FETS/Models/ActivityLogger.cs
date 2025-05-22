@@ -35,7 +35,7 @@ namespace FETS.Models
                 string ipAddress = GetClientIPAddress();
 
                 // Insert activity log
-                using (SqlConnection conn = new SqlConnection(WebConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString))
+                using (SqlConnection conn = new SqlConnection(WebConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString))
                 {
                     conn.Open();
                     using (SqlCommand cmd = new SqlCommand())
@@ -43,7 +43,7 @@ namespace FETS.Models
                         cmd.Connection = conn;
                         cmd.CommandType = CommandType.Text;
                         cmd.CommandText = @"
-                            INSERT INTO ActivityLogs (UserID, Action, Description, EntityType, EntityID, IPAddress)
+                            INSERT INTO FETS.ActivityLogs (UserID, Action, Description, EntityType, EntityID, IPAddress)
                             VALUES (@UserID, @Action, @Description, @EntityType, @EntityID, @IPAddress)";
 
                         cmd.Parameters.AddWithValue("@UserID", userId);
@@ -79,14 +79,14 @@ namespace FETS.Models
             
             try
             {
-                using (SqlConnection conn = new SqlConnection(WebConfigurationManager.ConnectionStrings["FETSConnection"].ConnectionString))
+                using (SqlConnection conn = new SqlConnection(WebConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString))
                 {
                     conn.Open();
                     using (SqlCommand cmd = new SqlCommand())
                     {
                         cmd.Connection = conn;
                         cmd.CommandType = CommandType.Text;
-                        cmd.CommandText = "SELECT UserID FROM Users WHERE Username = @Username";
+                        cmd.CommandText = "SELECT UserID FROM FETS.FETS.Users WHERE Username = @Username";
                         cmd.Parameters.AddWithValue("@Username", username);
 
                         object result = cmd.ExecuteScalar();
