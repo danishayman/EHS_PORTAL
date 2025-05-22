@@ -145,11 +145,20 @@ namespace FETS
             // Standard Forms Authentication SignOut
             FormsAuthentication.SignOut();
             
-            // Also explicitly remove the FETS authentication cookie
-            HttpCookie cookie = new HttpCookie(FormsAuthentication.FormsCookieName);
+            // Explicitly remove the FETS authentication cookie with exact name from Web.config
+            HttpCookie cookie = new HttpCookie(".FETS_AUTH_COOKIE");
             cookie.Expires = DateTime.Now.AddDays(-1);
             cookie.Path = "/FETS";
             Response.Cookies.Add(cookie);
+            
+            // Also try removing it from request cookies
+            if (Request.Cookies[".FETS_AUTH_COOKIE"] != null)
+            {
+                HttpCookie expiredCookie = Request.Cookies[".FETS_AUTH_COOKIE"];
+                expiredCookie.Expires = DateTime.Now.AddDays(-1);
+                expiredCookie.Path = "/FETS";
+                Response.Cookies.Add(expiredCookie);
+            }
             
             // Clear session data
             Session.Clear();
@@ -160,8 +169,8 @@ namespace FETS
 
         private string GetUserRoleFromTicket()
         {
-            // Get the user's role from the auth ticket
-            HttpCookie authCookie = Request.Cookies[FormsAuthentication.FormsCookieName];
+            // Get the user's role from the auth ticket using the exact cookie name
+            HttpCookie authCookie = Request.Cookies[".FETS_AUTH_COOKIE"];
             if (authCookie != null)
             {
                 FormsAuthenticationTicket ticket = FormsAuthentication.Decrypt(authCookie.Value);
@@ -185,11 +194,20 @@ namespace FETS
             // Clear authentication cookie
             FormsAuthentication.SignOut();
             
-            // Also explicitly remove the FETS authentication cookie
-            HttpCookie cookie = new HttpCookie(FormsAuthentication.FormsCookieName);
+            // Explicitly remove the FETS authentication cookie with exact name from Web.config
+            HttpCookie cookie = new HttpCookie(".FETS_AUTH_COOKIE");
             cookie.Expires = DateTime.Now.AddDays(-1);
             cookie.Path = "/FETS";
             Response.Cookies.Add(cookie);
+            
+            // Also try removing it from request cookies
+            if (Request.Cookies[".FETS_AUTH_COOKIE"] != null)
+            {
+                HttpCookie expiredCookie = Request.Cookies[".FETS_AUTH_COOKIE"];
+                expiredCookie.Expires = DateTime.Now.AddDays(-1);
+                expiredCookie.Path = "/FETS";
+                Response.Cookies.Add(expiredCookie);
+            }
             
             // Clear session data
             Session.Clear();
