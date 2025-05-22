@@ -113,6 +113,7 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                 EmpID = user.EmpID,
                 Atom_CEP = user.Atom_CEP,
                 DOE_CPD = user.DOE_CPD,
+                Dosh_CEP = user.Dosh_CEP,
                 UserRoles = userRoles,
                 UserPlants = userPlants,
                 UserCompetencies = userCompetencies,
@@ -169,6 +170,7 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                     {
                         user.Atom_CEP = model.Atom_CEP;
                         user.DOE_CPD = model.DOE_CPD;
+                        user.Dosh_CEP = model.Dosh_CEP;
                     }
                     break;
                 
@@ -210,6 +212,7 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                     {
                         user.Atom_CEP = model.Atom_CEP;
                         user.DOE_CPD = model.DOE_CPD;
+                        user.Dosh_CEP = model.Dosh_CEP;
                     }
                     break;
             }
@@ -544,7 +547,8 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                 PhoneNumberConfirmed = user.PhoneNumberConfirmed,
                 TwoFactorEnabled = user.TwoFactorEnabled,
                 LockoutEnabled = user.LockoutEnabled,
-                AccessFailedCount = user.AccessFailedCount
+                AccessFailedCount = user.AccessFailedCount,
+                Dosh_CEP = user.Dosh_CEP
             };
 
             return View(model);
@@ -590,6 +594,7 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                 // Update only points
                 user.Atom_CEP = model.Atom_CEP;
                 user.DOE_CPD = model.DOE_CPD;
+                user.Dosh_CEP = model.Dosh_CEP;
                 
                 // Update the user
                 var result = await UserManager.UpdateAsync(user);
@@ -615,6 +620,7 @@ namespace EHS_PORTAL.Areas.CLIP.Controllers
                 user.PhoneNumberConfirmed = model.PhoneNumberConfirmed;
                 user.TwoFactorEnabled = model.TwoFactorEnabled;
                 user.LockoutEnabled = model.LockoutEnabled;
+                user.Dosh_CEP = model.Dosh_CEP;
 
                 // Update the user
                 var result = await UserManager.UpdateAsync(user);
